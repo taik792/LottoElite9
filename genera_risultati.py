@@ -1,104 +1,96 @@
 import json
 from collections import Counter
+from itertools import combinations
 
-DISTANZA_MIN = 6
-ULTIME_ESTRAZIONI = 20
+# CARICA ESTRAZIONI
+with open("estrazioni.json", "r") as f:
+    estrazioni = json.load(f)
 
+risultati = {
+    "top": {},
+    "jolly": {},
+    "ruote": {}
+}
 
-def carica_estrazioni():
-    with open("estrazioni.json", "r") as f:
-        return json.load(f)
+# ANALISI RUOTE
+for ruota, lista_estrazioni in estrazioni.items():
 
+    frequenza = Counter()
+    coppie = Counter()
 
-def prendi_ultime(estrazioni_ruota):
-    # prende le ultime N estrazioni (le più recenti)
-    return estrazioni_ruota[-ULTIME_ESTRAZIONI:]
+    # ultime 20 estrazioni
+    ultime = lista_estrazioni[-20:]
 
+    for estrazione in ultime:
 
-def calcola_frequenze(estrazioni):
-    freq = Counter()
-    for estrazione in estrazioni:
+        # frequenza numeri
         for n in estrazione:
-            freq[n] += 1
-    return freq
+            frequenza[n] += 1
 
+        # coppie
+        for c in combinations(sorted(estrazione), 2):
+            coppie[c] += 1
 
-def applica_filtro_distanza(numeri):
-    filtrati = []
-    for n in numeri:
-        if all(abs(n - x) >= DISTANZA_MIN for x in filtrati):
-            filtrati.append(n)
-    return filtrati
+    score_ambi = []
 
+    # crea score sugli ambi
+    for ambo, freq in coppie.items():
 
-def genera_terno(freq):
-    # ordina per frequenza
-    numeri_ordinati = [n for n, _ in freq.most_common()]
+        n1, n2 = ambo
 
-    # applica filtro distanza
-    filtrati = applica_filtro_distanza(numeri_ordinati)
+        score = (
+            freq * 10 +
+            frequenza[n1] * 2 +
+            frequenza[n2] * 2
+        )
 
-    # fallback se meno di 3 numeri
-    if len(filtrati) < 3:
-        return numeri_ordinati[:3]
+        # bonus numeri vicini
+        if abs(n1 - n2) <= 7:
+            score += 4
 
-    return filtrati[:3]
+        # bonus numeri alti
+        if n1 >= 70 or n2 >= 70:
+            score += 2
 
+        score_ambi.append({
+            "ambo": [n1, n2],
+            "score": round(score, 2)
+        })
 
-def calcola_score(terno, freq):
-    return round(sum(freq[n] for n in terno) * 1.5, 2)
+    # ordina
+    score_ambi.sort(key=lambda x: x["score"], reverse=True)
 
+    miglior_ambo = score_ambi[0]
 
-def genera_risultati():
-    estrazioni = carica_estrazioni()
-
-    risultati = {
-        "top": {},
-        "jolly": {},
-        "ruote": {}
+    # salva risultati
+    risultati["ruote"][ruota] = {
+        "ultima_estrazione": lista_estrazioni[-1],
+        "ambo": miglior_ambo["ambo"],
+        "score": miglior_ambo["score"]
     }
 
-    classifica = []
+# TOP 3
+top3 = sorted(
+    risultati["ruote"].items(),
+    key=lambda x: x[1]["score"],
+    reverse=True
+)[:3]
 
-    for ruota, dati in estrazioni.items():
-        ultime = prendi_ultime(dati)
-        freq = calcola_frequenze(ultime)
+for ruota, dati in top3:
+    risultati["top"][ruota] = {
+        "ambo": dati["ambo"],
+        "score": dati["score"]
+    }
 
-        terno = genera_terno(freq)
-        score = calcola_score(terno, freq)
+# JOLLY
+jolly_ruota, jolly_dati = top3[0]
 
-        risultati["ruote"][ruota] = {
-            "ultima_estrazione": ultime[-1],
-            "numeri": terno,
-            "score": score
-        }
+risultati["jolly"][jolly_ruota] = {
+    "ambo": jolly_dati["ambo"]
+}
 
-        classifica.append((ruota, terno, score, ultime[-1]))
+# SALVA JSON
+with open("risultati.json", "w") as f:
+    json.dump(risultati, f, indent=2)
 
-    # TOP 3
-    top3 = sorted(classifica, key=lambda x: x[2], reverse=True)[:3]
-
-    for ruota, numeri, score, ultima in top3:
-        risultati["top"][ruota] = {
-            "numeri": numeri,
-            "score": score
-        }
-
-    # JOLLY = primo classificato
-    if top3:
-        r = top3[0]
-        risultati["jolly"][r[0]] = {
-            "numeri": r[1]
-        }
-
-    return risultati
-
-
-def salva_risultati():
-    risultati = genera_risultati()
-    with open("risultati.json", "w") as f:
-        json.dump(risultati, f, indent=2)
-
-
-if __name__ == "__main__":
-    salva_risultati()
+print("✅ Motore 9 AMBO generato!")
