@@ -18,8 +18,8 @@ for ruota, lista_estrazioni in estrazioni.items():
     frequenza = Counter()
     coppie = Counter()
 
-    # ultime 20 estrazioni
-    ultime = lista_estrazioni[-20:]
+    # ultime 16 estrazioni
+    ultime = lista_estrazioni[-16:]
 
     for estrazione in ultime:
 
