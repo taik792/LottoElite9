@@ -1,54 +1,96 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8">
-<title>Lotto Elite Pro</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>LOTTO ELITE PRO</title>
 
 <style>
-body {
-    background: #061e2c;
-    color: #fff;
-    font-family: Arial;
-    text-align: center;
+body{
+    margin:0;
+    padding:20px;
+    background:#031826;
+    color:white;
+    font-family:Arial;
+    text-align:center;
 }
 
-h1 {
-    color: #00e5ff;
+h1{
+    color:#00e5ff;
+    margin-bottom:5px;
 }
 
-.section {
-    margin-top: 30px;
+h2{
+    margin-top:0;
+    margin-bottom:30px;
 }
 
-.row {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    flex-wrap: wrap;
+.sezione{
+    margin-bottom:40px;
 }
 
-.box {
-    border: 2px solid #00e5ff;
-    border-radius: 12px;
-    padding: 10px;
-    width: 150px;
+.cards{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:20px;
 }
 
-.top {
-    border-color: gold;
+.card{
+    background:#08263d;
+    border:2px solid #00d9ff;
+    border-radius:15px;
+    padding:15px;
+    width:220px;
+    box-shadow:0 0 10px #000;
 }
 
-.jolly {
-    background: red;
+.card-top{
+    border-color:gold;
+    background:#3b2d00;
 }
 
-.numeri {
-    font-size: 20px;
-    color: #00e5ff;
+.card-jolly{
+    border-color:#ff3b3b;
+    background:#5c0000;
 }
 
-small {
-    color: #ff6b6b;
+.ruota{
+    font-size:22px;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.numeri{
+    font-size:38px;
+    color:#00e5ff;
+    font-weight:bold;
+    margin:15px 0;
+}
+
+.score{
+    color:#ff9db1;
+    font-size:24px;
+    font-weight:bold;
+}
+
+.ultima{
+    font-size:18px;
+    color:#ffffff;
+    margin-bottom:15px;
+    line-height:1.5;
+}
+
+@media(max-width:700px){
+
+    .card{
+        width:90%;
+    }
+
+    .numeri{
+        font-size:30px;
+    }
 }
 </style>
 </head>
@@ -58,95 +100,98 @@ small {
 <h1>🔥 LOTTO ELITE PRO 🤘</h1>
 <h2>Motore 9 PRO</h2>
 
-<div class="section">
-    <h3>🎯 TOP</h3>
-    <div id="top" class="row"></div>
+<div class="sezione">
+<h2>🎯 TOP</h2>
+<div id="top" class="cards"></div>
 </div>
 
-<div class="section">
-    <h3>💣 JOLLY</h3>
-    <div id="jolly" class="row"></div>
+<div class="sezione">
+<h2>💣 JOLLY</h2>
+<div id="jolly" class="cards"></div>
 </div>
 
-<div class="section">
-    <h3>📊 TERNO FORTE</h3>
-    <div id="ruote" class="row"></div>
+<div class="sezione">
+<h2>📊 TERNO FORTE</h2>
+<div id="ruote" class="cards"></div>
 </div>
 
 <script>
-async function carica() {
-    try {
-        const res = await fetch("./risultati.json");
-        const dati = await res.json();
 
-        // ===== TOP (tutti su una riga) =====
-        const topDiv = document.getElementById("top");
-        topDiv.innerHTML = "";
+fetch("risultati.json")
+.then(res => res.json())
+.then(data => {
 
-        Object.entries(dati.top).forEach(([ruota, r]) => {
-            topDiv.innerHTML += `
-                <div class="box top">
-                    <div>${ruota}</div>
-                    <div class="numeri">${r.numeri.join(" — ")}</div>
-                    <small>${r.score}</small>
-                </div>
-            `;
-        });
+    // TOP
+    const topDiv = document.getElementById("top");
 
-        // ===== JOLLY (una riga) =====
-        const jollyDiv = document.getElementById("jolly");
-        jollyDiv.innerHTML = "";
+    Object.entries(data.top).forEach(([ruota, dati]) => {
 
-        Object.entries(dati.jolly).forEach(([ruota, r]) => {
-            jollyDiv.innerHTML += `
-                <div class="box jolly">
-                    <div>${ruota}</div>
-                    <div class="numeri">${r.numeri.join(" — ")}</div>
-                </div>
-            `;
-        });
+        topDiv.innerHTML += `
+        <div class="card card-top">
+            <div class="ruota">${ruota}</div>
 
-        // ===== TERNO FORTE (3 per riga) =====
-        const ruoteDiv = document.getElementById("ruote");
-        ruoteDiv.innerHTML = "";
+            <div class="numeri">
+                ${dati.ambo.join(" — ")}
+            </div>
 
-        let contatore = 0;
-        let row = document.createElement("div");
-        row.className = "row";
+            <div class="score">
+                ${dati.score}
+            </div>
+        </div>
+        `;
+    });
 
-        Object.entries(dati.ruote).forEach(([ruota, r]) => {
 
-            const box = document.createElement("div");
-            box.className = "box";
+    // JOLLY
+    const jollyDiv = document.getElementById("jolly");
 
-            box.innerHTML = `
-                <div>${ruota}</div>
-                <div>${r.ultima_estrazione.join(" • ")}</div>
-                <div class="numeri">${r.numeri.join(" — ")}</div>
-                <small>${r.score}</small>
-            `;
+    Object.entries(data.jolly).forEach(([ruota, dati]) => {
 
-            row.appendChild(box);
-            contatore++;
+        jollyDiv.innerHTML += `
+        <div class="card card-jolly">
+            <div class="ruota">${ruota}</div>
 
-            if (contatore === 3) {
-                ruoteDiv.appendChild(row);
-                row = document.createElement("div");
-                row.className = "row";
-                contatore = 0;
-            }
-        });
+            <div class="numeri">
+                ${dati.ambo.join(" — ")}
+            </div>
+        </div>
+        `;
+    });
 
-        if (contatore > 0) {
-            ruoteDiv.appendChild(row);
-        }
 
-    } catch (e) {
-        console.error("Errore:", e);
-    }
-}
+    // RUOTE
+    const ruoteDiv = document.getElementById("ruote");
 
-carica();
+    Object.entries(data.ruote).forEach(([ruota, dati]) => {
+
+        ruoteDiv.innerHTML += `
+        <div class="card">
+
+            <div class="ruota">
+                ${ruota}
+            </div>
+
+            <div class="ultima">
+                ${dati.ultima_estrazione.join(" • ")}
+            </div>
+
+            <div class="numeri">
+                ${dati.ambo.join(" — ")}
+            </div>
+
+            <div class="score">
+                ${dati.score}
+            </div>
+
+        </div>
+        `;
+    });
+
+})
+.catch(err => {
+    console.log(err);
+});
+
 </script>
 
 </body>
