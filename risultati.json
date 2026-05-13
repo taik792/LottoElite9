@@ -5,7 +5,7 @@
         7,
         73
       ],
-      "score": 46
+      "score": 44
     },
     "Bari": {
       "ambo": [
@@ -33,11 +33,11 @@
   "ruote": {
     "Bari": {
       "ultima_estrazione": [
-        65,
-        2,
-        64,
-        85,
-        33
+        63,
+        50,
+        72,
+        81,
+        69
       ],
       "ambo": [
         71,
@@ -47,11 +47,11 @@
     },
     "Cagliari": {
       "ultima_estrazione": [
-        28,
-        76,
-        58,
-        69,
-        64
+        80,
+        20,
+        78,
+        61,
+        36
       ],
       "ambo": [
         58,
@@ -61,81 +61,81 @@
     },
     "Firenze": {
       "ultima_estrazione": [
-        15,
+        65,
+        13,
+        82,
         87,
-        69,
-        64,
-        22
+        26
       ],
       "ambo": [
         71,
         80
       ],
-      "score": 36
+      "score": 34
     },
     "Genova": {
       "ultima_estrazione": [
-        36,
-        34,
-        40,
-        55,
-        52
+        23,
+        48,
+        30,
+        68,
+        75
       ],
       "ambo": [
-        34,
+        75,
         81
       ],
       "score": 26
     },
     "Milano": {
       "ultima_estrazione": [
-        66,
-        27,
         36,
-        11,
-        56
+        90,
+        14,
+        85,
+        48
       ],
       "ambo": [
         2,
         8
       ],
-      "score": 26
+      "score": 24
     },
     "Napoli": {
       "ultima_estrazione": [
-        51,
-        75,
-        66,
-        38,
-        24
+        32,
+        42,
+        13,
+        54,
+        44
       ],
       "ambo": [
         7,
         73
       ],
-      "score": 46
+      "score": 44
     },
     "Palermo": {
       "ultima_estrazione": [
-        28,
-        41,
-        2,
-        40,
-        44
+        5,
+        17,
+        45,
+        72,
+        36
       ],
       "ambo": [
         68,
         78
       ],
-      "score": 36
+      "score": 34
     },
     "Roma": {
       "ultima_estrazione": [
-        38,
-        34,
+        86,
+        42,
         7,
-        36,
-        16
+        72,
+        61
       ],
       "ambo": [
         36,
@@ -145,11 +145,11 @@
     },
     "Torino": {
       "ultima_estrazione": [
-        54,
-        62,
-        73,
-        64,
-        30
+        61,
+        79,
+        21,
+        42,
+        36
       ],
       "ambo": [
         75,
@@ -159,11 +159,11 @@
     },
     "Venezia": {
       "ultima_estrazione": [
-        81,
         41,
-        84,
-        64,
-        89
+        33,
+        36,
+        23,
+        70
       ],
       "ambo": [
         54,
