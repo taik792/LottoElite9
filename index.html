@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Lotto Elite PRO</title>
+<title>Lotto Elite Pro</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 
@@ -13,138 +13,78 @@
 body{
     margin:0;
     padding:0;
-    background:
-    radial-gradient(circle at top,#063b73 0%,#02152b 70%);
     font-family:'Orbitron',sans-serif;
+    background:
+    radial-gradient(circle at center,#0b3d7a 0%,#00152d 70%);
     color:white;
     text-align:center;
 }
 
 h1{
-    color:#00eaff;
-    font-size:48px;
+    color:#00e5ff;
+    font-size:58px;
     margin-top:30px;
-    text-shadow:0 0 20px #00eaff;
+    text-shadow:0 0 20px #00e5ff;
 }
 
 h2{
-    margin-top:40px;
-    font-size:40px;
-    color:white;
+    margin-top:10px;
+    color:#d9d9d9;
+    font-weight:400;
 }
 
-.subtitle{
-    font-size:18px;
-    margin-top:-10px;
-    margin-bottom:30px;
-    color:#cccccc;
-}
-
-.section{
-    margin-top:30px;
+.sezione{
+    margin-top:50px;
 }
 
 .cards{
     display:flex;
     flex-wrap:wrap;
     justify-content:center;
-    gap:25px;
+    gap:30px;
     padding:20px;
 }
 
 .card{
-    width:260px;
-    min-height:320px;
-
-    background:rgba(0,0,0,0.35);
-
-    border:3px solid #00eaff;
-
-    border-radius:30px;
-
+    width:320px;
+    border:4px solid #ffd700;
+    border-radius:35px;
+    padding:30px 20px;
+    background:rgba(0,0,0,0.18);
     box-shadow:
-    0 0 20px #00eaff88,
-    inset 0 0 20px #00eaff22;
-
-    padding:20px;
-
-    backdrop-filter:blur(8px);
-}
-
-.top-card{
-    border-color:gold;
-
-    box-shadow:
-    0 0 25px gold,
-    inset 0 0 20px rgba(255,215,0,0.2);
-}
-
-.jolly-card{
-    border-color:#ff3b3b;
-
-    box-shadow:
-    0 0 25px #ff3b3b,
-    inset 0 0 20px rgba(255,0,0,0.2);
+    0 0 15px #ffd700,
+    0 0 35px rgba(255,215,0,0.5);
 }
 
 .ruota{
     font-size:42px;
-    margin-top:10px;
-    margin-bottom:20px;
-}
-
-.estrazione-label{
-    font-size:18px;
-    color:#dddddd;
-    margin-top:10px;
+    margin-bottom:25px;
 }
 
 .estrazione{
     font-size:20px;
-    color:#ffffff;
-    margin-top:10px;
+    color:#e5e5e5;
     margin-bottom:25px;
+    line-height:1.8;
 }
 
 .ambo{
-    font-size:58px;
-    color:#00f7ff;
-
-    text-shadow:
-    0 0 10px #00f7ff,
-    0 0 25px #00f7ff;
-
-    margin-top:15px;
+    font-size:72px;
+    color:#00f0ff;
+    text-shadow:0 0 15px #00f0ff;
     margin-bottom:25px;
 }
 
 .score{
-    font-size:32px;
-    color:#ffb6d9;
-
-    text-shadow:
-    0 0 10px #ffb6d9;
+    font-size:34px;
+    color:#ffb3d9;
 }
 
-@media(max-width:700px){
-
-    h1{
-        font-size:34px;
-    }
-
-    .card{
-        width:85%;
-        min-height:auto;
-    }
-
-    .ambo{
-        font-size:44px;
-    }
-
-    .ruota{
-        font-size:32px;
-    }
-
+.jolly-card{
+    border-color:#ff2d55;
+    box-shadow:
+    0 0 15px #ff2d55,
+    0 0 35px rgba(255,45,85,0.5);
 }
 
 </style>
@@ -153,30 +93,27 @@ h2{
 <body>
 
 <h1>🔥 LOTTO ELITE PRO 🤘</h1>
+<h2>Motore Ciclico PRO</h2>
 
-<div class="subtitle">
-Motore Ciclico PRO
-</div>
+<div class="sezione">
 
-<div class="section">
-
-<h2>🎯 TOP</h2>
+<h1 style="font-size:45px;">🎯 TOP</h1>
 
 <div class="cards" id="top"></div>
 
 </div>
 
-<div class="section">
+<div class="sezione">
 
-<h2>💣 JOLLY</h2>
+<h1 style="font-size:45px;">💣 JOLLY</h1>
 
 <div class="cards" id="jolly"></div>
 
 </div>
 
-<div class="section">
+<div class="sezione">
 
-<h2>📊 AMBO FORTE</h2>
+<h1 style="font-size:45px;">📊 AMBO FORTE</h1>
 
 <div class="cards" id="ruote"></div>
 
@@ -184,78 +121,86 @@ Motore Ciclico PRO
 
 <script>
 
-function creaCard(dati, classe = "") {
-
-    return `
-
-    <div class="card ${classe}">
-
-        <div class="ruota">
-            ${dati.ruota}
-        </div>
-
-        ${dati.estrazione ? `
-
-        <div class="estrazione-label">
-            Ultima Estrazione
-        </div>
-
-        <div class="estrazione">
-            ${dati.estrazione.join(" • ")}
-        </div>
-
-        ` : ""}
-
-        <div class="ambo">
-            ${dati.ambo[0]} - ${dati.ambo[1]}
-        </div>
-
-        <div class="score">
-            Score: ${dati.score}
-        </div>
-
-    </div>
-
-    `;
-}
-
 fetch("risultati.json")
-
-.then(response => response.json())
-
+.then(res => res.json())
 .then(data => {
+
+    const top = document.getElementById("top");
+    const jolly = document.getElementById("jolly");
+    const ruote = document.getElementById("ruote");
+
+    function creaCard(item, classe="") {
+
+        return `
+
+        <div class="card ${classe}">
+
+            <div class="ruota">${item.ruota}</div>
+
+            <div class="estrazione">
+                Ultima Estrazione<br>
+                ${item.estrazione.join(" · ")}
+            </div>
+
+            <div class="ambo">
+                ${item.ambo[0]} - ${item.ambo[1]}
+            </div>
+
+            <div class="score">
+                Score: ${item.score}
+            </div>
+
+        </div>
+
+        `;
+    }
 
     // TOP
 
-    const top = document.getElementById("top");
-
     data.top.forEach(item => {
 
-        top.innerHTML += creaCard(item, "top-card");
+        top.innerHTML += creaCard(item);
 
     });
 
     // JOLLY
 
-    const jolly = document.getElementById("jolly");
+    if(data.jolly){
 
-    jolly.innerHTML = creaCard(data.jolly, "jolly-card");
+        jolly.innerHTML += creaCard(data.jolly,"jolly-card");
+
+    }
+
+    // ORDINE RUOTE
+
+    const ordineRuote = [
+        "Bari",
+        "Cagliari",
+        "Firenze",
+        "Genova",
+        "Milano",
+        "Napoli",
+        "Palermo",
+        "Roma",
+        "Torino",
+        "Venezia",
+        "Nazionale"
+    ];
+
+    data.ruote.sort((a,b)=>{
+
+        return ordineRuote.indexOf(a.ruota)
+        - ordineRuote.indexOf(b.ruota);
+
+    });
 
     // RUOTE
-
-    const ruote = document.getElementById("ruote");
 
     data.ruote.forEach(item => {
 
         ruote.innerHTML += creaCard(item);
 
     });
-
-})
-
-.catch(error => {
-
-    console.log(error);
 
 });
 
