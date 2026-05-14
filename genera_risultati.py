@@ -1,17 +1,6 @@
 import json
-
-# ==========================================
-# FUNZIONI CICLICHE
-# ==========================================
-
-def somma90(n):
-    return n - 90 if n > 90 else n
-
-def speculare(n):
-    return 91 - n
-
-def distanza(a, b):
-    return abs(a - b)
+from collections import Counter
+from itertools import combinations
 
 # ==========================================
 # CARICA ESTRAZIONI
@@ -21,168 +10,109 @@ with open("estrazioni.json", "r") as f:
     estrazioni = json.load(f)
 
 risultati = {
-    "top": [],
+    "top": {},
     "jolly": {},
     "ruote": {}
 }
 
 # ==========================================
+# FUNZIONE CICLICA
+# ==========================================
+
+def genera_ambo_ciclico(estrazione):
+
+    numeri = estrazione[:]
+
+    frequenze = Counter()
+
+    # Analizza tutte le coppie
+    for a, b in combinations(numeri, 2):
+
+        distanza = abs(a - b)
+
+        if distanza > 45:
+            distanza = 90 - distanza
+
+        somma = (a + b) % 90
+        if somma == 0:
+            somma = 90
+
+        frequenze[distanza] += 2
+        frequenze[somma] += 1
+
+    # Numeri più forti
+    migliori = frequenze.most_common(2)
+
+    if len(migliori) < 2:
+        return [1, 90], 0
+
+    n1 = migliori[0][0]
+    n2 = migliori[1][0]
+
+    score = migliori[0][1] + migliori[1][1]
+
+    return [n1, n2], score
+
+
+# ==========================================
 # ANALISI RUOTE
 # ==========================================
+
+top_list = []
 
 for ruota, lista_estrazioni in estrazioni.items():
 
     ultima = lista_estrazioni[-1]
 
-    candidati = []
+    ambo, score = genera_ambo_ciclico(ultima)
 
-    # ==========================================
-    # DISTANZA 9
-    # ==========================================
-
-    for n in ultima:
-
-        candidati.append(sorted([n, somma90(n + 9)]))
-
-    # ==========================================
-    # DISTANZA 18
-    # ==========================================
-
-    for n in ultima:
-
-        candidati.append(sorted([n, somma90(n + 18)]))
-
-    # ==========================================
-    # SPECULARI
-    # ==========================================
-
-    for n in ultima:
-
-        candidati.append(sorted([n, speculare(n)]))
-
-    # ==========================================
-    # SOMME
-    # ==========================================
-
-    for i in range(len(ultima)):
-
-        for j in range(i + 1, len(ultima)):
-
-            s = somma90(ultima[i] + ultima[j])
-
-            candidati.append(sorted([ultima[i], s]))
-
-    # ==========================================
-    # RIMOZIONE DUPLICATI
-    # ==========================================
-
-    unici = []
-
-    visti = set()
-
-    for c in candidati:
-
-        if c[0] == c[1]:
-            continue
-
-        key = tuple(c)
-
-        if key not in visti:
-
-            visti.add(key)
-
-            unici.append(c)
-
-    # ==========================================
-    # SCORING
-    # ==========================================
-
-    migliori = []
-
-    for c in unici:
-
-        a, b = c
-
-        score = 0
-
-        dist = distanza(a, b)
-
-        # DISTANZE FORTI
-        if dist == 9:
-            score += 50
-
-        if dist == 18:
-            score += 45
-
-        if dist == 27:
-            score += 35
-
-        # STESSA FIGURA
-        if a % 9 == b % 9:
-            score += 30
-
-        # NUMERI ALTI
-        if a > 45:
-            score += 10
-
-        if b > 45:
-            score += 10
-
-        # VICINANZA
-        if dist <= 10:
-            score += 20
-
-        migliori.append({
-            "ambo": c,
-            "score": score
-        })
-
-    # ==========================================
-    # ORDINA
-    # ==========================================
-
-    migliori.sort(key=lambda x: x["score"], reverse=True)
-
-    migliore = migliori[0]
-
-    risultati["ruote"][ruota] = {
+    risultati["ruote"][ruota.lower()] = {
         "estrazione": ultima,
-        "ambo": migliore["ambo"],
-        "score": migliore["score"]
+        "ambo": ambo,
+        "score": round(score, 2)
     }
 
-# ==========================================
-# TOP
-# ==========================================
-
-top = sorted(
-    risultati["ruote"].items(),
-    key=lambda x: x[1]["score"],
-    reverse=True
-)
-
-risultati["top"] = []
-
-for ruota, dati in top[:3]:
-
-    risultati["top"].append({
+    top_list.append({
         "ruota": ruota,
-        "ambo": dati["ambo"],
-        "score": dati["score"]
+        "ambo": ambo,
+        "score": score
     })
+
+# ==========================================
+# TOP 3
+# ==========================================
+
+top_ordinati = sorted(
+    top_list,
+    key=lambda x: x["score"],
+    reverse=True
+)[:3]
+
+for i, item in enumerate(top_ordinati):
+
+    risultati["top"][str(i)] = {
+        "ruota": item["ruota"],
+        "ambo": item["ambo"],
+        "score": round(item["score"], 2)
+    }
 
 # ==========================================
 # JOLLY
 # ==========================================
 
-risultati["jolly"] = risultati["top"][0]
+migliore = top_ordinati[0]
+
+risultati["jolly"] = {
+    "ruota": migliore["ruota"],
+    "ambo": migliore["ambo"],
+    "score": round(migliore["score"], 2)
+}
 
 # ==========================================
-# SALVA RISULTATI
+# SALVA JSON
 # ==========================================
 
 with open("risultati.json", "w") as f:
-
     json.dump(risultati, f, indent=4)
 
-print("✅ MOTORE CICLICO GENERATO")
+print("✅ Nuovo motore ciclico generato correttamente.")
