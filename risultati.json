@@ -1,6 +1,6 @@
 {
-    "top": {
-        "0": {
+    "top": [
+        {
             "ruota": "Genova",
             "ambo": [
                 7,
@@ -8,7 +8,7 @@
             ],
             "score": 8
         },
-        "1": {
+        {
             "ruota": "Napoli",
             "ambo": [
                 10,
@@ -16,7 +16,7 @@
             ],
             "score": 8
         },
-        "2": {
+        {
             "ruota": "Roma",
             "ambo": [
                 11,
@@ -24,7 +24,7 @@
             ],
             "score": 8
         }
-    },
+    ],
     "jolly": {
         "ruota": "Genova",
         "ambo": [
