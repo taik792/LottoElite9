@@ -20,14 +20,13 @@ risultati = {
 }
 
 # ==========================================
-# FUNZIONE MOTORE CICLICO
+# MOTORE CICLICO
 # ==========================================
 
 def genera_ambo_ciclico(estrazione):
 
     frequenze = Counter()
 
-    # Tutte le combinazioni di 2 numeri
     for a, b in combinations(estrazione, 2):
 
         # DISTANZA CICLICA
@@ -42,7 +41,6 @@ def genera_ambo_ciclico(estrazione):
         if somma == 0:
             somma = 90
 
-        # PESI
         frequenze[distanza] += 2
         frequenze[somma] += 1
 
@@ -51,12 +49,12 @@ def genera_ambo_ciclico(estrazione):
     if len(migliori) < 2:
         return [1, 90], 0
 
-    numero1 = migliori[0][0]
-    numero2 = migliori[1][0]
+    n1 = migliori[0][0]
+    n2 = migliori[1][0]
 
     score = migliori[0][1] + migliori[1][1]
 
-    return [numero1, numero2], score
+    return [n1, n2], score
 
 # ==========================================
 # ANALISI RUOTE
@@ -66,21 +64,21 @@ classifica = []
 
 for ruota, lista_estrazioni in estrazioni.items():
 
+    # PRENDE L'ULTIMA ESTRAZIONE
     ultima = lista_estrazioni[-1]
 
-    ambo, score = genera_ambo_ciclico(ultima)
+    numeri, score = genera_ambo_ciclico(ultima)
 
     # SALVA RUOTA
     risultati["ruote"][ruota.lower()] = {
-        "estrazione": ultima,
-        "ambo": ambo,
+        "ultima_estrazione": ultima,
+        "numeri": numeri,
         "score": round(score, 2)
     }
 
-    # CLASSIFICA TOP
     classifica.append({
         "ruota": ruota,
-        "ambo": ambo,
+        "numeri": numeri,
         "score": score
     })
 
@@ -98,7 +96,7 @@ for item in top3:
 
     risultati["top"].append({
         "ruota": item["ruota"],
-        "ambo": item["ambo"],
+        "numeri": item["numeri"],
         "score": round(item["score"], 2)
     })
 
@@ -110,7 +108,7 @@ migliore = top3[0]
 
 risultati["jolly"] = {
     "ruota": migliore["ruota"],
-    "ambo": migliore["ambo"],
+    "numeri": migliore["numeri"],
     "score": round(migliore["score"], 2)
 }
 
