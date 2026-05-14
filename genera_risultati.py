@@ -1,192 +1,158 @@
 import json
-from collections import Counter
-from itertools import combinations
 
 # =========================
 # CARICA ESTRAZIONI
 # =========================
 
-with open("estrazioni.json", "r") as f:
+with open("estrazioni.json", "r", encoding="utf-8") as f:
     estrazioni = json.load(f)
 
 # =========================
 # FUNZIONI
 # =========================
 
+def modulo90(n):
+    n = n % 90
+    return 90 if n == 0 else n
+
 def distanza(a, b):
-    d = abs(a - b)
-    return min(d, 90 - d)
-
-def vertibile(n):
-    if n < 10:
-        return n * 10
-    return int(str(n)[::-1])
-
-def figura(n):
-    return ((n - 1) % 9) + 1
-
-def decina(n):
-    return n // 10
+    return modulo90(abs(a - b))
 
 # =========================
-# ANALISI CICLICA EVOLUTA
+# GENERA NUMERI CICLICI
 # =========================
 
-risultati_ruote = []
+def genera_ciclo(numeri):
 
-for ruota, lista_estrazioni in estrazioni.items():
+    risultati = []
 
-    if len(lista_estrazioni) < 6:
-        continue
+    for i in range(len(numeri)):
 
-    ultime3 = lista_estrazioni[-3:]
-    ultima = lista_estrazioni[-1]
+        a = numeri[i]
+        b = numeri[(i + 1) % len(numeri)]
 
-    numeri_recenti = []
-    for estr in ultime3:
-        numeri_recenti.extend(estr)
+        # SOMMA CICLICA
+        somma = modulo90(a + b)
 
-    candidati = []
-
-    # genera tutti gli ambi
-    for a, b in combinations(set(numeri_recenti), 2):
-
-        score = 0
-
-        # =====================
-        # DISTANZA CICLICA
-        # =====================
-
+        # DISTANZA
         dist = distanza(a, b)
 
-        if dist in [9, 18, 27, 36, 45]:
-            score += 3
+        # CHIUSURA INVERSA
+        inv = modulo90(90 - dist)
 
-        # =====================
-        # FIGURA UGUALE
-        # =====================
+        risultati.append(somma)
+        risultati.append(dist)
+        risultati.append(inv)
 
-        if figura(a) == figura(b):
-            score += 2
+    return risultati
 
-        # =====================
-        # STESSA DECINA
-        # =====================
+# =========================
+# CREA AMBO
+# =========================
 
-        if decina(a) == decina(b):
-            score += 1
+def crea_ambo(numeri_estratti):
 
-        # =====================
-        # VERTIBILI
-        # =====================
+    candidati = genera_ciclo(numeri_estratti)
 
-        if vertibile(a) == b or vertibile(b) == a:
-            score += 3
+    # ELIMINA NUMERI GIÀ USCITI
+    candidati = [
+        n for n in candidati
+        if n not in numeri_estratti
+    ]
 
-        # =====================
-        # SOMMA CICLICA
-        # =====================
+    # CONTA FREQUENZE
+    frequenze = {}
 
-        somma = a + b
+    for n in candidati:
+        frequenze[n] = frequenze.get(n, 0) + 1
 
-        if somma in [90, 45, 54, 72]:
-            score += 2
-
-        # =====================
-        # RIPETIZIONE NELLE 3 ESTRAZIONI
-        # =====================
-
-        freq = numeri_recenti.count(a) + numeri_recenti.count(b)
-
-        if freq >= 3:
-            score += 2
-
-        # =====================
-        # PRESENZA ULTIMA ESTRAZIONE
-        # =====================
-
-        presenti_ultima = 0
-
-        if a in ultima:
-            presenti_ultima += 1
-
-        if b in ultima:
-            presenti_ultima += 1
-
-        if presenti_ultima == 2:
-            score += 3
-        elif presenti_ultima == 1:
-            score += 1
-
-        # =====================
-        # FILTRO FINALE
-        # =====================
-
-        if score >= 6:
-            candidati.append({
-                "ambo": sorted([a, b]),
-                "score": score
-            })
-
-    # ordina per score
-    candidati = sorted(
-        candidati,
-        key=lambda x: x["score"],
+    # ORDINA
+    ordinati = sorted(
+        frequenze.items(),
+        key=lambda x: x[1],
         reverse=True
     )
 
-    # evita duplicati
-    visti = set()
-    finali = []
+    # PRENDE I MIGLIORI
+    migliori = [x[0] for x in ordinati[:2]]
 
-    for c in candidati:
+    # SICUREZZA
+    if len(migliori) < 2:
 
-        key = tuple(c["ambo"])
+        for n in range(1, 91):
 
-        if key not in visti:
-            visti.add(key)
+            if n not in migliori and n not in numeri_estratti:
+                migliori.append(n)
 
-            finali.append({
-                "ruota": ruota,
-                "ambo": c["ambo"],
-                "score": c["score"],
-                "estrazione": ultima
-            })
+            if len(migliori) == 2:
+                break
 
-        if len(finali) >= 1:
-            break
+    # SCORE
+    score = sum(frequenze.get(n, 0) for n in migliori)
 
-    risultati_ruote.extend(finali)
+    return migliori, score
 
 # =========================
-# ORDINA TOP
+# ANALISI RUOTE
 # =========================
 
-risultati_ruote = sorted(
-    risultati_ruote,
+ruote = []
+
+for ruota, lista in estrazioni.items():
+
+    ultima = lista[-1]
+
+    ambo, score = crea_ambo(ultima)
+
+    ruote.append({
+        "ruota": ruota,
+        "ambo": ambo,
+        "score": score,
+        "estrazione": ultima
+    })
+
+# =========================
+# ORDINA
+# =========================
+
+ruote.sort(
     key=lambda x: x["score"],
     reverse=True
 )
 
-top = risultati_ruote[:3]
+# =========================
+# TOP
+# =========================
+
+top = ruote[:3]
 
 # =========================
 # JOLLY
 # =========================
 
-jolly = top[0] if top else {}
+jolly = top[0]
 
 # =========================
-# SALVA JSON
+# RISULTATO FINALE
 # =========================
 
 risultati = {
     "top": top,
     "jolly": jolly,
-    "ruote": risultati_ruote
+    "ruote": ruote
 }
 
-with open("risultati.json", "w") as f:
-    json.dump(risultati, f, indent=4)
+# =========================
+# SALVA JSON
+# =========================
 
-print("✅ Nuovo Motore Ciclico Evoluto generato!")
+with open("risultati.json", "w", encoding="utf-8") as f:
+
+    json.dump(
+        risultati,
+        f,
+        indent=4,
+        ensure_ascii=False
+    )
+
+print("RISULTATI GENERATI")
