@@ -9,56 +9,60 @@ from itertools import combinations
 with open("estrazioni.json", "r") as f:
     estrazioni = json.load(f)
 
+# ==========================================
+# STRUTTURA RISULTATI
+# ==========================================
+
 risultati = {
-    "top": {},
+    "top": [],
     "jolly": {},
     "ruote": {}
 }
 
 # ==========================================
-# FUNZIONE CICLICA
+# FUNZIONE MOTORE CICLICO
 # ==========================================
 
 def genera_ambo_ciclico(estrazione):
 
-    numeri = estrazione[:]
-
     frequenze = Counter()
 
-    # Analizza tutte le coppie
-    for a, b in combinations(numeri, 2):
+    # Tutte le combinazioni di 2 numeri
+    for a, b in combinations(estrazione, 2):
 
+        # DISTANZA CICLICA
         distanza = abs(a - b)
 
         if distanza > 45:
             distanza = 90 - distanza
 
+        # SOMMA CICLICA
         somma = (a + b) % 90
+
         if somma == 0:
             somma = 90
 
+        # PESI
         frequenze[distanza] += 2
         frequenze[somma] += 1
 
-    # Numeri più forti
     migliori = frequenze.most_common(2)
 
     if len(migliori) < 2:
         return [1, 90], 0
 
-    n1 = migliori[0][0]
-    n2 = migliori[1][0]
+    numero1 = migliori[0][0]
+    numero2 = migliori[1][0]
 
     score = migliori[0][1] + migliori[1][1]
 
-    return [n1, n2], score
-
+    return [numero1, numero2], score
 
 # ==========================================
 # ANALISI RUOTE
 # ==========================================
 
-top_list = []
+classifica = []
 
 for ruota, lista_estrazioni in estrazioni.items():
 
@@ -66,13 +70,15 @@ for ruota, lista_estrazioni in estrazioni.items():
 
     ambo, score = genera_ambo_ciclico(ultima)
 
+    # SALVA RUOTA
     risultati["ruote"][ruota.lower()] = {
         "estrazione": ultima,
         "ambo": ambo,
         "score": round(score, 2)
     }
 
-    top_list.append({
+    # CLASSIFICA TOP
+    classifica.append({
         "ruota": ruota,
         "ambo": ambo,
         "score": score
@@ -82,25 +88,25 @@ for ruota, lista_estrazioni in estrazioni.items():
 # TOP 3
 # ==========================================
 
-top_ordinati = sorted(
-    top_list,
+top3 = sorted(
+    classifica,
     key=lambda x: x["score"],
     reverse=True
 )[:3]
 
-for i, item in enumerate(top_ordinati):
+for item in top3:
 
-    risultati["top"][str(i)] = {
+    risultati["top"].append({
         "ruota": item["ruota"],
         "ambo": item["ambo"],
         "score": round(item["score"], 2)
-    }
+    })
 
 # ==========================================
 # JOLLY
 # ==========================================
 
-migliore = top_ordinati[0]
+migliore = top3[0]
 
 risultati["jolly"] = {
     "ruota": migliore["ruota"],
@@ -109,10 +115,10 @@ risultati["jolly"] = {
 }
 
 # ==========================================
-# SALVA JSON
+# SALVA FILE JSON
 # ==========================================
 
 with open("risultati.json", "w") as f:
     json.dump(risultati, f, indent=4)
 
-print("✅ Nuovo motore ciclico generato correttamente.")
+print("✅ risultati.json generato correttamente")
