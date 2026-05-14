@@ -2,7 +2,7 @@
     "top": [
         {
             "ruota": "Genova",
-            "ambo": [
+            "numeri": [
                 7,
                 45
             ],
@@ -10,7 +10,7 @@
         },
         {
             "ruota": "Napoli",
-            "ambo": [
+            "numeri": [
                 10,
                 12
             ],
@@ -18,7 +18,7 @@
         },
         {
             "ruota": "Roma",
-            "ambo": [
+            "numeri": [
                 11,
                 25
             ],
@@ -27,7 +27,7 @@
     ],
     "jolly": {
         "ruota": "Genova",
-        "ambo": [
+        "numeri": [
             7,
             45
         ],
@@ -35,140 +35,140 @@
     },
     "ruote": {
         "bari": {
-            "estrazione": [
+            "ultima_estrazione": [
                 63,
                 50,
                 72,
                 81,
                 69
             ],
-            "ambo": [
+            "numeri": [
                 9,
                 13
             ],
             "score": 6
         },
         "cagliari": {
-            "estrazione": [
+            "ultima_estrazione": [
                 80,
                 20,
                 78,
                 61,
                 36
             ],
-            "ambo": [
+            "numeri": [
                 30,
                 2
             ],
             "score": 4
         },
         "firenze": {
-            "estrazione": [
+            "ultima_estrazione": [
                 65,
                 13,
                 82,
                 87,
                 26
             ],
-            "ambo": [
+            "numeri": [
                 39,
                 5
             ],
             "score": 6
         },
         "genova": {
-            "estrazione": [
+            "ultima_estrazione": [
                 23,
                 48,
                 30,
                 68,
                 75
             ],
-            "ambo": [
+            "numeri": [
                 7,
                 45
             ],
             "score": 8
         },
         "milano": {
-            "estrazione": [
+            "ultima_estrazione": [
                 36,
                 90,
                 14,
                 85,
                 48
             ],
-            "ambo": [
+            "numeri": [
                 36,
                 14
             ],
             "score": 6
         },
         "napoli": {
-            "estrazione": [
+            "ultima_estrazione": [
                 32,
                 42,
                 13,
                 54,
                 44
             ],
-            "ambo": [
+            "numeri": [
                 10,
                 12
             ],
             "score": 8
         },
         "palermo": {
-            "estrazione": [
+            "ultima_estrazione": [
                 5,
                 17,
                 45,
                 72,
                 36
             ],
-            "ambo": [
+            "numeri": [
                 27,
                 12
             ],
             "score": 5
         },
         "roma": {
-            "estrazione": [
+            "ultima_estrazione": [
                 86,
                 42,
                 7,
                 72,
                 61
             ],
-            "ambo": [
+            "numeri": [
                 11,
                 25
             ],
             "score": 8
         },
         "torino": {
-            "estrazione": [
+            "ultima_estrazione": [
                 61,
                 79,
                 21,
                 42,
                 36
             ],
-            "ambo": [
+            "numeri": [
                 25,
                 18
             ],
             "score": 5
         },
         "venezia": {
-            "estrazione": [
+            "ultima_estrazione": [
                 41,
                 33,
                 36,
                 23,
                 70
             ],
-            "ambo": [
+            "numeri": [
                 3,
                 13
             ],
