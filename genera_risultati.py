@@ -10,6 +10,23 @@ with open("estrazioni.json", "r") as f:
     estrazioni = json.load(f)
 
 # ==========================================
+# RUOTE FISSE
+# ==========================================
+
+RUOTE = [
+    "bari",
+    "cagliari",
+    "firenze",
+    "genova",
+    "milano",
+    "napoli",
+    "palermo",
+    "roma",
+    "torino",
+    "venezia"
+]
+
+# ==========================================
 # STRUTTURA RISULTATI
 # ==========================================
 
@@ -29,13 +46,11 @@ def genera_ambo_ciclico(estrazione):
 
     for a, b in combinations(estrazione, 2):
 
-        # DISTANZA CICLICA
         distanza = abs(a - b)
 
         if distanza > 45:
             distanza = 90 - distanza
 
-        # SOMMA CICLICA
         somma = (a + b) % 90
 
         if somma == 0:
@@ -62,22 +77,32 @@ def genera_ambo_ciclico(estrazione):
 
 classifica = []
 
-for ruota, lista_estrazioni in estrazioni.items():
+for ruota in RUOTE:
 
-    # PRENDE L'ULTIMA ESTRAZIONE
-    ultima = lista_estrazioni[-1]
+    # Cerca la ruota ignorando maiuscole/minuscole
+    dati_ruota = None
+
+    for key in estrazioni.keys():
+
+        if key.lower().strip() == ruota:
+            dati_ruota = estrazioni[key]
+            break
+
+    if not dati_ruota:
+        continue
+
+    ultima = dati_ruota[-1]
 
     numeri, score = genera_ambo_ciclico(ultima)
 
-    # SALVA RUOTA
-    risultati["ruote"][ruota.lower()] = {
+    risultati["ruote"][ruota] = {
         "ultima_estrazione": ultima,
         "numeri": numeri,
         "score": round(score, 2)
     }
 
     classifica.append({
-        "ruota": ruota,
+        "ruota": ruota.capitalize(),
         "numeri": numeri,
         "score": score
     })
@@ -113,7 +138,7 @@ risultati["jolly"] = {
 }
 
 # ==========================================
-# SALVA FILE JSON
+# SALVA JSON
 # ==========================================
 
 with open("risultati.json", "w") as f:
