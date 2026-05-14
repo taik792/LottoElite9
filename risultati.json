@@ -1,40 +1,40 @@
 {
-    "top": [
-        {
-            "ruota": "Bari",
+    "top": {
+        "0": {
+            "ruota": "Genova",
             "ambo": [
-                63,
-                72
+                7,
+                45
             ],
-            "score": 120
+            "score": 8
         },
-        {
-            "ruota": "Cagliari",
+        "1": {
+            "ruota": "Napoli",
             "ambo": [
-                80,
-                89
+                10,
+                12
             ],
-            "score": 120
+            "score": 8
         },
-        {
-            "ruota": "Firenze",
+        "2": {
+            "ruota": "Roma",
             "ambo": [
-                65,
-                74
+                11,
+                25
             ],
-            "score": 120
+            "score": 8
         }
-    ],
+    },
     "jolly": {
-        "ruota": "Bari",
+        "ruota": "Genova",
         "ambo": [
-            63,
-            72
+            7,
+            45
         ],
-        "score": 120
+        "score": 8
     },
     "ruote": {
-        "Bari": {
+        "bari": {
             "estrazione": [
                 63,
                 50,
@@ -43,12 +43,12 @@
                 69
             ],
             "ambo": [
-                63,
-                72
+                9,
+                13
             ],
-            "score": 120
+            "score": 6
         },
-        "Cagliari": {
+        "cagliari": {
             "estrazione": [
                 80,
                 20,
@@ -57,12 +57,12 @@
                 36
             ],
             "ambo": [
-                80,
-                89
+                30,
+                2
             ],
-            "score": 120
+            "score": 4
         },
-        "Firenze": {
+        "firenze": {
             "estrazione": [
                 65,
                 13,
@@ -71,12 +71,12 @@
                 26
             ],
             "ambo": [
-                65,
-                74
+                39,
+                5
             ],
-            "score": 120
+            "score": 6
         },
-        "Genova": {
+        "genova": {
             "estrazione": [
                 23,
                 48,
@@ -85,12 +85,12 @@
                 75
             ],
             "ambo": [
-                48,
-                57
+                7,
+                45
             ],
-            "score": 120
+            "score": 8
         },
-        "Milano": {
+        "milano": {
             "estrazione": [
                 36,
                 90,
@@ -99,12 +99,12 @@
                 48
             ],
             "ambo": [
-                48,
-                57
+                36,
+                14
             ],
-            "score": 120
+            "score": 6
         },
-        "Napoli": {
+        "napoli": {
             "estrazione": [
                 32,
                 42,
@@ -113,12 +113,12 @@
                 44
             ],
             "ambo": [
-                54,
-                63
+                10,
+                12
             ],
-            "score": 120
+            "score": 8
         },
-        "Palermo": {
+        "palermo": {
             "estrazione": [
                 5,
                 17,
@@ -127,12 +127,12 @@
                 36
             ],
             "ambo": [
-                72,
-                81
+                27,
+                12
             ],
-            "score": 120
+            "score": 5
         },
-        "Roma": {
+        "roma": {
             "estrazione": [
                 86,
                 42,
@@ -141,12 +141,12 @@
                 61
             ],
             "ambo": [
-                72,
-                81
+                11,
+                25
             ],
-            "score": 120
+            "score": 8
         },
-        "Torino": {
+        "torino": {
             "estrazione": [
                 61,
                 79,
@@ -155,12 +155,12 @@
                 36
             ],
             "ambo": [
-                61,
-                70
+                25,
+                18
             ],
-            "score": 120
+            "score": 5
         },
-        "Venezia": {
+        "venezia": {
             "estrazione": [
                 41,
                 33,
@@ -169,10 +169,10 @@
                 70
             ],
             "ambo": [
-                70,
-                79
+                3,
+                13
             ],
-            "score": 120
+            "score": 6
         }
     }
 }
