@@ -1,96 +1,188 @@
 import json
-from collections import Counter
-from itertools import combinations
 
+# ==========================================
+# FUNZIONI CICLICHE
+# ==========================================
+
+def somma90(n):
+    return n - 90 if n > 90 else n
+
+def speculare(n):
+    return 91 - n
+
+def distanza(a, b):
+    return abs(a - b)
+
+# ==========================================
 # CARICA ESTRAZIONI
+# ==========================================
+
 with open("estrazioni.json", "r") as f:
     estrazioni = json.load(f)
 
 risultati = {
-    "top": {},
+    "top": [],
     "jolly": {},
     "ruote": {}
 }
 
+# ==========================================
 # ANALISI RUOTE
+# ==========================================
+
 for ruota, lista_estrazioni in estrazioni.items():
 
-    frequenza = Counter()
-    coppie = Counter()
+    ultima = lista_estrazioni[-1]
 
-    # ultime 16 estrazioni
-    ultime = lista_estrazioni[-16:]
+    candidati = []
 
-    for estrazione in ultime:
+    # ==========================================
+    # DISTANZA 9
+    # ==========================================
 
-        # frequenza numeri
-        for n in estrazione:
-            frequenza[n] += 1
+    for n in ultima:
 
-        # coppie
-        for c in combinations(sorted(estrazione), 2):
-            coppie[c] += 1
+        candidati.append(sorted([n, somma90(n + 9)]))
 
-    score_ambi = []
+    # ==========================================
+    # DISTANZA 18
+    # ==========================================
 
-    # crea score sugli ambi
-    for ambo, freq in coppie.items():
+    for n in ultima:
 
-        n1, n2 = ambo
+        candidati.append(sorted([n, somma90(n + 18)]))
 
-        score = (
-            freq * 10 +
-            frequenza[n1] * 2 +
-            frequenza[n2] * 2
-        )
+    # ==========================================
+    # SPECULARI
+    # ==========================================
 
-        # bonus numeri vicini
-        if abs(n1 - n2) <= 7:
-            score += 4
+    for n in ultima:
 
-        # bonus numeri alti
-        if n1 >= 70 or n2 >= 70:
-            score += 2
+        candidati.append(sorted([n, speculare(n)]))
 
-        score_ambi.append({
-            "ambo": [n1, n2],
-            "score": round(score, 2)
+    # ==========================================
+    # SOMME
+    # ==========================================
+
+    for i in range(len(ultima)):
+
+        for j in range(i + 1, len(ultima)):
+
+            s = somma90(ultima[i] + ultima[j])
+
+            candidati.append(sorted([ultima[i], s]))
+
+    # ==========================================
+    # RIMOZIONE DUPLICATI
+    # ==========================================
+
+    unici = []
+
+    visti = set()
+
+    for c in candidati:
+
+        if c[0] == c[1]:
+            continue
+
+        key = tuple(c)
+
+        if key not in visti:
+
+            visti.add(key)
+
+            unici.append(c)
+
+    # ==========================================
+    # SCORING
+    # ==========================================
+
+    migliori = []
+
+    for c in unici:
+
+        a, b = c
+
+        score = 0
+
+        dist = distanza(a, b)
+
+        # DISTANZE FORTI
+        if dist == 9:
+            score += 50
+
+        if dist == 18:
+            score += 45
+
+        if dist == 27:
+            score += 35
+
+        # STESSA FIGURA
+        if a % 9 == b % 9:
+            score += 30
+
+        # NUMERI ALTI
+        if a > 45:
+            score += 10
+
+        if b > 45:
+            score += 10
+
+        # VICINANZA
+        if dist <= 10:
+            score += 20
+
+        migliori.append({
+            "ambo": c,
+            "score": score
         })
 
-    # ordina
-    score_ambi.sort(key=lambda x: x["score"], reverse=True)
+    # ==========================================
+    # ORDINA
+    # ==========================================
 
-    miglior_ambo = score_ambi[0]
+    migliori.sort(key=lambda x: x["score"], reverse=True)
 
-    # salva risultati
+    migliore = migliori[0]
+
     risultati["ruote"][ruota] = {
-        "ultima_estrazione": lista_estrazioni[-1],
-        "ambo": miglior_ambo["ambo"],
-        "score": miglior_ambo["score"]
+        "estrazione": ultima,
+        "ambo": migliore["ambo"],
+        "score": migliore["score"]
     }
 
-# TOP 3
-top3 = sorted(
+# ==========================================
+# TOP
+# ==========================================
+
+top = sorted(
     risultati["ruote"].items(),
     key=lambda x: x[1]["score"],
     reverse=True
-)[:3]
+)
 
-for ruota, dati in top3:
-    risultati["top"][ruota] = {
+risultati["top"] = []
+
+for ruota, dati in top[:3]:
+
+    risultati["top"].append({
+        "ruota": ruota,
         "ambo": dati["ambo"],
         "score": dati["score"]
-    }
+    })
 
+# ==========================================
 # JOLLY
-jolly_ruota, jolly_dati = top3[0]
+# ==========================================
 
-risultati["jolly"][jolly_ruota] = {
-    "ambo": jolly_dati["ambo"]
-}
+risultati["jolly"] = risultati["top"][0]
 
-# SALVA JSON
+# ==========================================
+# SALVA RISULTATI
+# ==========================================
+
 with open("risultati.json", "w") as f:
-    json.dump(risultati, f, indent=2)
 
-print("✅ Motore 9 AMBO generato!")
+    json.dump(risultati, f, indent=4)
+
+print("✅ MOTORE CICLICO GENERATO")
