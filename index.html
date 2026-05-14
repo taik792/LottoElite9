@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lotto Elite Pro</title>
+
+<title>Lotto Elite PRO</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 
@@ -12,206 +13,249 @@
 body{
     margin:0;
     padding:0;
-    background: radial-gradient(circle at top, #08325f 0%, #000814 100%);
-    font-family:'Orbitron', sans-serif;
+    background:
+    radial-gradient(circle at top,#063b73 0%,#02152b 70%);
+    font-family:'Orbitron',sans-serif;
     color:white;
-}
-
-.container{
-    width:95%;
-    margin:auto;
     text-align:center;
-    padding-bottom:50px;
 }
 
 h1{
     color:#00eaff;
-    font-size:42px;
-    margin-top:20px;
-    text-shadow:0 0 15px #00eaff;
+    font-size:48px;
+    margin-top:30px;
+    text-shadow:0 0 20px #00eaff;
+}
+
+h2{
+    margin-top:40px;
+    font-size:40px;
+    color:white;
 }
 
 .subtitle{
     font-size:18px;
+    margin-top:-10px;
     margin-bottom:30px;
-    color:#d8d8d8;
+    color:#cccccc;
 }
 
-.section-title{
-    margin-top:40px;
-    margin-bottom:20px;
-    font-size:34px;
-}
-
-.top-grid{
-    display:flex;
-    justify-content:center;
-    flex-wrap:wrap;
-    gap:20px;
-}
-
-.ruote-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-    gap:20px;
+.section{
     margin-top:30px;
 }
 
-.card{
-    background:rgba(255,170,0,0.15);
-    border:3px solid #ffbf00;
-    border-radius:25px;
+.cards{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:25px;
     padding:20px;
-    box-shadow:0 0 20px rgba(255,191,0,0.4);
 }
 
-.card.jolly{
-    background:rgba(255,0,0,0.18);
-    border:3px solid #ff3b3b;
-    box-shadow:0 0 20px rgba(255,0,0,0.5);
+.card{
+    width:260px;
+    min-height:320px;
+
+    background:rgba(0,0,0,0.35);
+
+    border:3px solid #00eaff;
+
+    border-radius:30px;
+
+    box-shadow:
+    0 0 20px #00eaff88,
+    inset 0 0 20px #00eaff22;
+
+    padding:20px;
+
+    backdrop-filter:blur(8px);
 }
 
-.card.ruota{
-    background:rgba(0,255,255,0.08);
-    border:2px solid #00eaff;
-    box-shadow:0 0 15px rgba(0,234,255,0.25);
+.top-card{
+    border-color:gold;
+
+    box-shadow:
+    0 0 25px gold,
+    inset 0 0 20px rgba(255,215,0,0.2);
 }
 
-.ruota-nome{
-    font-size:24px;
-    margin-bottom:15px;
-    color:white;
+.jolly-card{
+    border-color:#ff3b3b;
+
+    box-shadow:
+    0 0 25px #ff3b3b,
+    inset 0 0 20px rgba(255,0,0,0.2);
 }
 
-.estrazione{
-    font-size:14px;
-    color:#d7d7d7;
-    margin-bottom:15px;
-    line-height:1.7;
+.ruota{
+    font-size:42px;
+    margin-top:10px;
+    margin-bottom:20px;
 }
 
-.numeri{
-    font-size:48px;
-    color:#00f7ff;
-    text-shadow:0 0 12px #00f7ff;
-    margin:10px 0;
-}
-
-.score{
-    color:#ffb6d9;
-    font-size:24px;
+.estrazione-label{
+    font-size:18px;
+    color:#dddddd;
     margin-top:10px;
 }
 
-.jolly-box{
-    display:flex;
-    justify-content:center;
-    margin-top:20px;
+.estrazione{
+    font-size:20px;
+    color:#ffffff;
+    margin-top:10px;
+    margin-bottom:25px;
 }
 
-@media(max-width:768px){
+.ambo{
+    font-size:58px;
+    color:#00f7ff;
+
+    text-shadow:
+    0 0 10px #00f7ff,
+    0 0 25px #00f7ff;
+
+    margin-top:15px;
+    margin-bottom:25px;
+}
+
+.score{
+    font-size:32px;
+    color:#ffb6d9;
+
+    text-shadow:
+    0 0 10px #ffb6d9;
+}
+
+@media(max-width:700px){
 
     h1{
+        font-size:34px;
+    }
+
+    .card{
+        width:85%;
+        min-height:auto;
+    }
+
+    .ambo{
+        font-size:44px;
+    }
+
+    .ruota{
         font-size:32px;
     }
 
-    .numeri{
-        font-size:38px;
-    }
-
-    .section-title{
-        font-size:28px;
-    }
 }
 
 </style>
 </head>
+
 <body>
 
-<div class="container">
-
 <h1>🔥 LOTTO ELITE PRO 🤘</h1>
-<div class="subtitle">Motore Ciclico PRO</div>
 
-<div class="section-title">🎯 TOP</div>
-<div id="top" class="top-grid"></div>
+<div class="subtitle">
+Motore Ciclico PRO
+</div>
 
-<div class="section-title">💣 JOLLY</div>
-<div class="jolly-box" id="jolly"></div>
+<div class="section">
 
-<div class="section-title">📊 AMBO FORTE</div>
-<div id="ruote" class="ruote-grid"></div>
+<h2>🎯 TOP</h2>
+
+<div class="cards" id="top"></div>
+
+</div>
+
+<div class="section">
+
+<h2>💣 JOLLY</h2>
+
+<div class="cards" id="jolly"></div>
+
+</div>
+
+<div class="section">
+
+<h2>📊 AMBO FORTE</h2>
+
+<div class="cards" id="ruote"></div>
 
 </div>
 
 <script>
 
-fetch('risultati.json')
-.then(response => response.json())
-.then(dati => {
+function creaCard(dati, classe = "") {
 
-    // =========================
-    // TOP
-    // =========================
+    return `
 
-    const topContainer = document.getElementById('top');
+    <div class="card ${classe}">
 
-    dati.top.forEach(item => {
-
-        topContainer.innerHTML += `
-        <div class="card">
-            <div class="ruota-nome">${item.ruota}</div>
-            <div class="numeri">${item.numeri[0]} - ${item.numeri[1]}</div>
-            <div class="score">${item.score}</div>
+        <div class="ruota">
+            ${dati.ruota}
         </div>
-        `;
-    });
 
-    // =========================
-    // JOLLY
-    // =========================
+        ${dati.estrazione ? `
 
-    const jolly = dati.jolly;
-
-    document.getElementById('jolly').innerHTML = `
-        <div class="card jolly">
-            <div class="ruota-nome">${jolly.ruota}</div>
-            <div class="numeri">${jolly.numeri[0]} - ${jolly.numeri[1]}</div>
-            <div class="score">${jolly.score}</div>
+        <div class="estrazione-label">
+            Ultima Estrazione
         </div>
+
+        <div class="estrazione">
+            ${dati.estrazione.join(" • ")}
+        </div>
+
+        ` : ""}
+
+        <div class="ambo">
+            ${dati.ambo[0]} - ${dati.ambo[1]}
+        </div>
+
+        <div class="score">
+            Score: ${dati.score}
+        </div>
+
+    </div>
+
     `;
+}
 
-    // =========================
-    // RUOTE
-    // =========================
+fetch("risultati.json")
 
-    const ruoteContainer = document.getElementById('ruote');
+.then(response => response.json())
 
-    Object.entries(dati.ruote).forEach(([nome, info]) => {
+.then(data => {
 
-        ruoteContainer.innerHTML += `
-        <div class="card ruota">
+    // TOP
 
-            <div class="ruota-nome">
-                ${nome.charAt(0).toUpperCase() + nome.slice(1)}
-            </div>
+    const top = document.getElementById("top");
 
-            <div class="estrazione">
-                Ultima Estrazione<br>
-                ${info.ultima_estrazione.join(' • ')}
-            </div>
+    data.top.forEach(item => {
 
-            <div class="numeri">
-                ${info.numeri[0]} - ${info.numeri[1]}
-            </div>
+        top.innerHTML += creaCard(item, "top-card");
 
-            <div class="score">
-                Score: ${info.score}
-            </div>
-
-        </div>
-        `;
     });
+
+    // JOLLY
+
+    const jolly = document.getElementById("jolly");
+
+    jolly.innerHTML = creaCard(data.jolly, "jolly-card");
+
+    // RUOTE
+
+    const ruote = document.getElementById("ruote");
+
+    data.ruote.forEach(item => {
+
+        ruote.innerHTML += creaCard(item);
+
+    });
+
+})
+
+.catch(error => {
+
+    console.log(error);
 
 });
 
