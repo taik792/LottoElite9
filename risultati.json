@@ -1,215 +1,215 @@
 {
     "top": [
         {
-            "ruota": "Cagliari",
+            "ruota": "Genova",
             "ambo": [
-                6,
-                45
+                89,
+                87
             ],
             "score": 4,
             "estrazione": [
-                29,
-                67,
-                49,
-                4,
-                10
-            ]
-        },
-        {
-            "ruota": "Firenze",
-            "ambo": [
-                81,
-                13
-            ],
-            "score": 3,
-            "estrazione": [
-                70,
-                33,
-                42,
-                39,
-                8
-            ]
-        },
-        {
-            "ruota": "Palermo",
-            "ambo": [
-                27,
-                14
-            ],
-            "score": 3,
-            "estrazione": [
-                50,
-                54,
-                36,
-                4,
-                23
-            ]
-        }
-    ],
-    "jolly": {
-        "ruota": "Cagliari",
-        "ambo": [
-            6,
-            45
-        ],
-        "score": 4,
-        "estrazione": [
-            29,
-            67,
-            49,
-            4,
-            10
-        ]
-    },
-    "ruote": [
-        {
-            "ruota": "Cagliari",
-            "ambo": [
-                6,
-                45
-            ],
-            "score": 4,
-            "estrazione": [
-                29,
-                67,
-                49,
-                4,
-                10
-            ]
-        },
-        {
-            "ruota": "Firenze",
-            "ambo": [
-                81,
-                13
-            ],
-            "score": 3,
-            "estrazione": [
-                70,
-                33,
-                42,
-                39,
-                8
-            ]
-        },
-        {
-            "ruota": "Palermo",
-            "ambo": [
-                27,
-                14
-            ],
-            "score": 3,
-            "estrazione": [
-                50,
-                54,
-                36,
-                4,
-                23
+                46,
+                80,
+                88,
+                1,
+                43
             ]
         },
         {
             "ruota": "Roma",
             "ambo": [
-                26,
-                86
+                15,
+                75
             ],
-            "score": 3,
+            "score": 4,
             "estrazione": [
-                40,
-                46,
-                70,
-                79,
-                37
+                64,
+                49,
+                19,
+                33,
+                48
             ]
         },
         {
-            "ruota": "Torino",
+            "ruota": "Cagliari",
             "ambo": [
-                18,
-                31
+                79,
+                64
+            ],
+            "score": 3,
+            "estrazione": [
+                57,
+                7,
+                86,
+                5,
+                74
+            ]
+        }
+    ],
+    "jolly": {
+        "ruota": "Genova",
+        "ambo": [
+            89,
+            87
+        ],
+        "score": 4,
+        "estrazione": [
+            46,
+            80,
+            88,
+            1,
+            43
+        ]
+    },
+    "ruote": [
+        {
+            "ruota": "Genova",
+            "ambo": [
+                89,
+                87
+            ],
+            "score": 4,
+            "estrazione": [
+                46,
+                80,
+                88,
+                1,
+                43
+            ]
+        },
+        {
+            "ruota": "Roma",
+            "ambo": [
+                15,
+                75
+            ],
+            "score": 4,
+            "estrazione": [
+                64,
+                49,
+                19,
+                33,
+                48
+            ]
+        },
+        {
+            "ruota": "Cagliari",
+            "ambo": [
+                79,
+                64
+            ],
+            "score": 3,
+            "estrazione": [
+                57,
+                7,
+                86,
+                5,
+                74
+            ]
+        },
+        {
+            "ruota": "Firenze",
+            "ambo": [
+                66,
+                50
+            ],
+            "score": 3,
+            "estrazione": [
+                48,
+                2,
+                85,
+                71,
+                47
+            ]
+        },
+        {
+            "ruota": "Palermo",
+            "ambo": [
+                75,
+                17
             ],
             "score": 3,
             "estrazione": [
                 89,
-                32,
-                55,
-                53,
-                19
-            ]
-        },
-        {
-            "ruota": "Venezia",
-            "ambo": [
-                71,
-                45
-            ],
-            "score": 3,
-            "estrazione": [
-                51,
-                84,
-                85,
-                66,
-                20
+                18,
+                59,
+                16,
+                14
             ]
         },
         {
             "ruota": "Bari",
             "ambo": [
-                19,
-                17
+                3,
+                85
             ],
             "score": 2,
             "estrazione": [
-                18,
-                1,
-                37,
-                16,
-                59
-            ]
-        },
-        {
-            "ruota": "Genova",
-            "ambo": [
-                15,
-                9
-            ],
-            "score": 2,
-            "estrazione": [
-                57,
-                48,
-                87,
-                52,
-                25
+                89,
+                4,
+                6,
+                43,
+                69
             ]
         },
         {
             "ruota": "Milano",
             "ambo": [
-                30,
-                52
+                74,
+                6
             ],
             "score": 2,
             "estrazione": [
-                86,
                 34,
-                59,
-                53,
-                51
+                40,
+                38,
+                11,
+                57
             ]
         },
         {
             "ruota": "Napoli",
             "ambo": [
-                6,
-                28
+                14,
+                8
             ],
             "score": 2,
             "estrazione": [
-                34,
-                62,
-                37,
-                61,
+                3,
+                11,
+                6,
+                73,
+                58
+            ]
+        },
+        {
+            "ruota": "Torino",
+            "ambo": [
+                56,
+                20
+            ],
+            "score": 2,
+            "estrazione": [
+                63,
+                83,
+                40,
+                15,
                 11
+            ]
+        },
+        {
+            "ruota": "Venezia",
+            "ambo": [
+                50,
+                26
+            ],
+            "score": 2,
+            "estrazione": [
+                38,
+                12,
+                53,
+                2,
+                86
             ]
         }
     ]
