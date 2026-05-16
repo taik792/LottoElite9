@@ -1,4 +1,156 @@
 {
+    "tutte": [
+        {
+            "ruota": "Firenze",
+            "ambo": [
+                71,
+                60
+            ],
+            "score": 8,
+            "estrazione": [
+                48,
+                2,
+                85,
+                71,
+                47
+            ]
+        },
+        {
+            "ruota": "Bari",
+            "ambo": [
+                33,
+                50
+            ],
+            "score": 7,
+            "estrazione": [
+                89,
+                4,
+                6,
+                43,
+                69
+            ]
+        },
+        {
+            "ruota": "Napoli",
+            "ambo": [
+                46,
+                53
+            ],
+            "score": 7,
+            "estrazione": [
+                3,
+                11,
+                6,
+                73,
+                58
+            ]
+        },
+        {
+            "ruota": "Palermo",
+            "ambo": [
+                18,
+                68
+            ],
+            "score": 7,
+            "estrazione": [
+                89,
+                18,
+                59,
+                16,
+                14
+            ]
+        },
+        {
+            "ruota": "Venezia",
+            "ambo": [
+                85,
+                70
+            ],
+            "score": 7,
+            "estrazione": [
+                38,
+                12,
+                53,
+                2,
+                86
+            ]
+        },
+        {
+            "ruota": "Cagliari",
+            "ambo": [
+                80,
+                28
+            ],
+            "score": 6,
+            "estrazione": [
+                57,
+                7,
+                86,
+                5,
+                74
+            ]
+        },
+        {
+            "ruota": "Roma",
+            "ambo": [
+                38,
+                49
+            ],
+            "score": 6,
+            "estrazione": [
+                64,
+                49,
+                19,
+                33,
+                48
+            ]
+        },
+        {
+            "ruota": "Torino",
+            "ambo": [
+                64,
+                70
+            ],
+            "score": 6,
+            "estrazione": [
+                63,
+                83,
+                40,
+                15,
+                11
+            ]
+        },
+        {
+            "ruota": "Genova",
+            "ambo": [
+                30,
+                68
+            ],
+            "score": 5,
+            "estrazione": [
+                46,
+                80,
+                88,
+                1,
+                43
+            ]
+        },
+        {
+            "ruota": "Milano",
+            "ambo": [
+                51,
+                40
+            ],
+            "score": 5,
+            "estrazione": [
+                34,
+                40,
+                38,
+                11,
+                57
+            ]
+        }
+    ],
     "top": [
         {
             "ruota": "Firenze",
