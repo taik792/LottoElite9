@@ -1,158 +1,263 @@
+# ======================================================
+# LOTTO ELITE PRO - MOTORE 10 PRO ADATTIVO
+# Versione Python
+# genera_risultati.py
+# ======================================================
+
 import json
 
-# =========================
+# ==========================
 # CARICA ESTRAZIONI
-# =========================
+# ==========================
 
 with open("estrazioni.json", "r", encoding="utf-8") as f:
     estrazioni = json.load(f)
 
-# =========================
+# ultime 12 estrazioni
+ultime = estrazioni[-12:]
+
+# ==========================
 # FUNZIONI
-# =========================
+# ==========================
 
-def modulo90(n):
-    n = n % 90
-    return 90 if n == 0 else n
+def fuori90(n):
+    while n > 90:
+        n -= 90
 
-def distanza(a, b):
-    return modulo90(abs(a - b))
+    while n < 1:
+        n += 90
 
-# =========================
-# GENERA NUMERI CICLICI
-# =========================
+    return n
 
-def genera_ciclo(numeri):
 
-    risultati = []
+def distanza90(a, b):
+    d = abs(a - b)
+    return min(d, 90 - d)
 
-    for i in range(len(numeri)):
 
-        a = numeri[i]
-        b = numeri[(i + 1) % len(numeri)]
+def complementare90(n):
+    return fuori90(90 - n)
 
-        # SOMMA CICLICA
-        somma = modulo90(a + b)
 
-        # DISTANZA
-        dist = distanza(a, b)
+def frequenza_numero(numero, ruota_estrazioni):
 
-        # CHIUSURA INVERSA
-        inv = modulo90(90 - dist)
+    count = 0
 
-        risultati.append(somma)
-        risultati.append(dist)
-        risultati.append(inv)
+    for estr in ruota_estrazioni:
+        if numero in estr["numeri"]:
+            count += 1
 
-    return risultati
+    return count
 
-# =========================
-# CREA AMBO
-# =========================
 
-def crea_ambo(numeri_estratti):
+# ==========================
+# COSTRUZIONE ARCHIVIO RUOTE
+# ==========================
 
-    candidati = genera_ciclo(numeri_estratti)
+archivio_ruote = {}
 
-    # ELIMINA NUMERI GIÀ USCITI
+for estrazione in ultime:
+
+    for ruota, numeri in estrazione["ruote"].items():
+
+        if ruota not in archivio_ruote:
+            archivio_ruote[ruota] = []
+
+        archivio_ruote[ruota].append({
+            "data": estrazione["data"],
+            "numeri": numeri
+        })
+
+
+# ==========================
+# GENERATORE AMBI
+# ==========================
+
+def genera_ambi(ruota, dati_ruota):
+
+    ultima = dati_ruota[-1]
+    penultima = dati_ruota[-2]
+
+    ultimi_numeri = ultima["numeri"]
+    vecchi_numeri = penultima["numeri"]
+
+    candidati = []
+
+    # ==========================
+    # DERIVATI CICLICI
+    # ==========================
+
+    for i in range(len(ultimi_numeri)):
+
+        n = ultimi_numeri[i]
+
+        candidati.append(fuori90(n + 9))
+        candidati.append(fuori90(n - 9))
+
+        candidati.append(fuori90(n + 18))
+        candidati.append(fuori90(n - 18))
+
+        candidati.append(complementare90(n))
+
+        # media dinamica
+        media = round((n + vecchi_numeri[i]) / 2)
+        candidati.append(fuori90(media))
+
+        # distanza ciclica
+        dist = distanza90(n, vecchi_numeri[i])
+        candidati.append(fuori90(n + dist))
+
+    # ==========================
+    # PULIZIA
+    # ==========================
+
     candidati = [
         n for n in candidati
-        if n not in numeri_estratti
+        if 1 <= n <= 90
     ]
 
-    # CONTA FREQUENZE
-    frequenze = {}
+    # elimina numeri appena usciti
+    candidati = [
+        n for n in candidati
+        if n not in ultimi_numeri
+    ]
+
+    # ==========================
+    # SCORE DINAMICO
+    # ==========================
+
+    score_map = {}
 
     for n in candidati:
-        frequenze[n] = frequenze.get(n, 0) + 1
 
+        score = 0
+
+        # frequenza recente
+        freq = frequenza_numero(n, dati_ruota)
+
+        # meno frequente = più forte
+        score += (12 - freq)
+
+        # vicinanza ciclica
+        for e in ultimi_numeri:
+
+            d = distanza90(n, e)
+
+            if d <= 9:
+                score += 2
+
+            if d <= 5:
+                score += 2
+
+        # bonus complementare
+        if complementare90(n) in ultimi_numeri:
+            score += 3
+
+        score_map[n] = score
+
+    # ==========================
     # ORDINA
+    # ==========================
+
     ordinati = sorted(
-        frequenze.items(),
+        score_map.items(),
         key=lambda x: x[1],
         reverse=True
     )
 
-    # PRENDE I MIGLIORI
-    migliori = [x[0] for x in ordinati[:2]]
+    # ==========================
+    # CREA AMBI
+    # ==========================
 
-    # SICUREZZA
-    if len(migliori) < 2:
+    risultati = []
 
-        for n in range(1, 91):
+    i = 0
 
-            if n not in migliori and n not in numeri_estratti:
-                migliori.append(n)
+    while i < len(ordinati) - 1:
 
-            if len(migliori) == 2:
-                break
+        n1 = ordinati[i][0]
+        n2 = ordinati[i + 1][0]
 
-    # SCORE
-    score = sum(frequenze.get(n, 0) for n in migliori)
+        if n1 != n2:
 
-    return migliori, score
+            score = round(
+                (ordinati[i][1] + ordinati[i + 1][1]) / 2
+            )
 
-# =========================
-# ANALISI RUOTE
-# =========================
+            risultati.append({
+                "ruota": ruota,
+                "ambo": [n1, n2],
+                "score": score,
+                "estrazione": ultimi_numeri
+            })
 
-ruote = []
+        if len(risultati) >= 3:
+            break
 
-for ruota, lista in estrazioni.items():
+        i += 2
 
-    ultima = lista[-1]
+    return risultati
 
-    ambo, score = crea_ambo(ultima)
 
-    ruote.append({
-        "ruota": ruota,
-        "ambo": ambo,
-        "score": score,
-        "estrazione": ultima
-    })
+# ==========================
+# GENERAZIONE COMPLETA
+# ==========================
 
-# =========================
-# ORDINA
-# =========================
+top = []
+jolly = []
+ambo_forte = []
 
-ruote.sort(
+for ruota, dati_ruota in archivio_ruote.items():
+
+    risultati = genera_ambi(
+        ruota,
+        dati_ruota
+    )
+
+    if len(risultati) > 0:
+        top.append(risultati[0])
+
+    if len(risultati) > 1:
+        jolly.append(risultati[1])
+
+    if len(risultati) > 2:
+        ambo_forte.append(risultati[2])
+
+# ==========================
+# ORDINA SCORE
+# ==========================
+
+top.sort(
     key=lambda x: x["score"],
     reverse=True
 )
 
-# =========================
-# TOP
-# =========================
+jolly.sort(
+    key=lambda x: x["score"],
+    reverse=True
+)
 
-top = ruote[:3]
+ambo_forte.sort(
+    key=lambda x: x["score"],
+    reverse=True
+)
 
-# =========================
-# JOLLY
-# =========================
+# ==========================
+# OUTPUT
+# ==========================
 
-jolly = top[0]
-
-# =========================
-# RISULTATO FINALE
-# =========================
-
-risultati = {
+output = {
     "top": top,
     "jolly": jolly,
-    "ruote": ruote
+    "amboForte": ambo_forte
 }
 
-# =========================
-# SALVA JSON
-# =========================
-
 with open("risultati.json", "w", encoding="utf-8") as f:
-
     json.dump(
-        risultati,
+        output,
         f,
-        indent=4,
+        indent=2,
         ensure_ascii=False
     )
 
-print("RISULTATI GENERATI")
+print("✅ MOTORE 10 PRO GENERATO")
