@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
 
 <meta charset="UTF-8">
@@ -18,12 +19,16 @@ body{
     text-align:center;
 }
 
+/* TITOLO */
+
 h1{
     margin-top:20px;
     color:#00eaff;
     text-shadow:0 0 20px #00eaff;
     font-size:42px;
 }
+
+/* SEZIONI */
 
 .sezione{
     margin-top:40px;
@@ -36,14 +41,65 @@ h1{
     font-size:28px;
 }
 
+/* GRID */
+
 .grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    grid-template-columns:repeat(5, 1fr);
     gap:20px;
     max-width:1400px;
     margin:auto;
     padding:20px;
 }
+
+/* TABLET */
+
+@media(max-width:1000px){
+
+    .grid{
+        grid-template-columns:repeat(3, 1fr);
+    }
+
+}
+
+/* CELLULARE */
+
+@media(max-width:700px){
+
+    .grid{
+        grid-template-columns:repeat(2, 1fr);
+        gap:12px;
+        padding:12px;
+    }
+
+    .card{
+        padding:12px;
+        border-radius:18px;
+    }
+
+    .ruota{
+        font-size:22px;
+    }
+
+    .ambo{
+        font-size:34px;
+    }
+
+    .score{
+        font-size:18px;
+    }
+
+    .estrazione{
+        font-size:11px;
+    }
+
+    h1{
+        font-size:30px;
+    }
+
+}
+
+/* CARD */
 
 .card{
     background:#071633;
@@ -53,15 +109,21 @@ h1{
     box-shadow:0 0 20px #ffe600;
 }
 
+/* JOLLY */
+
 .card.jolly{
     border:3px solid #ff2ea6;
     box-shadow:0 0 20px #ff2ea6;
 }
 
+/* AMBO FORTE */
+
 .card.forte{
     border:3px solid #00eaff;
     box-shadow:0 0 20px #00eaff;
 }
+
+/* TESTI */
 
 .ruota{
     font-size:32px;
@@ -90,6 +152,8 @@ h1{
     text-shadow:0 0 10px #ff77c8;
 }
 
+/* FOOTER */
+
 footer{
     margin:40px 0;
     color:#8fb6ff;
@@ -104,6 +168,8 @@ footer{
 
 <h1>🔥 LOTTO ELITE PRO 🤘</h1>
 
+<!-- RUOTE -->
+
 <div class="sezione">
 
     <h2>🎰 RUOTE</h2>
@@ -112,6 +178,8 @@ footer{
 
 </div>
 
+<!-- JOLLY -->
+
 <div class="sezione">
 
     <h2>💣 JOLLY</h2>
@@ -119,6 +187,8 @@ footer{
     <div class="grid" id="jolly"></div>
 
 </div>
+
+<!-- AMBO FORTE -->
 
 <div class="sezione">
 
@@ -129,7 +199,9 @@ footer{
 </div>
 
 <footer>
+
 Motore Ciclico PRO
+
 </footer>
 
 <script>
@@ -141,6 +213,7 @@ fetch("risultati.json")
 .then(data => {
 
     const ordineRuote = [
+
         "Bari",
         "Cagliari",
         "Firenze",
@@ -151,6 +224,7 @@ fetch("risultati.json")
         "Roma",
         "Torino",
         "Venezia"
+
     ];
 
     function ordinaRuote(lista){
@@ -171,7 +245,9 @@ fetch("risultati.json")
         <div class="card ${classe}">
 
             <div class="ruota">
+
                 ${item.ruota}
+
             </div>
 
             <div class="estrazione">
