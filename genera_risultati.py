@@ -2,164 +2,102 @@ import json
 from collections import Counter
 
 # =========================
-# CARICA JSON
+# CONFIG
+# =========================
+
+TOP_MINIMO = 8
+JOLLY_MINIMO = 11
+FORTE_MINIMO = 13
+
+NUMERI_DA_USARE = 12
+
+# =========================
+# CARICA ESTRAZIONI
 # =========================
 
 with open("estrazioni.json", "r", encoding="utf-8") as f:
-    estrazioni = json.load(f)
-
-# =========================
-# FUNZIONI CICLICHE
-# =========================
-
-def piu9(n):
-    return ((n + 8) % 90) + 1
-
-def meno9(n):
-    return ((n - 10) % 90) + 1
-
-def complementare(n):
-    return 90 - n if n != 90 else 90
-
-# =========================
-# SCORE
-# =========================
-
-def calcola_score(numero, frequenze):
-
-    score = 0
-
-    score += frequenze.get(numero, 0)
-
-    score += frequenze.get(piu9(numero), 0)
-
-    score += frequenze.get(meno9(numero), 0)
-
-    score += frequenze.get(complementare(numero), 0)
-
-    return score
-
-# =========================
-# ORDINE RUOTE
-# =========================
-
-ordine_ruote = [
-    "Bari",
-    "Cagliari",
-    "Firenze",
-    "Genova",
-    "Milano",
-    "Napoli",
-    "Palermo",
-    "Roma",
-    "Torino",
-    "Venezia",
-    "Nazionale"
-]
-
-# =========================
-# ELABORAZIONE
-# =========================
+    dati = json.load(f)
 
 top = []
+jolly = []
+ambo_forte = []
 
-for ruota in ordine_ruote:
+# =========================
+# ANALISI RUOTE
+# =========================
 
-    if ruota not in estrazioni:
-        continue
+for ruota, estrazioni in dati.items():
 
-    storico_ruota = estrazioni[ruota]
+    # prende le ultime 12 estrazioni
+    ultime = estrazioni[-NUMERI_DA_USARE:]
 
-    # Ultime 12 estrazioni
-    ultime = storico_ruota[-12:]
+    frequenze = Counter()
 
-    # Ultima estrazione reale
-    ultima = ultime[-1]
-
-    # Frequenze
-    tutti_numeri = []
-
+    # conta tutti i numeri
     for estrazione in ultime:
-        tutti_numeri.extend(estrazione)
+        for numero in estrazione:
+            frequenze[numero] += 1
 
-    frequenze = Counter(tutti_numeri)
+    # prende i 2 numeri più frequenti
+    migliori = frequenze.most_common(2)
 
-    candidati = []
-
-    # Genera numeri ciclici
-    for n in ultima:
-
-        candidati.append(piu9(n))
-        candidati.append(meno9(n))
-        candidati.append(complementare(n))
-
-    # Rimuove numeri usciti
-    candidati = [n for n in candidati if n not in ultima]
-
-    # Rimuove duplicati
-    candidati = list(set(candidati))
-
-    scored = []
-
-    for n in candidati:
-
-        s = calcola_score(n, frequenze)
-
-        scored.append((n, s))
-
-    # Ordina per score
-    scored.sort(key=lambda x: x[1], reverse=True)
-
-    if len(scored) < 2:
+    if len(migliori) < 2:
         continue
 
-    ambo = [
-        scored[0][0],
-        scored[1][0]
-    ]
+    n1 = migliori[0][0]
+    n2 = migliori[1][0]
 
-    score_finale = scored[0][1] + scored[1][1]
+    score = migliori[0][1] + migliori[1][1]
 
-    risultato = {
+    ultima_estrazione = estrazioni[-1]
+
+    dato = {
         "ruota": ruota,
-        "ambo": ambo,
-        "score": score_finale,
-        "estrazione": ultima
+        "ambo": [n1, n2],
+        "score": score,
+        "estrazione": ultima_estrazione
     }
 
-    top.append(risultato)
+    # =========================
+    # TOP
+    # =========================
+
+    if score >= TOP_MINIMO:
+        top.append(dato)
+
+    # =========================
+    # JOLLY
+    # =========================
+
+    if score >= JOLLY_MINIMO:
+        jolly.append(dato)
+
+    # =========================
+    # AMBO FORTE
+    # =========================
+
+    if score >= FORTE_MINIMO:
+        ambo_forte.append(dato)
 
 # =========================
-# JOLLY
+# ORDINA
 # =========================
 
-jolly = sorted(
-    top,
-    key=lambda x: x["score"],
-    reverse=True
-)[:3]
+top = sorted(top, key=lambda x: x["score"], reverse=True)
+jolly = sorted(jolly, key=lambda x: x["score"], reverse=True)
+ambo_forte = sorted(ambo_forte, key=lambda x: x["score"], reverse=True)
 
 # =========================
-# AMBO FORTE
-# =========================
-
-amboForte = sorted(
-    top,
-    key=lambda x: x["score"],
-    reverse=True
-)[:5]
-
-# =========================
-# OUTPUT
+# SALVA
 # =========================
 
 risultati = {
     "top": top,
     "jolly": jolly,
-    "amboForte": amboForte
+    "ambo_forte": ambo_forte
 }
 
 with open("risultati.json", "w", encoding="utf-8") as f:
-    json.dump(risultati, f, indent=2, ensure_ascii=False)
+    json.dump(risultati, f, indent=4, ensure_ascii=False)
 
 print("risultati.json generato correttamente")
