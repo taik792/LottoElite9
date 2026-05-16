@@ -1,78 +1,71 @@
 import json
-from collections import Counter
 
-TOP_MINIMO = 8
-JOLLY_MINIMO = 11
-FORTE_MINIMO = 13
-
-NUMERI_DA_USARE = 12
-
+# CARICA ESTRAZIONI
 with open("estrazioni.json", "r", encoding="utf-8") as f:
     dati = json.load(f)
 
-tutte = []
-top = []
-jolly = []
-ambo_forte = []
+risultati = []
 
 for ruota, estrazioni in dati.items():
 
-    ultime = estrazioni[-NUMERI_DA_USARE:]
+    # ultime 12 estrazioni
+    ultime = estrazioni[-12:]
 
-    frequenze = Counter()
+    frequenze = {}
 
     for estrazione in ultime:
+
         for numero in estrazione:
-            frequenze[numero] += 1
 
-    migliori = frequenze.most_common(2)
+            frequenze[numero] = frequenze.get(numero, 0) + 1
 
-    if len(migliori) < 2:
+    ordinati = sorted(
+        frequenze.items(),
+        key=lambda x: x[1],
+        reverse=True
+    )
+
+    if len(ordinati) < 2:
         continue
 
-    n1 = migliori[0][0]
-    n2 = migliori[1][0]
+    ambo = [
+        ordinati[0][0],
+        ordinati[1][0]
+    ]
 
-    score = migliori[0][1] + migliori[1][1]
+    score = ordinati[0][1] + ordinati[1][1]
 
-    ultima_estrazione = estrazioni[-1]
-
-    dato = {
+    risultati.append({
         "ruota": ruota,
-        "ambo": [n1, n2],
+        "ambo": ambo,
         "score": score,
-        "estrazione": ultima_estrazione
-    }
+        "estrazione": estrazioni[-1]
+    })
 
-    # TUTTE LE RUOTE
-    tutte.append(dato)
+# ORDINA PER SCORE
+risultati = sorted(
+    risultati,
+    key=lambda x: x["score"],
+    reverse=True
+)
 
-    # TOP
-    if score >= TOP_MINIMO:
-        top.append(dato)
+# TOP = tutte ruote
+top = risultati
 
-    # JOLLY
-    if score >= JOLLY_MINIMO:
-        jolly.append(dato)
+# JOLLY = prime 3
+jolly = risultati[:3]
 
-    # AMBO FORTE
-    if score >= FORTE_MINIMO:
-        ambo_forte.append(dato)
+# AMBO FORTE = prime 5
+ambo_forte = risultati[:5]
 
-# ORDINA
-tutte = sorted(tutte, key=lambda x: x["score"], reverse=True)
-top = sorted(top, key=lambda x: x["score"], reverse=True)
-jolly = sorted(jolly, key=lambda x: x["score"], reverse=True)
-ambo_forte = sorted(ambo_forte, key=lambda x: x["score"], reverse=True)
-
-risultati = {
-    "tutte": tutte,
-    "top": top,
+output = {
+    "tutte": top,
     "jolly": jolly,
     "ambo_forte": ambo_forte
 }
 
+# SALVA JSON
 with open("risultati.json", "w", encoding="utf-8") as f:
-    json.dump(risultati, f, indent=4, ensure_ascii=False)
+    json.dump(output, f, indent=4)
 
-print("risultati.json generato")
+print("risultati.json generato correttamente")
