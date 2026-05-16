@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Lotto Elite Pro</title>
+<title>Lotto Elite PRO</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 
@@ -13,36 +13,36 @@
 body{
     margin:0;
     padding:0;
-    background:
-        radial-gradient(circle at center,#0d4d9b 0%,#031633 100%);
     font-family:'Orbitron',sans-serif;
+    background:
+    radial-gradient(circle at center,#0b4da1 0%,#03142d 100%);
     color:white;
     text-align:center;
 }
 
 header{
-    padding:30px 10px 10px;
+    padding:30px 15px;
 }
 
 h1{
-    color:#00eaff;
     font-size:48px;
+    color:#00eaff;
     text-shadow:
         0 0 10px #00eaff,
-        0 0 20px #00eaff;
+        0 0 25px #00eaff;
     margin:0;
 }
 
 .subtitle{
     margin-top:10px;
-    font-size:20px;
+    font-size:22px;
     color:#ffffffcc;
 }
 
 .section-title{
     margin-top:50px;
     margin-bottom:25px;
-    font-size:36px;
+    font-size:34px;
     color:#00eaff;
     text-shadow:
         0 0 10px #00eaff,
@@ -51,15 +51,15 @@ h1{
 
 .container{
     display:flex;
-    justify-content:center;
     flex-wrap:wrap;
+    justify-content:center;
     gap:25px;
-    padding:10px 20px 50px;
+    padding:10px 20px 40px;
 }
 
 .card{
-    width:300px;
-    background:rgba(0,0,20,0.75);
+    width:260px;
+    background:rgba(0,0,30,0.75);
     border-radius:30px;
     padding:25px;
     backdrop-filter:blur(5px);
@@ -92,29 +92,29 @@ h1{
 }
 
 .ruota{
-    font-size:42px;
-    margin-bottom:25px;
+    font-size:38px;
+    margin-bottom:20px;
 }
 
 .label{
-    font-size:20px;
+    font-size:18px;
     opacity:0.8;
     margin-bottom:10px;
 }
 
 .estrazione{
     font-size:18px;
-    margin-bottom:35px;
     color:#ffffffcc;
+    margin-bottom:30px;
 }
 
 .ambo{
-    font-size:60px;
+    font-size:54px;
     color:#00f7ff;
     text-shadow:
         0 0 10px #00f7ff,
         0 0 25px #00f7ff;
-    margin-bottom:30px;
+    margin-bottom:25px;
 }
 
 .score{
@@ -146,7 +146,7 @@ footer{
     }
 
     .ambo{
-        font-size:48px;
+        font-size:44px;
     }
 
     .ruota{
@@ -164,12 +164,15 @@ footer{
     <div class="subtitle">Motore Ciclico PRO</div>
 </header>
 
+<!-- TUTTE LE RUOTE -->
 <div class="section-title">🎯 TOP</div>
 <div id="top-container" class="container"></div>
 
+<!-- JOLLY -->
 <div class="section-title">💣 JOLLY</div>
 <div id="jolly-container" class="container"></div>
 
+<!-- AMBO FORTE -->
 <div class="section-title">📊 AMBO FORTE</div>
 <div id="forte-container" class="container"></div>
 
@@ -183,12 +186,18 @@ function creaCards(lista, containerId, classe){
 
     const container = document.getElementById(containerId);
 
+    // PULISCE CONTAINER
     container.innerHTML = "";
 
+    // NESSUN RISULTATO
     if(!lista || lista.length === 0){
 
         container.innerHTML = `
-            <div style="opacity:0.6;font-size:18px;">
+            <div style="
+                opacity:0.6;
+                font-size:18px;
+                margin-top:20px;
+            ">
                 Nessun risultato
             </div>
         `;
@@ -196,6 +205,7 @@ function creaCards(lista, containerId, classe){
         return;
     }
 
+    // CREA CARDS
     lista.forEach(item => {
 
         const card = document.createElement("div");
@@ -205,7 +215,9 @@ function creaCards(lista, containerId, classe){
         card.innerHTML = `
             <div class="ruota">${item.ruota}</div>
 
-            <div class="label">Ultima Estrazione</div>
+            <div class="label">
+                Ultima Estrazione
+            </div>
 
             <div class="estrazione">
                 ${item.estrazione.join(" • ")}
@@ -220,33 +232,50 @@ function creaCards(lista, containerId, classe){
             </div>
         `;
 
+        // AGGIUNGE CARD
         container.appendChild(card);
+
     });
 }
 
-fetch("risultati.json")
-.then(res => res.json())
+fetch("risultati.json?v=" + new Date().getTime())
+
+.then(response => response.json())
+
 .then(data => {
 
     // TUTTE LE RUOTE
-    creaCards(data.tutte, "top-container", "top-card");
+    creaCards(
+        data.tutte,
+        "top-container",
+        "top-card"
+    );
 
     // JOLLY
-    creaCards(data.jolly, "jolly-container", "jolly-card");
+    creaCards(
+        data.jolly,
+        "jolly-container",
+        "jolly-card"
+    );
 
     // AMBO FORTE
-    creaCards(data.ambo_forte, "forte-container", "forte-card");
+    creaCards(
+        data.ambo_forte,
+        "forte-container",
+        "forte-card"
+    );
 
 })
-.catch(err => {
 
-    console.error(err);
+.catch(error => {
+
+    console.error(error);
 
     document.body.innerHTML += `
         <div style="
             color:red;
             margin-top:40px;
-            font-size:20px;
+            font-size:22px;
         ">
             Errore caricamento risultati.json
         </div>
