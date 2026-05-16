@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -14,257 +13,245 @@
 body{
     margin:0;
     padding:0;
-    background:#021b3a;
-    background:radial-gradient(circle,#0b3b75 0%, #02142d 100%);
+    background:
+        radial-gradient(circle at center,#0d4d9b 0%,#031633 100%);
     font-family:'Orbitron',sans-serif;
     color:white;
     text-align:center;
 }
 
-h1{
-    margin-top:20px;
-    color:#00eaff;
-    text-shadow:0 0 15px #00eaff;
-    font-size:42px;
+header{
+    padding:30px 10px 10px;
 }
 
-h3{
-    color:white;
+h1{
+    color:#00eaff;
+    font-size:48px;
+    text-shadow:
+        0 0 10px #00eaff,
+        0 0 20px #00eaff;
+    margin:0;
+}
+
+.subtitle{
     margin-top:10px;
-    margin-bottom:25px;
-    font-weight:400;
+    font-size:20px;
+    color:#ffffffcc;
 }
 
 .section-title{
-    font-size:34px;
+    margin-top:50px;
+    margin-bottom:25px;
+    font-size:36px;
     color:#00eaff;
-    margin-top:35px;
-    margin-bottom:20px;
-    text-shadow:0 0 15px #00eaff;
+    text-shadow:
+        0 0 10px #00eaff,
+        0 0 20px #00eaff;
 }
 
-.cards{
+.container{
     display:flex;
-    flex-wrap:wrap;
     justify-content:center;
-    gap:18px;
-    padding:10px;
+    flex-wrap:wrap;
+    gap:25px;
+    padding:10px 20px 50px;
 }
 
 .card{
-    width:220px;
-    background:#001733;
-    border:4px solid #ffd500;
-    border-radius:28px;
-    padding:18px;
+    width:300px;
+    background:rgba(0,0,20,0.75);
+    border-radius:30px;
+    padding:25px;
+    backdrop-filter:blur(5px);
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:scale(1.03);
+}
+
+.top-card{
+    border:5px solid #ffe600;
     box-shadow:
-        0 0 10px #ffd500,
-        0 0 25px #ffd500;
+        0 0 15px #ffe600,
+        0 0 35px #ffe600;
 }
 
 .jolly-card{
-    border:4px solid #ff2d75;
-
+    border:5px solid #ff2d75;
     box-shadow:
-        0 0 10px #ff2d75,
-        0 0 25px #ff2d75;
+        0 0 15px #ff2d75,
+        0 0 35px #ff2d75;
 }
 
 .forte-card{
-    border:4px solid #00eaff;
-
+    border:5px solid #00eaff;
     box-shadow:
-        0 0 10px #00eaff,
-        0 0 25px #00eaff;
+        0 0 15px #00eaff,
+        0 0 35px #00eaff;
 }
 
-.card h2{
-    font-size:22px;
-    margin-bottom:20px;
-    color:white;
+.ruota{
+    font-size:42px;
+    margin-bottom:25px;
 }
 
-.ultima{
-    font-size:12px;
+.label{
+    font-size:20px;
+    opacity:0.8;
     margin-bottom:10px;
-    color:#d0d0d0;
 }
 
 .estrazione{
-    font-size:14px;
-    color:white;
-    margin-bottom:25px;
+    font-size:18px;
+    margin-bottom:35px;
+    color:#ffffffcc;
 }
 
 .ambo{
-    font-size:44px;
-    color:#00f0ff;
+    font-size:60px;
+    color:#00f7ff;
     text-shadow:
-        0 0 10px #00f0ff,
-        0 0 20px #00f0ff;
-    margin-bottom:25px;
+        0 0 10px #00f7ff,
+        0 0 25px #00f7ff;
+    margin-bottom:30px;
 }
 
 .score{
-    font-size:24px;
-    color:#ff9ed1;
+    font-size:28px;
+    color:#ff8ad8;
     text-shadow:
-        0 0 10px #ff9ed1;
+        0 0 10px #ff8ad8;
 }
 
 footer{
-    margin-top:40px;
-    padding-bottom:30px;
-    color:#aaa;
+    margin-top:50px;
+    padding-bottom:40px;
+    opacity:0.5;
     font-size:12px;
 }
 
-</style>
+@media(max-width:700px){
 
+    h1{
+        font-size:34px;
+    }
+
+    .section-title{
+        font-size:28px;
+    }
+
+    .card{
+        width:85%;
+    }
+
+    .ambo{
+        font-size:48px;
+    }
+
+    .ruota{
+        font-size:34px;
+    }
+}
+
+</style>
 </head>
 
 <body>
 
-<h1>🔥 LOTTO ELITE PRO 🤘</h1>
-
-<h3>Motore Ciclico PRO</h3>
+<header>
+    <h1>🔥 LOTTO ELITE PRO 🤘</h1>
+    <div class="subtitle">Motore Ciclico PRO</div>
+</header>
 
 <div class="section-title">🎯 TOP</div>
-
-<div id="top" class="cards"></div>
+<div id="top-container" class="container"></div>
 
 <div class="section-title">💣 JOLLY</div>
-
-<div id="jolly" class="cards"></div>
+<div id="jolly-container" class="container"></div>
 
 <div class="section-title">📊 AMBO FORTE</div>
-
-<div id="amboForte" class="cards"></div>
+<div id="forte-container" class="container"></div>
 
 <footer>
-Lotto Elite Pro ©
+    Lotto Elite PRO
 </footer>
 
 <script>
 
-async function caricaRisultati() {
+function creaCards(lista, containerId, classe){
 
-    const response = await fetch("risultati.json?v=" + Date.now());
+    const container = document.getElementById(containerId);
 
-    const dati = await response.json();
+    container.innerHTML = "";
 
-    // =====================
-    // CONTENITORI
-    // =====================
+    if(!lista || lista.length === 0){
 
-    const topContainer = document.getElementById("top");
+        container.innerHTML = `
+            <div style="opacity:0.6;font-size:18px;">
+                Nessun risultato
+            </div>
+        `;
 
-    const jollyContainer = document.getElementById("jolly");
+        return;
+    }
 
-    const amboForteContainer = document.getElementById("amboForte");
-
-    // Pulizia
-
-    topContainer.innerHTML = "";
-
-    jollyContainer.innerHTML = "";
-
-    amboForteContainer.innerHTML = "";
-
-    // =====================
-    // CREA CARD
-    // =====================
-
-    function creaCard(item, classe = "") {
+    lista.forEach(item => {
 
         const card = document.createElement("div");
 
-        card.className = "card " + classe;
+        card.className = `card ${classe}`;
 
         card.innerHTML = `
+            <div class="ruota">${item.ruota}</div>
 
-            <h2>${item.ruota || ""}</h2>
-
-            <div class="ultima">
-                Ultima Estrazione
-            </div>
+            <div class="label">Ultima Estrazione</div>
 
             <div class="estrazione">
-                ${
-                    item.estrazione
-                    ? item.estrazione.join(" • ")
-                    : ""
-                }
+                ${item.estrazione.join(" • ")}
             </div>
 
             <div class="ambo">
-                ${
-                    item.ambo
-                    ? item.ambo.join(" - ")
-                    : ""
-                }
+                ${item.ambo[0]} - ${item.ambo[1]}
             </div>
 
             <div class="score">
-                Score: ${item.score || 0}
+                Score: ${item.score}
             </div>
-
         `;
 
-        return card;
-    }
-
-    // =====================
-    // TOP
-    // =====================
-
-    if (dati.top && Array.isArray(dati.top)) {
-
-        dati.top.forEach(item => {
-
-            topContainer.appendChild(
-                creaCard(item)
-            );
-
-        });
-
-    }
-
-    // =====================
-    // JOLLY
-    // =====================
-
-    if (dati.jolly && Array.isArray(dati.jolly)) {
-
-        dati.jolly.forEach(item => {
-
-            jollyContainer.appendChild(
-                creaCard(item, "jolly-card")
-            );
-
-        });
-
-    }
-
-    // =====================
-    // AMBO FORTE
-    // =====================
-
-    if (dati.amboForte && Array.isArray(dati.amboForte)) {
-
-        dati.amboForte.forEach(item => {
-
-            amboForteContainer.appendChild(
-                creaCard(item, "forte-card")
-            );
-
-        });
-
-    }
-
+        container.appendChild(card);
+    });
 }
 
-caricaRisultati();
+fetch("risultati.json")
+.then(res => res.json())
+.then(data => {
+
+    // TUTTE LE RUOTE
+    creaCards(data.tutte, "top-container", "top-card");
+
+    // JOLLY
+    creaCards(data.jolly, "jolly-container", "jolly-card");
+
+    // AMBO FORTE
+    creaCards(data.ambo_forte, "forte-container", "forte-card");
+
+})
+.catch(err => {
+
+    console.error(err);
+
+    document.body.innerHTML += `
+        <div style="
+            color:red;
+            margin-top:40px;
+            font-size:20px;
+        ">
+            Errore caricamento risultati.json
+        </div>
+    `;
+});
 
 </script>
 
