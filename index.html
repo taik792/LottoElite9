@@ -4,154 +4,82 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Lotto Elite PRO</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+<title>Lotto Elite Pro</title>
 
 <style>
 
 body{
     margin:0;
-    padding:0;
-    font-family:'Orbitron',sans-serif;
-    background:
-    radial-gradient(circle at center,#0b4da1 0%,#03142d 100%);
+    background:#031b4e;
+    font-family:Arial;
     color:white;
     text-align:center;
 }
 
-header{
-    padding:30px 15px;
-}
-
 h1{
-    font-size:48px;
     color:#00eaff;
-    text-shadow:
-        0 0 10px #00eaff,
-        0 0 25px #00eaff;
-    margin:0;
+    text-shadow:0 0 20px #00eaff;
+    margin-top:20px;
 }
 
-.subtitle{
-    margin-top:10px;
-    font-size:22px;
-    color:#ffffffcc;
+.sezione{
+    margin-top:40px;
 }
 
-.section-title{
-    margin-top:50px;
+.sezione h2{
+    color:#00eaff;
+    text-shadow:0 0 15px #00eaff;
     margin-bottom:25px;
-    font-size:34px;
-    color:#00eaff;
-    text-shadow:
-        0 0 10px #00eaff,
-        0 0 20px #00eaff;
 }
 
-.container{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap:25px;
-    padding:10px 20px 40px;
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    max-width:1400px;
+    margin:auto;
+    padding:20px;
 }
 
 .card{
-    width:260px;
-    background:rgba(0,0,30,0.75);
-    border-radius:30px;
-    padding:25px;
-    backdrop-filter:blur(5px);
-    transition:0.3s;
+    background:#071633;
+    border-radius:25px;
+    padding:20px;
+    box-shadow:0 0 20px #ffe600;
+    border:3px solid #ffe600;
 }
 
-.card:hover{
-    transform:scale(1.03);
+.card.jolly{
+    border:3px solid #ff2ea6;
+    box-shadow:0 0 20px #ff2ea6;
 }
 
-.top-card{
-    border:5px solid #ffe600;
-    box-shadow:
-        0 0 15px #ffe600,
-        0 0 35px #ffe600;
-}
-
-.jolly-card{
-    border:5px solid #ff2d75;
-    box-shadow:
-        0 0 15px #ff2d75,
-        0 0 35px #ff2d75;
-}
-
-.forte-card{
-    border:5px solid #00eaff;
-    box-shadow:
-        0 0 15px #00eaff,
-        0 0 35px #00eaff;
+.card.forte{
+    border:3px solid #00eaff;
+    box-shadow:0 0 20px #00eaff;
 }
 
 .ruota{
-    font-size:38px;
-    margin-bottom:20px;
-}
-
-.label{
-    font-size:18px;
-    opacity:0.8;
+    font-size:32px;
     margin-bottom:10px;
 }
 
 .estrazione{
-    font-size:18px;
-    color:#ffffffcc;
-    margin-bottom:30px;
+    font-size:15px;
+    color:#ddd;
+    margin-bottom:20px;
 }
 
 .ambo{
-    font-size:54px;
+    font-size:52px;
     color:#00f7ff;
-    text-shadow:
-        0 0 10px #00f7ff,
-        0 0 25px #00f7ff;
-    margin-bottom:25px;
+    text-shadow:0 0 20px #00f7ff;
+    margin-bottom:15px;
 }
 
 .score{
+    color:#ff77c8;
     font-size:28px;
-    color:#ff8ad8;
-    text-shadow:
-        0 0 10px #ff8ad8;
-}
-
-footer{
-    margin-top:50px;
-    padding-bottom:40px;
-    opacity:0.5;
-    font-size:12px;
-}
-
-@media(max-width:700px){
-
-    h1{
-        font-size:34px;
-    }
-
-    .section-title{
-        font-size:28px;
-    }
-
-    .card{
-        width:85%;
-    }
-
-    .ambo{
-        font-size:44px;
-    }
-
-    .ruota{
-        font-size:34px;
-    }
 }
 
 </style>
@@ -159,67 +87,37 @@ footer{
 
 <body>
 
-<header>
-    <h1>🔥 LOTTO ELITE PRO 🤘</h1>
-    <div class="subtitle">Motore Ciclico PRO</div>
-</header>
+<h1>🔥 LOTTO ELITE PRO 🤘</h1>
 
-<!-- TUTTE LE RUOTE -->
-<div class="section-title">🎯 TOP</div>
-<div id="top-container" class="container"></div>
+<div class="sezione">
+    <h2>🎯 TOP</h2>
+    <div class="grid" id="top"></div>
+</div>
 
-<!-- JOLLY -->
-<div class="section-title">💣 JOLLY</div>
-<div id="jolly-container" class="container"></div>
+<div class="sezione">
+    <h2>💣 JOLLY</h2>
+    <div class="grid" id="jolly"></div>
+</div>
 
-<!-- AMBO FORTE -->
-<div class="section-title">📊 AMBO FORTE</div>
-<div id="forte-container" class="container"></div>
-
-<footer>
-    Lotto Elite PRO
-</footer>
+<div class="sezione">
+    <h2>📊 AMBO FORTE</h2>
+    <div class="grid" id="forte"></div>
+</div>
 
 <script>
 
-function creaCards(lista, containerId, classe){
+fetch("risultati.json")
+.then(r=>r.json())
+.then(data=>{
 
-    const container = document.getElementById(containerId);
+    function creaCard(item, classe=""){
 
-    // PULISCE CONTAINER
-    container.innerHTML = "";
-
-    // NESSUN RISULTATO
-    if(!lista || lista.length === 0){
-
-        container.innerHTML = `
-            <div style="
-                opacity:0.6;
-                font-size:18px;
-                margin-top:20px;
-            ">
-                Nessun risultato
-            </div>
-        `;
-
-        return;
-    }
-
-    // CREA CARDS
-    lista.forEach(item => {
-
-        const card = document.createElement("div");
-
-        card.className = `card ${classe}`;
-
-        card.innerHTML = `
+        return `
+        <div class="card ${classe}">
             <div class="ruota">${item.ruota}</div>
 
-            <div class="label">
-                Ultima Estrazione
-            </div>
-
             <div class="estrazione">
+                Ultima Estrazione<br>
                 ${item.estrazione.join(" • ")}
             </div>
 
@@ -228,58 +126,30 @@ function creaCards(lista, containerId, classe){
             </div>
 
             <div class="score">
-                Score: ${item.score}
+                Score ${item.score}
             </div>
+        </div>
         `;
+    }
 
-        // AGGIUNGE CARD
-        container.appendChild(card);
-
-    });
-}
-
-fetch("risultati.json?v=" + new Date().getTime())
-
-.then(response => response.json())
-
-.then(data => {
-
-    // TUTTE LE RUOTE
-    creaCards(
-        data.tutte,
-        "top-container",
-        "top-card"
-    );
+    // TOP
+    document.getElementById("top").innerHTML =
+        data.tutte
+        .map(x=>creaCard(x))
+        .join("");
 
     // JOLLY
-    creaCards(
-        data.jolly,
-        "jolly-container",
-        "jolly-card"
-    );
+    document.getElementById("jolly").innerHTML =
+        data.jolly
+        .map(x=>creaCard(x,"jolly"))
+        .join("");
 
-    // AMBO FORTE
-    creaCards(
-        data.ambo_forte,
-        "forte-container",
-        "forte-card"
-    );
+    // FORTE
+    document.getElementById("forte").innerHTML =
+        data.ambo_forte
+        .map(x=>creaCard(x,"forte"))
+        .join("");
 
-})
-
-.catch(error => {
-
-    console.error(error);
-
-    document.body.innerHTML += `
-        <div style="
-            color:red;
-            margin-top:40px;
-            font-size:22px;
-        ">
-            Errore caricamento risultati.json
-        </div>
-    `;
 });
 
 </script>
