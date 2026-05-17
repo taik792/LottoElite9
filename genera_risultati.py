@@ -8,23 +8,33 @@ risultati = []
 
 for ruota, estrazioni in dati.items():
 
-    # ultime 1 estrazioni
-    ultime = estrazioni[-1:]
+    # SALTA RUOTE VUOTE
+    if not estrazioni:
+        continue
+
+    # PRENDE LE ULTIME 10 ESTRAZIONI
+    ultime = estrazioni[-10:]
+
+    # PRENDE L'ULTIMA ESTRAZIONE REALE
+    ultima = estrazioni[-1]
 
     frequenze = {}
 
+    # CONTA FREQUENZE
     for estrazione in ultime:
 
         for numero in estrazione:
 
             frequenze[numero] = frequenze.get(numero, 0) + 1
 
+    # ORDINA PER FREQUENZA
     ordinati = sorted(
         frequenze.items(),
         key=lambda x: x[1],
         reverse=True
     )
 
+    # SE CI SONO ALMENO 2 NUMERI
     if len(ordinati) < 2:
         continue
 
@@ -33,38 +43,58 @@ for ruota, estrazioni in dati.items():
         ordinati[1][0]
     ]
 
-    score = ordinati[0][1] + ordinati[1][1]
+    score = (
+        ordinati[0][1] +
+        ordinati[1][1]
+    )
 
     risultati.append({
         "ruota": ruota,
         "ambo": ambo,
         "score": score,
-        "estrazione": estrazioni[-1]
+        "estrazione": ultima
     })
 
-# ORDINA PER SCORE
-risultati = sorted(
+# ORDINE RUOTE
+ordine_ruote = [
+    "Bari",
+    "Cagliari",
+    "Firenze",
+    "Genova",
+    "Milano",
+    "Napoli",
+    "Palermo",
+    "Roma",
+    "Torino",
+    "Venezia"
+]
+
+# ORDINA RISULTATI
+risultati.sort(
+    key=lambda x: ordine_ruote.index(x["ruota"])
+)
+
+# TOP 3 JOLLY
+jolly = sorted(
     risultati,
     key=lambda x: x["score"],
     reverse=True
-)
+)[:3]
 
-# TOP = tutte ruote
-top = risultati
-
-# JOLLY = prime 3
-jolly = risultati[:3]
-
-# AMBO FORTE = prime 5
-ambo_forte = risultati[:5]
+# AMBI FORTI SCORE >= 7
+forti = sorted(
+    [x for x in risultati if x["score"] >= 7],
+    key=lambda x: x["score"],
+    reverse=True
+)[:5]
 
 output = {
-    "tutte": top,
+    "tutte": risultati,
     "jolly": jolly,
-    "ambo_forte": ambo_forte
+    "forti": forti
 }
 
-# SALVA JSON
+# SALVA FILE
 with open("risultati.json", "w", encoding="utf-8") as f:
     json.dump(output, f, indent=4)
 
