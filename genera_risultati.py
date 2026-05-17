@@ -1,48 +1,62 @@
 import json
 
+# =========================
 # CARICA ESTRAZIONI
+# =========================
+
 with open("estrazioni.json", "r", encoding="utf-8") as f:
     dati = json.load(f)
 
 risultati = []
 
+# =========================
+# ANALISI RUOTE
+# =========================
+
 for ruota, estrazioni in dati.items():
 
     # SALTA RUOTE VUOTE
-    if not estrazioni:
+    if not estrazioni or len(estrazioni) < 2:
         continue
 
-    # PRENDE LE ULTIME 10 ESTRAZIONI
-    ultime = estrazioni[-10:]
-
-    # PRENDE L'ULTIMA ESTRAZIONE REALE
+    # ULTIMA ESTRAZIONE
     ultima = estrazioni[-1]
+
+    # ULTIME 10 ESTRAZIONI
+    ultime10 = estrazioni[-10:]
 
     frequenze = {}
 
     # CONTA FREQUENZE
-    for estrazione in ultime:
+    for estrazione in ultime10:
 
         for numero in estrazione:
 
+            # ESCLUDE NUMERI USCITI
+            # NELL'ULTIMA ESTRAZIONE
+            if numero in ultima:
+                continue
+
             frequenze[numero] = frequenze.get(numero, 0) + 1
 
-    # ORDINA PER FREQUENZA
+    # ORDINA FREQUENZE
     ordinati = sorted(
         frequenze.items(),
         key=lambda x: x[1],
         reverse=True
     )
 
-    # SE CI SONO ALMENO 2 NUMERI
+    # SERVONO ALMENO 2 NUMERI
     if len(ordinati) < 2:
         continue
 
+    # CREA AMBO
     ambo = [
         ordinati[0][0],
         ordinati[1][0]
     ]
 
+    # SCORE
     score = (
         ordinati[0][1] +
         ordinati[1][1]
@@ -55,7 +69,10 @@ for ruota, estrazioni in dati.items():
         "estrazione": ultima
     })
 
+# =========================
 # ORDINE RUOTE
+# =========================
+
 ordine_ruote = [
     "Bari",
     "Cagliari",
@@ -69,24 +86,35 @@ ordine_ruote = [
     "Venezia"
 ]
 
-# ORDINA RISULTATI
 risultati.sort(
     key=lambda x: ordine_ruote.index(x["ruota"])
 )
 
-# TOP 3 JOLLY
+# =========================
+# JOLLY
+# TOP 3 SCORE
+# =========================
+
 jolly = sorted(
     risultati,
     key=lambda x: x["score"],
     reverse=True
 )[:3]
 
-# AMBI FORTI SCORE >= 7
+# =========================
+# AMBI FORTI
+# SCORE >= 7
+# =========================
+
 forti = sorted(
     [x for x in risultati if x["score"] >= 7],
     key=lambda x: x["score"],
     reverse=True
 )[:5]
+
+# =========================
+# OUTPUT JSON
+# =========================
 
 output = {
     "tutte": risultati,
@@ -94,7 +122,6 @@ output = {
     "forti": forti
 }
 
-# SALVA FILE
 with open("risultati.json", "w", encoding="utf-8") as f:
     json.dump(output, f, indent=4)
 
