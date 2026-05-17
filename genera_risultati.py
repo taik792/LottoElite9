@@ -8,8 +8,8 @@ risultati = []
 
 for ruota, estrazioni in dati.items():
 
-    # ultime 12 estrazioni
-    ultime = estrazioni[-12:]
+    # ultime 1 estrazioni
+    ultime = estrazioni[-1:]
 
     frequenze = {}
 
