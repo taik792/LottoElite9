@@ -3,91 +3,91 @@
         {
             "ruota": "Bari",
             "ambo": [
-                16,
-                33
-            ],
-            "score": 4,
-            "estrazione": [
-                84,
-                57,
                 9,
-                22,
-                60
+                22
+            ],
+            "score": 5,
+            "estrazione": [
+                31,
+                86,
+                56,
+                69,
+                65
             ]
         },
         {
             "ruota": "Cagliari",
             "ambo": [
-                28,
-                86
+                84,
+                4
             ],
             "score": 4,
             "estrazione": [
-                52,
-                58,
-                80,
-                57,
-                76
+                66,
+                23,
+                78,
+                64,
+                48
             ]
         },
         {
             "ruota": "Firenze",
             "ambo": [
-                71,
-                32
+                60,
+                71
             ],
-            "score": 5,
+            "score": 7,
             "estrazione": [
-                50,
-                15,
-                63,
-                58,
-                60
+                43,
+                30,
+                56,
+                2,
+                12
             ]
         },
         {
             "ruota": "Genova",
             "ambo": [
-                43,
-                80
-            ],
-            "score": 4,
-            "estrazione": [
-                8,
                 30,
-                61,
-                75,
                 55
+            ],
+            "score": 7,
+            "estrazione": [
+                75,
+                47,
+                20,
+                71,
+                18
             ]
         },
         {
             "ruota": "Milano",
             "ambo": [
                 14,
-                51
+                16
             ],
             "score": 4,
             "estrazione": [
-                82,
-                68,
-                29,
-                16,
-                10
+                37,
+                35,
+                74,
+                85,
+                80
             ]
         },
         {
             "ruota": "Napoli",
             "ambo": [
                 73,
-                64
+                54
             ],
             "score": 5,
             "estrazione": [
-                86,
-                46,
-                15,
-                33,
-                65
+                75,
+                66,
+                53,
+                89,
+                87
             ]
         },
         {
@@ -96,13 +96,13 @@
                 18,
                 36
             ],
-            "score": 7,
+            "score": 6,
             "estrazione": [
-                46,
-                29,
-                73,
-                74,
-                37
+                89,
+                39,
+                2,
+                81,
+                14
             ]
         },
         {
@@ -113,105 +113,120 @@
             ],
             "score": 6,
             "estrazione": [
-                30,
-                15,
-                2,
-                87,
-                52
+                58,
+                42,
+                9,
+                38,
+                8
             ]
         },
         {
             "ruota": "Torino",
             "ambo": [
-                21,
-                42
+                1,
+                70
             ],
             "score": 4,
             "estrazione": [
+                10,
+                26,
                 15,
-                62,
-                82,
-                52,
-                67
+                5,
+                3
             ]
         },
         {
             "ruota": "Venezia",
             "ambo": [
-                70,
-                68
-            ],
-            "score": 4,
-            "estrazione": [
-                58,
                 85,
-                40,
-                35,
-                48
+                17
+            ],
+            "score": 5,
+            "estrazione": [
+                38,
+                68,
+                69,
+                22,
+                7
             ]
         }
     ],
     "jolly": [
         {
+            "ruota": "Firenze",
+            "ambo": [
+                60,
+                71
+            ],
+            "score": 7,
+            "estrazione": [
+                43,
+                30,
+                56,
+                2,
+                12
+            ]
+        },
+        {
+            "ruota": "Genova",
+            "ambo": [
+                30,
+                55
+            ],
+            "score": 7,
+            "estrazione": [
+                75,
+                47,
+                20,
+                71,
+                18
+            ]
+        },
+        {
             "ruota": "Palermo",
             "ambo": [
                 18,
                 36
             ],
-            "score": 7,
-            "estrazione": [
-                46,
-                29,
-                73,
-                74,
-                37
-            ]
-        },
-        {
-            "ruota": "Roma",
-            "ambo": [
-                7,
-                47
-            ],
             "score": 6,
             "estrazione": [
-                30,
-                15,
+                89,
+                39,
                 2,
-                87,
-                52
-            ]
-        },
-        {
-            "ruota": "Firenze",
-            "ambo": [
-                71,
-                32
-            ],
-            "score": 5,
-            "estrazione": [
-                50,
-                15,
-                63,
-                58,
-                60
+                81,
+                14
             ]
         }
     ],
     "forti": [
         {
-            "ruota": "Palermo",
+            "ruota": "Firenze",
             "ambo": [
-                18,
-                36
+                60,
+                71
             ],
             "score": 7,
             "estrazione": [
-                46,
-                29,
-                73,
-                74,
-                37
+                43,
+                30,
+                56,
+                2,
+                12
+            ]
+        },
+        {
+            "ruota": "Genova",
+            "ambo": [
+                30,
+                55
+            ],
+            "score": 7,
+            "estrazione": [
+                75,
+                47,
+                20,
+                71,
+                18
             ]
         }
     ]
