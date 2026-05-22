@@ -1,141 +1,166 @@
 import json
 from collections import Counter
 
-# =========================
-# CONFIG
-# =========================
-
-RUOTE_GEMELLE = {
-    "Bari": "Cagliari",
-    "Cagliari": "Bari",
-    "Firenze": "Roma",
-    "Roma": "Firenze",
-    "Genova": "Milano",
-    "Milano": "Genova",
-    "Napoli": "Palermo",
-    "Palermo": "Napoli",
-    "Torino": "Venezia",
-    "Venezia": "Torino"
-}
-
-DISTANZE = [9, 18, 27, 45]
-
-# =========================
-# FUNZIONI
-# =========================
-
-def distanza_ciclica(n, d):
-    return ((n + d - 1) % 90) + 1
-
-def speculare(n):
-    s = str(n).zfill(2)
-    return int(s[::-1])
-
-def normalizza(n):
-    while n > 90:
-        n -= 90
-    if n == 0:
-        n = 90
-    return n
+RUOTE_ORDINE = [
+    "Bari",
+    "Cagliari",
+    "Firenze",
+    "Genova",
+    "Milano",
+    "Napoli",
+    "Palermo",
+    "Roma",
+    "Torino",
+    "Venezia"
+]
 
 # =========================
 # CARICA ESTRAZIONI
 # =========================
 
 with open("estrazioni.json", "r", encoding="utf-8") as f:
-    archivio = json.load(f)
+    estrazioni = json.load(f)
 
-risultati = []
+# PRENDE LE ULTIME 12 ESTRAZIONI
+ultime = estrazioni[-12:]
+
+risultati_ruote = []
+jolly = []
+ambo_forte = []
+
+# =========================
+# FUNZIONE CICLICA
+# =========================
+
+def calcolo_ciclico(numeri):
+
+    frequenze = Counter()
+    distanze = Counter()
+
+    # frequenze
+    for n in numeri:
+        frequenze[n] += 1
+
+    # distanze cicliche
+    for i in range(len(numeri)-1):
+        a = numeri[i]
+        b = numeri[i+1]
+
+        dist = abs(a - b)
+
+        if dist > 45:
+            dist = 90 - dist
+
+        distanze[dist] += 1
+
+    score_numeri = {}
+
+    for n in set(numeri):
+
+        score = 0
+
+        # frequenza
+        score += frequenze[n] * 2
+
+        # vicinanza ciclica
+        for altro in numeri:
+
+            dist = abs(n - altro)
+
+            if dist > 45:
+                dist = 90 - dist
+
+            if dist <= 9:
+                score += 2
+            elif dist <= 18:
+                score += 1
+
+        score_numeri[n] = score
+
+    ordinati = sorted(score_numeri.items(), key=lambda x: x[1], reverse=True)
+
+    return ordinati
 
 # =========================
 # ANALISI RUOTE
 # =========================
 
-for ruota, estrazioni in archivio.items():
+for ruota in RUOTE_ORDINE:
 
-    ultime = estrazioni[-12:]
-    ultima = estrazioni[-1]
-
-    score_numeri = Counter()
-
-    # -------------------------
-    # ANALISI CICLICA
-    # -------------------------
+    archivio_ruota = []
 
     for estrazione in ultime:
+        if ruota in estrazione:
+            archivio_ruota.extend(estrazione[ruota])
 
-        for numero in estrazione:
+    # ultima estrazione
+    ultima_estrazione = ultime[-1][ruota]
 
-            # DISTANZE CICLICHE
-            for d in DISTANZE:
-                candidato = distanza_ciclica(numero, d)
-                score_numeri[candidato] += 2
+    # calcolo ciclico
+    classifica = calcolo_ciclico(archivio_ruota)
 
-            # SPECULARE
-            spec = speculare(numero)
-            if spec != numero:
-                score_numeri[spec] += 1
+    ambo = []
 
-    # -------------------------
-    # SOMME CICLICHE
-    # -------------------------
+    for numero, score in classifica:
 
-    for estrazione in ultime:
+        # ESCLUDE numeri già usciti nell'ultima estrazione
+        if numero not in ultima_estrazione:
+            ambo.append(numero)
 
-        for i in range(len(estrazione)):
-            for j in range(i + 1, len(estrazione)):
+        if len(ambo) == 2:
+            break
 
-                somma = normalizza(estrazione[i] + estrazione[j])
-                score_numeri[somma] += 2
+    score_finale = (
+        classifica[0][1] + classifica[1][1]
+    ) // 2
 
-    # -------------------------
-    # RUOTA GEMELLA
-    # -------------------------
-
-    gemella = RUOTE_GEMELLE.get(ruota)
-
-    if gemella and gemella in archivio:
-
-        ultime_gemella = archivio[gemella][-6:]
-
-        for estrazione in ultime_gemella:
-
-            for numero in estrazione:
-
-                for d in [9, 18]:
-                    candidato = distanza_ciclica(numero, d)
-                    score_numeri[candidato] += 2
-
-    # -------------------------
-    # FILTRO NUMERI USCITI
-    # -------------------------
-
-    numeri_recenti = set()
-
-    for estrazione in ultime[-3:]:
-        numeri_recenti.update(estrazione)
-
-    filtrati = {
-        n: s
-        for n, s in score_numeri.items()
-        if n not in numeri_recenti
+    risultato = {
+        "ruota": ruota,
+        "ambo": ambo,
+        "score": score_finale,
+        "estrazione": ultima_estrazione
     }
 
-    # -------------------------
-    # TOP 2 NUMERI
-    # -------------------------
+    risultati_ruote.append(risultato)
 
-    top = sorted(
-        filtrati.items(),
-        key=lambda x: x[1],
-        reverse=True
-    )[:2]
+# =========================
+# ORDINA PER SCORE
+# =========================
 
-    if len(top) < 2:
-        continue
+ordinati = sorted(
+    risultati_ruote,
+    key=lambda x: x["score"],
+    reverse=True
+)
 
-    ambo = [top[0][0], top[1][0]]
-    score = top[0][1] + top[1][1]
+# =========================
+# JOLLY
+# PRIME 3 RUOTE
+# =========================
 
-    risultati.append({
-        "ruota"
+jolly = ordinati[:3]
+
+# =========================
+# AMBO FORTE
+# SOLO SCORE >= 7
+# =========================
+
+ambo_forte = [
+    r for r in ordinati
+    if r["score"] >= 7
+]
+
+# =========================
+# SALVA JSON
+# =========================
+
+output = {
+    "tutte": risultati_ruote,
+    "jolly": jolly,
+    "ambo_forte": ambo_forte
+}
+
+with open("risultati.json", "w", encoding="utf-8") as f:
+    json.dump(output, f, indent=4, ensure_ascii=False)
+
+print("Risultati generati correttamente.")
