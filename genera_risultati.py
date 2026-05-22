@@ -1,16 +1,32 @@
 import json
+import os
 
-# =========================================
-# CONFIGURAZIONE
-# =========================================
+COLPI_VALIDITA = 5
 
-COLPI_VALIDITA = 8
+# =========================
+# CARICA ESTRAZIONI
+# =========================
 
-# =========================================
-# ORDINE REALE RUOTE
-# =========================================
+with open("estrazioni.json", "r", encoding="utf-8") as f:
+    estrazioni = json.load(f)
 
-ORDINE_RUOTE = [
+# =========================
+# STORICO PREVISIONI
+# =========================
+
+STORICO_FILE = "storico_previsioni.json"
+
+if os.path.exists(STORICO_FILE):
+    with open(STORICO_FILE, "r", encoding="utf-8") as f:
+        storico_previsioni = json.load(f)
+else:
+    storico_previsioni = []
+
+# =========================
+# RUOTE
+# =========================
+
+ruote = [
     "Bari",
     "Cagliari",
     "Firenze",
@@ -23,88 +39,50 @@ ORDINE_RUOTE = [
     "Venezia"
 ]
 
-# =========================================
-# CARICA ESTRAZIONI
-# =========================================
+# =========================
+# ANALISI AMBO
+# =========================
 
-with open("estrazioni.json", "r", encoding="utf-8") as f:
-    estrazioni = json.load(f)
-
-# =========================================
-# GENERA AMBO
-# =========================================
-
-def genera_ambo(ultima, storico_ruota):
+def analizza_ambo(storico):
 
     frequenze = {}
 
-    # ultime 15 estrazioni
-    recenti = storico_ruota[-15:]
+    ultime = storico[-12:]
 
-    for estrazione in recenti:
+    for estrazione in ultime:
 
         for numero in estrazione:
 
             frequenze[numero] = frequenze.get(numero, 0) + 1
 
-    # ordina per frequenza
     ordinati = sorted(
         frequenze.items(),
         key=lambda x: x[1],
         reverse=True
     )
 
-    ambo = []
+    numeri = [n[0] for n in ordinati[:2]]
 
-    # evita numeri usciti nell'ultima estrazione
-    for numero, freq in ordinati:
+    score = sum(n[1] for n in ordinati[:2])
 
-        if numero not in ultima:
+    return numeri, score
 
-            ambo.append(numero)
+# =========================
+# CALCOLO COLPI
+# =========================
 
-        if len(ambo) == 2:
-            break
+def calcola_colpi(ruota, ambo):
 
-    # sicurezza
-    if len(ambo) < 2:
-
-        for n in range(1, 91):
-
-            if n not in ultima and n not in ambo:
-                ambo.append(n)
-
-            if len(ambo) == 2:
-                break
-
-    # score
-    score_totale = 0
-
-    for numero in ambo:
-        score_totale += frequenze.get(numero, 1)
-
-    score_finale = score_totale
-
-    return ambo, score_finale
-
-# =========================================
-# CALCOLO COLPI RIMANENTI
-# =========================================
-
-def calcola_colpi_rimanenti(storico_ruota, ambo):
+    storico = estrazioni[ruota][-COLPI_VALIDITA:]
 
     colpi = 0
 
-    # dal più recente al più vecchio
-    storico_inverso = storico_ruota[::-1]
+    for estrazione in reversed(storico):
 
-    for estrazione in storico_inverso:
-
-        colpi += 1
-
-        # se uno dei numeri è già uscito
         if ambo[0] in estrazione or ambo[1] in estrazione:
             break
+
+        colpi += 1
 
     rimanenti = COLPI_VALIDITA - colpi
 
@@ -113,87 +91,141 @@ def calcola_colpi_rimanenti(storico_ruota, ambo):
 
     return rimanenti
 
-# =========================================
-# ANALISI RUOTE
-# =========================================
+# =========================
+# NUOVE PREVISIONI
+# =========================
 
 risultati = []
 
-for ruota, storico in estrazioni.items():
+for ruota in ruote:
 
-    # ultima estrazione
+    storico = estrazioni[ruota]
+
     ultima = storico[-1]
 
-    # genera ambo
-    ambo, score = genera_ambo(ultima, storico)
+    ambo, score = analizza_ambo(storico)
 
-    # colpi rimasti
-    colpi_rimasti = calcola_colpi_rimanenti(
-        storico,
-        ambo
-    )
+    # evita numeri usciti ultima estrazione
+
+    if ambo[0] in ultima or ambo[1] in ultima:
+        continue
+
+    colpi = calcola_colpi(ruota, ambo)
 
     risultati.append({
         "ruota": ruota,
         "ambo": ambo,
         "score": score,
-        "estrazione": ultima,
-        "colpi_rimasti": colpi_rimasti
+        "ultima": ultima,
+        "colpi": colpi
     })
 
-# =========================================
-# RUOTE ORDINATE REALI
-# =========================================
+# =========================
+# ORDINE SCORE
+# =========================
 
-risultati_ruote = sorted(
-    risultati,
-    key=lambda x: ORDINE_RUOTE.index(x["ruota"])
-)
-
-# =========================================
-# ORDINA PER SCORE
-# =========================================
-
-risultati_score = sorted(
-    risultati,
+risultati.sort(
     key=lambda x: x["score"],
     reverse=True
 )
 
-# =========================================
+# =========================
 # JOLLY
-# SOLO PREVISIONI FRESCHE
-# =========================================
+# =========================
 
-jolly = [
-    r for r in risultati_score
-    if r["colpi_rimasti"] >= 4
-][:3]
+jolly = risultati[:3]
 
-# =========================================
+# =========================
 # AMBO FORTE
-# =========================================
+# =========================
 
 ambo_forte = [
-    r for r in risultati_score
-    if r["colpi_rimasti"] > 0
-][:10]
+    r for r in risultati
+    if r["score"] >= 6
+]
 
-# =========================================
-# OUTPUT JSON
-# =========================================
+# =========================
+# AGGIORNA PREVISIONI ATTIVE
+# =========================
+
+nuovo_storico = []
+
+for previsione in storico_previsioni:
+
+    ruota = previsione["ruota"]
+    ambo = previsione["ambo"]
+
+    ultima = estrazioni[ruota][-1]
+
+    # se esce elimina
+
+    if ambo[0] in ultima or ambo[1] in ultima:
+        continue
+
+    previsione["colpi"] -= 1
+
+    # se finiti elimina
+
+    if previsione["colpi"] <= 0:
+        continue
+
+    nuovo_storico.append(previsione)
+
+# aggiungi nuovi jolly
+
+for j in jolly:
+
+    esiste = False
+
+    for s in nuovo_storico:
+
+        if (
+            s["ruota"] == j["ruota"]
+            and s["ambo"] == j["ambo"]
+        ):
+            esiste = True
+            break
+
+    if not esiste:
+
+        nuovo_storico.append({
+            "ruota": j["ruota"],
+            "ambo": j["ambo"],
+            "score": j["score"],
+            "ultima": j["ultima"],
+            "colpi": COLPI_VALIDITA
+        })
+
+# =========================
+# SALVA STORICO
+# =========================
+
+with open(STORICO_FILE, "w", encoding="utf-8") as f:
+    json.dump(
+        nuovo_storico,
+        f,
+        indent=2,
+        ensure_ascii=False
+    )
+
+# =========================
+# OUTPUT FINALE
+# =========================
 
 output = {
-    "tutte": risultati_ruote,
+    "ruote": risultati,
     "jolly": jolly,
-    "ambo_forte": ambo_forte
+    "ambo_forte": ambo_forte,
+    "previsioni_attive": nuovo_storico
 }
 
-# =========================================
-# SALVA FILE
-# =========================================
-
 with open("risultati.json", "w", encoding="utf-8") as f:
-    json.dump(output, f, indent=2)
+    json.dump(
+        output,
+        f,
+        indent=2,
+        ensure_ascii=False
+    )
 
-print("risultati.json generato correttamente")
+print("RISULTATI GENERATI")
+print("PREVISIONI ATTIVE:", len(nuovo_storico))
