@@ -1,52 +1,20 @@
 {
-  "tutte": [
-    {
-      "ruota": "Bari",
-      "ambo": [
-        33,
-        9
-      ],
-      "score": 6,
-      "estrazione": [
-        45,
-        50,
-        76,
-        1,
-        26
-      ],
-      "colpi_rimasti": 4
-    },
-    {
-      "ruota": "Cagliari",
-      "ambo": [
-        80,
-        28
-      ],
-      "score": 7,
-      "estrazione": [
-        61,
-        42,
-        13,
-        26,
-        21
-      ],
-      "colpi_rimasti": 6
-    },
+  "ruote": [
     {
       "ruota": "Firenze",
       "ambo": [
-        71,
-        60
+        60,
+        2
       ],
-      "score": 8,
-      "estrazione": [
+      "score": 7,
+      "ultima": [
         73,
         48,
         7,
         84,
         88
       ],
-      "colpi_rimasti": 4
+      "colpi": 3
     },
     {
       "ruota": "Genova",
@@ -55,226 +23,128 @@
         55
       ],
       "score": 7,
-      "estrazione": [
+      "ultima": [
         62,
         77,
         10,
         13,
         37
       ],
-      "colpi_rimasti": 4
+      "colpi": 2
     },
     {
-      "ruota": "Milano",
+      "ruota": "Bari",
       "ambo": [
-        51,
-        85
+        9,
+        65
       ],
       "score": 6,
-      "estrazione": [
-        71,
-        24,
-        74,
-        37,
-        12
-      ],
-      "colpi_rimasti": 6
-    },
-    {
-      "ruota": "Napoli",
-      "ambo": [
-        46,
-        53
-      ],
-      "score": 9,
-      "estrazione": [
-        25,
-        16,
-        57,
+      "ultima": [
+        45,
         50,
-        43
+        76,
+        1,
+        26
       ],
-      "colpi_rimasti": 5
+      "colpi": 4
     },
     {
-      "ruota": "Palermo",
+      "ruota": "Cagliari",
       "ambo": [
-        36,
-        2
+        64,
+        80
       ],
       "score": 6,
-      "estrazione": [
-        66,
-        74,
+      "ultima": [
+        61,
         42,
-        70,
-        18
+        13,
+        26,
+        21
       ],
-      "colpi_rimasti": 6
+      "colpi": 4
     },
     {
       "ruota": "Roma",
       "ambo": [
-        2,
-        49
+        7,
+        47
       ],
       "score": 6,
-      "estrazione": [
+      "ultima": [
         14,
         10,
         31,
         69,
         4
       ],
-      "colpi_rimasti": 4
+      "colpi": 0
+    },
+    {
+      "ruota": "Venezia",
+      "ambo": [
+        85,
+        40
+      ],
+      "score": 6,
+      "ultima": [
+        51,
+        58,
+        80,
+        60,
+        2
+      ],
+      "colpi": 4
+    },
+    {
+      "ruota": "Milano",
+      "ambo": [
+        85,
+        14
+      ],
+      "score": 5,
+      "ultima": [
+        71,
+        24,
+        74,
+        37,
+        12
+      ],
+      "colpi": 4
     },
     {
       "ruota": "Torino",
       "ambo": [
-        64,
-        70
+        15,
+        1
       ],
-      "score": 6,
-      "estrazione": [
+      "score": 5,
+      "ultima": [
         81,
         12,
         33,
         84,
         22
       ],
-      "colpi_rimasti": 0
-    },
-    {
-      "ruota": "Venezia",
-      "ambo": [
-        85,
-        84
-      ],
-      "score": 7,
-      "estrazione": [
-        51,
-        58,
-        80,
-        60,
-        2
-      ],
-      "colpi_rimasti": 4
+      "colpi": 3
     }
   ],
   "jolly": [
     {
-      "ruota": "Napoli",
-      "ambo": [
-        46,
-        53
-      ],
-      "score": 9,
-      "estrazione": [
-        25,
-        16,
-        57,
-        50,
-        43
-      ],
-      "colpi_rimasti": 5
-    },
-    {
       "ruota": "Firenze",
       "ambo": [
-        71,
-        60
+        60,
+        2
       ],
-      "score": 8,
-      "estrazione": [
+      "score": 7,
+      "ultima": [
         73,
         48,
         7,
         84,
         88
       ],
-      "colpi_rimasti": 4
-    },
-    {
-      "ruota": "Venezia",
-      "ambo": [
-        85,
-        84
-      ],
-      "score": 7,
-      "estrazione": [
-        51,
-        58,
-        80,
-        60,
-        2
-      ],
-      "colpi_rimasti": 4
-    }
-  ],
-  "ambo_forte": [
-    {
-      "ruota": "Napoli",
-      "ambo": [
-        46,
-        53
-      ],
-      "score": 9,
-      "estrazione": [
-        25,
-        16,
-        57,
-        50,
-        43
-      ],
-      "colpi_rimasti": 5
-    },
-    {
-      "ruota": "Firenze",
-      "ambo": [
-        71,
-        60
-      ],
-      "score": 8,
-      "estrazione": [
-        73,
-        48,
-        7,
-        84,
-        88
-      ],
-      "colpi_rimasti": 4
-    },
-    {
-      "ruota": "Venezia",
-      "ambo": [
-        85,
-        84
-      ],
-      "score": 7,
-      "estrazione": [
-        51,
-        58,
-        80,
-        60,
-        2
-      ],
-      "colpi_rimasti": 4
-    },
-    {
-      "ruota": "Cagliari",
-      "ambo": [
-        80,
-        28
-      ],
-      "score": 7,
-      "estrazione": [
-        61,
-        42,
-        13,
-        26,
-        21
-      ],
-      "colpi_rimasti": 6
+      "colpi": 3
     },
     {
       "ruota": "Genova",
@@ -283,78 +153,178 @@
         55
       ],
       "score": 7,
-      "estrazione": [
+      "ultima": [
         62,
         77,
         10,
         13,
         37
       ],
-      "colpi_rimasti": 4
+      "colpi": 2
     },
     {
       "ruota": "Bari",
       "ambo": [
-        33,
-        9
+        9,
+        65
       ],
       "score": 6,
-      "estrazione": [
+      "ultima": [
         45,
         50,
         76,
         1,
         26
       ],
-      "colpi_rimasti": 4
-    },
+      "colpi": 4
+    }
+  ],
+  "ambo_forte": [
     {
-      "ruota": "Milano",
+      "ruota": "Firenze",
       "ambo": [
-        51,
-        85
-      ],
-      "score": 6,
-      "estrazione": [
-        71,
-        24,
-        74,
-        37,
-        12
-      ],
-      "colpi_rimasti": 6
-    },
-    {
-      "ruota": "Palermo",
-      "ambo": [
-        36,
+        60,
         2
       ],
-      "score": 6,
-      "estrazione": [
-        66,
-        74,
-        42,
-        70,
-        18
+      "score": 7,
+      "ultima": [
+        73,
+        48,
+        7,
+        84,
+        88
       ],
-      "colpi_rimasti": 6
+      "colpi": 3
+    },
+    {
+      "ruota": "Genova",
+      "ambo": [
+        30,
+        55
+      ],
+      "score": 7,
+      "ultima": [
+        62,
+        77,
+        10,
+        13,
+        37
+      ],
+      "colpi": 2
+    },
+    {
+      "ruota": "Bari",
+      "ambo": [
+        9,
+        65
+      ],
+      "score": 6,
+      "ultima": [
+        45,
+        50,
+        76,
+        1,
+        26
+      ],
+      "colpi": 4
+    },
+    {
+      "ruota": "Cagliari",
+      "ambo": [
+        64,
+        80
+      ],
+      "score": 6,
+      "ultima": [
+        61,
+        42,
+        13,
+        26,
+        21
+      ],
+      "colpi": 4
     },
     {
       "ruota": "Roma",
       "ambo": [
-        2,
-        49
+        7,
+        47
       ],
       "score": 6,
-      "estrazione": [
+      "ultima": [
         14,
         10,
         31,
         69,
         4
       ],
-      "colpi_rimasti": 4
+      "colpi": 0
+    },
+    {
+      "ruota": "Venezia",
+      "ambo": [
+        85,
+        40
+      ],
+      "score": 6,
+      "ultima": [
+        51,
+        58,
+        80,
+        60,
+        2
+      ],
+      "colpi": 4
+    }
+  ],
+  "previsioni_attive": [
+    {
+      "ruota": "Firenze",
+      "ambo": [
+        60,
+        2
+      ],
+      "score": 7,
+      "ultima": [
+        73,
+        48,
+        7,
+        84,
+        88
+      ],
+      "colpi": 5
+    },
+    {
+      "ruota": "Genova",
+      "ambo": [
+        30,
+        55
+      ],
+      "score": 7,
+      "ultima": [
+        62,
+        77,
+        10,
+        13,
+        37
+      ],
+      "colpi": 5
+    },
+    {
+      "ruota": "Bari",
+      "ambo": [
+        9,
+        65
+      ],
+      "score": 6,
+      "ultima": [
+        45,
+        50,
+        76,
+        1,
+        26
+      ],
+      "colpi": 5
     }
   ]
 }
