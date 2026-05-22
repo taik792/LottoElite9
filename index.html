@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-<title>Lotto Elite Pro</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Lotto Elite PRO</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 
@@ -90,6 +91,13 @@ h2{
     text-shadow:0 0 10px #ff5fcf;
 }
 
+.colpi{
+    margin-top:10px;
+    font-size:18px;
+    color:#ffe600;
+    text-shadow:0 0 10px #ffe600;
+}
+
 .footer{
     margin-top:40px;
     font-size:10px;
@@ -121,26 +129,41 @@ h2{
 <body>
 
 <h1>🔥 LOTTO ELITE PRO 🤘</h1>
-<div class="sottotitolo">Motore Ciclico PRO V2</div>
 
-<h2>🧾 RUOTE</h2>
+<div class="sottotitolo">
+    Motore Ciclometrico Evoluto
+</div>
+
+<!-- RUOTE -->
+
+<h2>🎰 RUOTE</h2>
+
 <div class="griglia" id="ruote"></div>
 
+<!-- JOLLY -->
+
 <h2>💣 JOLLY</h2>
+
 <div class="griglia" id="jolly"></div>
 
+<!-- AMBO FORTE -->
+
 <h2>📊 AMBO FORTE</h2>
+
 <div class="griglia" id="ambo-forte"></div>
 
 <div class="footer">
-    Motore Ciclico PRO
+    Lotto Elite PRO
 </div>
 
 <script>
 
 async function caricaDati(){
 
-    const response = await fetch("risultati.json");
+    const response = await fetch(
+        "risultati.json?v=" + new Date().getTime()
+    );
+
     const data = await response.json();
 
     const tutte = data.tutte || [];
@@ -181,6 +204,10 @@ function mostraRuote(lista, idContainer, classe){
 
             <div class="score">
                 Score ${item.score}
+            </div>
+
+            <div class="colpi">
+                Colpi rimasti: ${item.colpi}
             </div>
 
         `;
