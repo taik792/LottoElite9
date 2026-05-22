@@ -1,22 +1,10 @@
 import json
-from collections import Counter
 
-RUOTE_ORDINE = [
-    "Bari",
-    "Cagliari",
-    "Firenze",
-    "Genova",
-    "Milano",
-    "Napoli",
-    "Palermo",
-    "Roma",
-    "Torino",
-    "Venezia"
-]
+# =========================
+# CONFIG
+# =========================
 
-DISTANZE_FORTI = [9, 18, 27, 45]
-
-COLPI_VALIDITA = 6
+COLPI_VALIDITA = 8
 
 # =========================
 # CARICA ESTRAZIONI
@@ -26,121 +14,61 @@ with open("estrazioni.json", "r", encoding="utf-8") as f:
     estrazioni = json.load(f)
 
 # =========================
-# FUNZIONI CICLICHE
+# GENERA AMBO
 # =========================
 
-def normalizza(n):
+def genera_ambo(ultima, storico_ruota):
 
-    while n > 90:
-        n -= 90
+    frequenze = {}
 
-    while n < 1:
-        n += 90
+    # analizza ultime 15 estrazioni
+    recenti = storico_ruota[-15:]
 
-    return n
+    for estrazione in recenti:
 
+        for numero in estrazione:
 
-def distanza_ciclica(a, b):
+            frequenze[numero] = frequenze.get(numero, 0) + 1
 
-    dist = abs(a - b)
-
-    if dist > 45:
-        dist = 90 - dist
-
-    return dist
-
-
-def complementare90(n):
-
-    comp = 90 - n
-
-    if comp == 0:
-        comp = 90
-
-    return comp
-
-
-def vertibile(n):
-
-    if n < 10:
-        return n
-
-    return int(str(n)[::-1])
-
-
-# =========================
-# MOTORE CICLOMETRICO
-# =========================
-
-def genera_previsione(storico, ultima_estrazione):
-
-    convergenze = Counter()
-
-    archivio = []
-
-    for estr in storico:
-        archivio.extend(estr)
-
-    # =====================
-    # ANALISI CICLICA
-    # =====================
-
-    for numero in archivio:
-
-        # DISTANZE CICLICHE
-        for d in DISTANZE_FORTI:
-
-            avanti = normalizza(numero + d)
-            dietro = normalizza(numero - d)
-
-            convergenze[avanti] += 2
-            convergenze[dietro] += 2
-
-        # COMPLEMENTARE
-        comp = complementare90(numero)
-        convergenze[comp] += 3
-
-        # VERTIBILE
-        v = vertibile(numero)
-
-        if v != numero:
-            convergenze[v] += 2
-
-    # =====================
-    # ELIMINA NUMERI USCITI
-    # =====================
-
-    candidati = []
-
-    ordinati = convergenze.most_common()
-
-    for numero, score in ordinati:
-
-        if numero not in ultima_estrazione:
-            candidati.append((numero, score))
-
-    # =====================
-    # CREA AMBO
-    # =====================
+    # ordina per frequenza
+    ordinati = sorted(
+        frequenze.items(),
+        key=lambda x: x[1],
+        reverse=True
+    )
 
     ambo = []
 
-    score_totale = 0
+    # evita numeri usciti nell'ultima estrazione
+    for numero, freq in ordinati:
 
-    for numero, score in candidati:
-
-        if numero not in ambo:
+        if numero not in ultima:
 
             ambo.append(numero)
-            score_totale += score
 
         if len(ambo) == 2:
             break
 
-    score_finale = score_totale // 2
+    # sicurezza
+    if len(ambo) < 2:
+
+        for n in range(1, 91):
+
+            if n not in ultima and n not in ambo:
+                ambo.append(n)
+
+            if len(ambo) == 2:
+                break
+
+    # score
+    score_totale = 0
+
+    for numero in ambo:
+        score_totale += frequenze.get(numero, 1)
+
+    score_finale = score_totale
 
     return ambo, score_finale
-
 
 # =========================
 # CALCOLO COLPI RIMANENTI
@@ -166,44 +94,36 @@ def calcola_colpi_rimanenti(storico_ruota, ambo):
 
     return rimanenti
 
-
 # =========================
 # ANALISI RUOTE
 # =========================
 
 risultati = []
 
-for ruota in RUOTE_ORDINE:
+for ruota, storico in estrazioni.items():
 
-    storico_ruota = estrazioni[ruota]
+    # prende l'ultima estrazione
+    ultima = storico[-1]
 
-    ultime_10 = storico_ruota[-10:]
+    # genera ambo
+    ambo, score = genera_ambo(ultima, storico)
 
-    ultima_estrazione = storico_ruota[-1]
-
-    ambo, score = genera_previsione(
-        ultime_10,
-        ultima_estrazione
-    )
-
-    colpi_rimanenti = calcola_colpi_rimanenti(
-        storico_ruota,
-        ambo
-    )
+    # calcola colpi
+    colpi_rimasti = calcola_colpi_rimanenti(storico, ambo)
 
     risultati.append({
         "ruota": ruota,
         "ambo": ambo,
         "score": score,
-        "colpi": colpi_rimanenti,
-        "estrazione": ultima_estrazione
+        "estrazione": ultima,
+        "colpi_rimasti": colpi_rimasti
     })
 
 # =========================
 # ORDINA PER SCORE
 # =========================
 
-ordinati = sorted(
+risultati_ordinati = sorted(
     risultati,
     key=lambda x: x["score"],
     reverse=True
@@ -211,30 +131,38 @@ ordinati = sorted(
 
 # =========================
 # JOLLY
+# SOLO PREVISIONI FRESCHE
 # =========================
 
-jolly = ordinati[:3]
+jolly = [
+    r for r in risultati_ordinati
+    if r["colpi_rimasti"] >= 4
+][:3]
 
 # =========================
 # AMBO FORTE
 # =========================
 
 ambo_forte = [
-    r for r in ordinati
-    if r["score"] >= 12
-]
+    r for r in risultati_ordinati
+    if r["colpi_rimasti"] > 0
+][:10]
 
 # =========================
-# SALVA JSON
+# OUTPUT JSON
 # =========================
 
 output = {
-    "tutte": risultati,
+    "tutte": risultati_ordinati,
     "jolly": jolly,
     "ambo_forte": ambo_forte
 }
 
-with open("risultati.json", "w", encoding="utf-8") as f:
-    json.dump(output, f, indent=4, ensure_ascii=False)
+# =========================
+# SALVA FILE
+# =========================
 
-print("Motore ciclometrico evoluto creato.")
+with open("risultati.json", "w", encoding="utf-8") as f:
+    json.dump(output, f, indent=2)
+
+print("risultati.json generato correttamente")
