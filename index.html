@@ -50,7 +50,7 @@ h2{
     background:#00103a;
     border-radius:20px;
     padding:20px;
-    width:180px;
+    width:190px;
     box-shadow:0 0 15px #ffe600;
     border:3px solid #ffe600;
 }
@@ -63,6 +63,11 @@ h2{
 .card-forte{
     box-shadow:0 0 20px #00eaff;
     border:3px solid #00eaff;
+}
+
+.card-attiva{
+    box-shadow:0 0 20px #00ff85;
+    border:3px solid #00ff85;
 }
 
 .ruota{
@@ -79,14 +84,14 @@ h2{
 }
 
 .ambo{
-    font-size:48px;
+    font-size:42px;
     color:#7ffcff;
     text-shadow:0 0 15px #00ffff;
     margin-bottom:20px;
 }
 
 .score{
-    font-size:24px;
+    font-size:22px;
     color:#ff5fcf;
     text-shadow:0 0 10px #ff5fcf;
 }
@@ -115,7 +120,7 @@ h2{
     }
 
     .ambo{
-        font-size:42px;
+        font-size:36px;
     }
 
     .ruota{
@@ -124,6 +129,7 @@ h2{
 }
 
 </style>
+
 </head>
 
 <body>
@@ -131,7 +137,7 @@ h2{
 <h1>🔥 LOTTO ELITE PRO 🤘</h1>
 
 <div class="sottotitolo">
-    Motore Ciclometrico Evoluto
+Motore Ciclometrico Evoluto
 </div>
 
 <!-- RUOTE -->
@@ -152,8 +158,14 @@ h2{
 
 <div class="griglia" id="ambo-forte"></div>
 
+<!-- PREVISIONI ATTIVE -->
+
+<h2>🔥 PREVISIONI ATTIVE</h2>
+
+<div class="griglia" id="attive"></div>
+
 <div class="footer">
-    Lotto Elite PRO
+Lotto Elite PRO
 </div>
 
 <script>
@@ -166,13 +178,29 @@ async function caricaDati(){
 
     const data = await response.json();
 
-    const tutte = data.tutte || [];
-    const jolly = data.jolly || [];
-    const ambiForti = data.ambo_forte || [];
+    mostraRuote(
+        data.ruote || [],
+        "ruote",
+        ""
+    );
 
-    mostraRuote(tutte, "ruote", "");
-    mostraRuote(jolly, "jolly", "card-jolly");
-    mostraRuote(ambiForti, "ambo-forte", "card-forte");
+    mostraRuote(
+        data.jolly || [],
+        "jolly",
+        "card-jolly"
+    );
+
+    mostraRuote(
+        data.ambo_forte || [],
+        "ambo-forte",
+        "card-forte"
+    );
+
+    mostraRuote(
+        data.previsioni_attive || [],
+        "attive",
+        "card-attiva"
+    );
 }
 
 function mostraRuote(lista, idContainer, classe){
@@ -187,6 +215,8 @@ function mostraRuote(lista, idContainer, classe){
 
         card.className = `card ${classe}`;
 
+        const estrazione = item.ultima || item.estrazione || [];
+
         card.innerHTML = `
 
             <div class="ruota">
@@ -195,7 +225,7 @@ function mostraRuote(lista, idContainer, classe){
 
             <div class="estrazione">
                 Ultima Estrazione<br>
-                ${item.estrazione.join(" • ")}
+                ${estrazione.join(" • ")}
             </div>
 
             <div class="ambo">
@@ -207,7 +237,7 @@ function mostraRuote(lista, idContainer, classe){
             </div>
 
             <div class="colpi">
-                Colpi rimasti: ${item.colpi_rimasti}
+                Colpi rimasti: ${item.colpi}
             </div>
 
         `;
