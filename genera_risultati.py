@@ -1,11 +1,49 @@
 import json
+from collections import Counter
+
+# =========================
+# CONFIG
+# =========================
+
+RUOTE_GEMELLE = {
+    "Bari": "Cagliari",
+    "Cagliari": "Bari",
+    "Firenze": "Roma",
+    "Roma": "Firenze",
+    "Genova": "Milano",
+    "Milano": "Genova",
+    "Napoli": "Palermo",
+    "Palermo": "Napoli",
+    "Torino": "Venezia",
+    "Venezia": "Torino"
+}
+
+DISTANZE = [9, 18, 27, 45]
+
+# =========================
+# FUNZIONI
+# =========================
+
+def distanza_ciclica(n, d):
+    return ((n + d - 1) % 90) + 1
+
+def speculare(n):
+    s = str(n).zfill(2)
+    return int(s[::-1])
+
+def normalizza(n):
+    while n > 90:
+        n -= 90
+    if n == 0:
+        n = 90
+    return n
 
 # =========================
 # CARICA ESTRAZIONI
 # =========================
 
 with open("estrazioni.json", "r", encoding="utf-8") as f:
-    dati = json.load(f)
+    archivio = json.load(f)
 
 risultati = []
 
@@ -13,116 +51,91 @@ risultati = []
 # ANALISI RUOTE
 # =========================
 
-for ruota, estrazioni in dati.items():
+for ruota, estrazioni in archivio.items():
 
-    # SALTA RUOTE VUOTE
-    if not estrazioni or len(estrazioni) < 2:
-        continue
-
-    # ULTIMA ESTRAZIONE
+    ultime = estrazioni[-12:]
     ultima = estrazioni[-1]
 
-    # ULTIME 10 ESTRAZIONI
-    ultime10 = estrazioni[-10:]
+    score_numeri = Counter()
 
-    frequenze = {}
+    # -------------------------
+    # ANALISI CICLICA
+    # -------------------------
 
-    # CONTA FREQUENZE
-    for estrazione in ultime10:
+    for estrazione in ultime:
 
         for numero in estrazione:
 
-            # ESCLUDE NUMERI USCITI
-            # NELL'ULTIMA ESTRAZIONE
-            if numero in ultima:
-                continue
+            # DISTANZE CICLICHE
+            for d in DISTANZE:
+                candidato = distanza_ciclica(numero, d)
+                score_numeri[candidato] += 2
 
-            frequenze[numero] = frequenze.get(numero, 0) + 1
+            # SPECULARE
+            spec = speculare(numero)
+            if spec != numero:
+                score_numeri[spec] += 1
 
-    # ORDINA FREQUENZE
-    ordinati = sorted(
-        frequenze.items(),
+    # -------------------------
+    # SOMME CICLICHE
+    # -------------------------
+
+    for estrazione in ultime:
+
+        for i in range(len(estrazione)):
+            for j in range(i + 1, len(estrazione)):
+
+                somma = normalizza(estrazione[i] + estrazione[j])
+                score_numeri[somma] += 2
+
+    # -------------------------
+    # RUOTA GEMELLA
+    # -------------------------
+
+    gemella = RUOTE_GEMELLE.get(ruota)
+
+    if gemella and gemella in archivio:
+
+        ultime_gemella = archivio[gemella][-6:]
+
+        for estrazione in ultime_gemella:
+
+            for numero in estrazione:
+
+                for d in [9, 18]:
+                    candidato = distanza_ciclica(numero, d)
+                    score_numeri[candidato] += 2
+
+    # -------------------------
+    # FILTRO NUMERI USCITI
+    # -------------------------
+
+    numeri_recenti = set()
+
+    for estrazione in ultime[-3:]:
+        numeri_recenti.update(estrazione)
+
+    filtrati = {
+        n: s
+        for n, s in score_numeri.items()
+        if n not in numeri_recenti
+    }
+
+    # -------------------------
+    # TOP 2 NUMERI
+    # -------------------------
+
+    top = sorted(
+        filtrati.items(),
         key=lambda x: x[1],
         reverse=True
-    )
+    )[:2]
 
-    # SERVONO ALMENO 2 NUMERI
-    if len(ordinati) < 2:
+    if len(top) < 2:
         continue
 
-    # CREA AMBO
-    ambo = [
-        ordinati[0][0],
-        ordinati[1][0]
-    ]
-
-    # SCORE
-    score = (
-        ordinati[0][1] +
-        ordinati[1][1]
-    )
+    ambo = [top[0][0], top[1][0]]
+    score = top[0][1] + top[1][1]
 
     risultati.append({
-        "ruota": ruota,
-        "ambo": ambo,
-        "score": score,
-        "estrazione": ultima
-    })
-
-# =========================
-# ORDINE RUOTE
-# =========================
-
-ordine_ruote = [
-    "Bari",
-    "Cagliari",
-    "Firenze",
-    "Genova",
-    "Milano",
-    "Napoli",
-    "Palermo",
-    "Roma",
-    "Torino",
-    "Venezia"
-]
-
-risultati.sort(
-    key=lambda x: ordine_ruote.index(x["ruota"])
-)
-
-# =========================
-# JOLLY
-# TOP 3 SCORE
-# =========================
-
-jolly = sorted(
-    risultati,
-    key=lambda x: x["score"],
-    reverse=True
-)[:3]
-
-# =========================
-# AMBI FORTI
-# SCORE >= 7
-# =========================
-
-forti = sorted(
-    [x for x in risultati if x["score"] >= 7],
-    key=lambda x: x["score"],
-    reverse=True
-)[:5]
-
-# =========================
-# OUTPUT JSON
-# =========================
-
-output = {
-    "tutte": risultati,
-    "jolly": jolly,
-    "forti": forti
-}
-
-with open("risultati.json", "w", encoding="utf-8") as f:
-    json.dump(output, f, indent=4)
-
-print("risultati.json generato correttamente")
+        "ru
