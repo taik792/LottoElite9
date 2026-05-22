@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 <title>Lotto Elite Pro</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
 
@@ -12,104 +14,105 @@ body{
     margin:0;
     padding:20px;
     background:#001b5e;
-    font-family:Arial,sans-serif;
+    font-family:'Orbitron',sans-serif;
     color:white;
     text-align:center;
 }
 
 h1{
-    color:#00f7ff;
-    text-shadow:0 0 15px #00f7ff;
+    color:#00eaff;
+    text-shadow:0 0 20px #00eaff;
     margin-bottom:5px;
 }
 
+h2{
+    color:#00eaff;
+    margin-top:40px;
+    text-shadow:0 0 10px #00eaff;
+}
+
 .sottotitolo{
-    margin-bottom:30px;
     color:white;
+    margin-bottom:30px;
+    font-size:12px;
 }
 
-.sezione{
-    margin-top:35px;
-}
-
-.sezione h2{
-    color:#00f7ff;
-    text-shadow:0 0 10px #00f7ff;
-    margin-bottom:20px;
-}
-
-.container{
+.griglia{
     display:flex;
     flex-wrap:wrap;
     justify-content:center;
     gap:20px;
+    margin-top:20px;
 }
 
 .card{
-    width:180px;
-    background:#00113d;
+    background:#00103a;
     border-radius:20px;
-    padding:15px;
-    border:4px solid gold;
-    box-shadow:0 0 20px gold;
+    padding:20px;
+    width:180px;
+    box-shadow:0 0 15px #ffe600;
+    border:3px solid #ffe600;
 }
 
-.card.jolly{
-    border:4px solid #ff4fd8;
-    box-shadow:0 0 20px #ff4fd8;
+.card-jolly{
+    box-shadow:0 0 20px #ff4df0;
+    border:3px solid #ff4df0;
 }
 
-.card.forte{
-    border:4px solid #00eaff;
+.card-forte{
     box-shadow:0 0 20px #00eaff;
+    border:3px solid #00eaff;
 }
 
 .ruota{
     font-size:28px;
-    font-weight:bold;
     margin-bottom:10px;
-}
-
-.label{
-    font-size:14px;
-    color:#ddd;
+    font-weight:bold;
 }
 
 .estrazione{
-    font-size:14px;
-    margin-top:5px;
-    margin-bottom:15px;
+    font-size:12px;
+    color:#ffffff;
+    margin-bottom:20px;
+    line-height:1.5;
 }
 
 .ambo{
-    font-size:42px;
+    font-size:48px;
     color:#7ffcff;
-    text-shadow:0 0 15px #00f7ff;
-    margin-bottom:15px;
+    text-shadow:0 0 15px #00ffff;
+    margin-bottom:20px;
 }
 
 .score{
-    color:#ff69d9;
     font-size:24px;
-    font-weight:bold;
+    color:#ff5fcf;
+    text-shadow:0 0 10px #ff5fcf;
+}
+
+.footer{
+    margin-top:40px;
+    font-size:10px;
+    opacity:0.7;
 }
 
 @media(max-width:700px){
 
-    .container{
-        flex-direction:column;
-        align-items:center;
+    body{
+        padding:10px;
     }
 
     .card{
-        width:85%;
-        max-width:300px;
+        width:90%;
     }
 
     .ambo{
-        font-size:48px;
+        font-size:42px;
     }
 
+    .ruota{
+        font-size:24px;
+    }
 }
 
 </style>
@@ -118,120 +121,76 @@ h1{
 <body>
 
 <h1>🔥 LOTTO ELITE PRO 🤘</h1>
-<div class="sottotitolo">Motore Ciclico PRO</div>
+<div class="sottotitolo">Motore Ciclico PRO V2</div>
 
-<div class="sezione">
-    <h2>🎰 RUOTE</h2>
-    <div class="container" id="ruote"></div>
-</div>
+<h2>🧾 RUOTE</h2>
+<div class="griglia" id="ruote"></div>
 
-<div class="sezione">
-    <h2>💣 JOLLY</h2>
-    <div class="container" id="jolly"></div>
-</div>
+<h2>💣 JOLLY</h2>
+<div class="griglia" id="jolly"></div>
 
-<div class="sezione">
-    <h2>📊 AMBO FORTE</h2>
-    <div class="container" id="forti"></div>
+<h2>📊 AMBO FORTE</h2>
+<div class="griglia" id="ambo-forte"></div>
+
+<div class="footer">
+    Motore Ciclico PRO
 </div>
 
 <script>
 
-fetch("risultati.json")
-.then(r => r.json())
-.then(data => {
+async function caricaDati(){
+
+    const response = await fetch("risultati.json");
+    const data = await response.json();
 
     const tutte = data.tutte || [];
+    const jolly = data.jolly || [];
+    const ambiForti = data.ambo_forte || [];
 
-    // ORDINE RUOTE FISSO
-    const ordineRuote = [
-        "Bari",
-        "Cagliari",
-        "Firenze",
-        "Genova",
-        "Milano",
-        "Napoli",
-        "Palermo",
-        "Roma",
-        "Torino",
-        "Venezia"
-    ];
-
-    // ORDINA LE RUOTE
-    tutte.sort((a,b)=>{
-        return ordineRuote.indexOf(a.ruota) - ordineRuote.indexOf(b.ruota);
-    });
-
-    const ruoteDiv = document.getElementById("ruote");
-    const jollyDiv = document.getElementById("jolly");
-    const fortiDiv = document.getElementById("forti");
-
-    // CREA CARD RUOTE
-    tutte.forEach(item=>{
-
-        const card = creaCard(item,"");
-
-        ruoteDiv.appendChild(card);
-
-    });
-
-    // JOLLY = TOP 3 SCORE
-    const jolly = [...tutte]
-    .sort((a,b)=>b.score-a.score)
-    .slice(0,3);
-
-    jolly.forEach(item=>{
-
-        const card = creaCard(item,"jolly");
-
-        jollyDiv.appendChild(card);
-
-    });
-
-    // AMBI FORTI = SCORE >=7
-    const forti = [...tutte]
-    .filter(x=>x.score >= 7)
-    .sort((a,b)=>b.score-a.score)
-    .slice(0,5);
-
-    forti.forEach(item=>{
-
-        const card = creaCard(item,"forte");
-
-        fortiDiv.appendChild(card);
-
-    });
-
-});
-
-function creaCard(item,classe){
-
-    const card = document.createElement("div");
-
-    card.className = "card " + classe;
-
-    card.innerHTML = `
-
-        <div class="ruota">${item.ruota}</div>
-
-        <div class="label">Ultima Estrazione</div>
-
-        <div class="estrazione">
-            ${item.estrazione.join(" • ")}
-        </div>
-
-        <div class="ambo">
-            ${item.ambo[0]} - ${item.ambo[1]}
-        </div>
-
-        <div class="score">
-            Score ${item.score}
-        </div>
-
-    `;
-
-    return card;
+    mostraRuote(tutte, "ruote", "");
+    mostraRuote(jolly, "jolly", "card-jolly");
+    mostraRuote(ambiForti, "ambo-forte", "card-forte");
 }
+
+function mostraRuote(lista, idContainer, classe){
+
+    const container = document.getElementById(idContainer);
+
+    container.innerHTML = "";
+
+    lista.forEach(item => {
+
+        const card = document.createElement("div");
+
+        card.className = `card ${classe}`;
+
+        card.innerHTML = `
+
+            <div class="ruota">
+                ${item.ruota}
+            </div>
+
+            <div class="estrazione">
+                Ultima Estrazione<br>
+                ${item.estrazione.join(" • ")}
+            </div>
+
+            <div class="ambo">
+                ${item.ambo[0]} - ${item.ambo[1]}
+            </div>
+
+            <div class="score">
+                Score ${item.score}
+            </div>
+
+        `;
+
+        container.appendChild(card);
+
+    });
+}
+
+caricaDati();
 
 </script>
 
