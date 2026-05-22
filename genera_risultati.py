@@ -1,5 +1,5 @@
 import json
-from collections import Counter
+from collections import Counter, defaultdict
 
 RUOTE_ORDINE = [
     "Bari",
@@ -14,96 +14,158 @@ RUOTE_ORDINE = [
     "Venezia"
 ]
 
+DISTANZE_FORTI = [9, 18, 27, 45]
+
 # =========================
-# CARICA JSON
+# CARICA ESTRAZIONI
 # =========================
 
 with open("estrazioni.json", "r", encoding="utf-8") as f:
     estrazioni = json.load(f)
 
-risultati_ruote = []
-
 # =========================
-# CALCOLO CICLICO
+# FUNZIONI CICLICHE
 # =========================
 
-def calcolo_ciclico(numeri):
+def distanza_ciclica(a, b):
 
-    score_numeri = {}
+    dist = abs(a - b)
 
-    frequenze = Counter(numeri)
+    if dist > 45:
+        dist = 90 - dist
 
-    for numero in set(numeri):
+    return dist
 
-        score = 0
 
-        # frequenza
-        score += frequenze[numero] * 2
+def complementare90(n):
 
-        # distanze cicliche
-        for altro in numeri:
+    comp = 90 - n
 
-            dist = abs(numero - altro)
+    if comp == 0:
+        comp = 90
 
-            if dist > 45:
-                dist = 90 - dist
+    return comp
 
-            if dist <= 9:
-                score += 2
 
-            elif dist <= 18:
-                score += 1
+def vertibile(n):
 
-        score_numeri[numero] = score
+    if n < 10:
+        return n
 
-    ordinati = sorted(
-        score_numeri.items(),
-        key=lambda x: x[1],
-        reverse=True
-    )
+    s = str(n)
 
-    return ordinati
+    return int(s[::-1])
+
+
+def normalizza(n):
+
+    while n > 90:
+        n -= 90
+
+    while n < 1:
+        n += 90
+
+    return n
+
+
+# =========================
+# MOTORE CICLOMETRICO
+# =========================
+
+def genera_previsione(storico, ultima_estrazione):
+
+    numeri = []
+
+    for estr in storico:
+        numeri.extend(estr)
+
+    convergenze = Counter()
+
+    # =====================
+    # ANALISI CICLICA
+    # =====================
+
+    for n in numeri:
+
+        # DISTANZE CICLICHE
+        for d in DISTANZE_FORTI:
+
+            n1 = normalizza(n + d)
+            n2 = normalizza(n - d)
+
+            convergenze[n1] += 2
+            convergenze[n2] += 2
+
+        # COMPLEMENTARE A 90
+        comp = complementare90(n)
+        convergenze[comp] += 3
+
+        # VERTIBILE
+        v = vertibile(n)
+
+        if v != n:
+            convergenze[v] += 2
+
+    # =====================
+    # ELIMINA NUMERI USCITI
+    # =====================
+
+    candidati = []
+
+    ordinati = convergenze.most_common()
+
+    for numero, score in ordinati:
+
+        if numero not in ultima_estrazione:
+            candidati.append((numero, score))
+
+    # =====================
+    # CREA AMBO
+    # =====================
+
+    ambo = []
+
+    totale_score = 0
+
+    for numero, score in candidati:
+
+        if numero not in ambo:
+
+            ambo.append(numero)
+            totale_score += score
+
+        if len(ambo) == 2:
+            break
+
+    score_finale = totale_score // 2
+
+    return ambo, score_finale
+
 
 # =========================
 # ANALISI RUOTE
 # =========================
 
+risultati = []
+
 for ruota in RUOTE_ORDINE:
 
-    storico = estrazioni[ruota]
+    storico_ruota = estrazioni[ruota]
 
-    # ultime 12 estrazioni
-    ultime_12 = storico[-12:]
+    # ultime 10 estrazioni
+    ultime_10 = storico_ruota[-10:]
 
-    archivio = []
+    ultima_estrazione = storico_ruota[-1]
 
-    for estrazione in ultime_12:
-        archivio.extend(estrazione)
+    ambo, score = genera_previsione(
+        ultime_10,
+        ultima_estrazione
+    )
 
-    # ultima estrazione
-    ultima_estrazione = storico[-1]
-
-    classifica = calcolo_ciclico(archivio)
-
-    ambo = []
-
-    for numero, score in classifica:
-
-        # esclude numeri già usciti
-        if numero not in ultima_estrazione:
-            ambo.append(numero)
-
-        if len(ambo) == 2:
-            break
-
-    score_finale = (
-        classifica[0][1] + classifica[1][1]
-    ) // 2
-
-    risultati_ruote.append({
+    risultati.append({
         "ruota": ruota,
         "ambo": ambo,
-        "score": score_finale,
+        "score": score,
         "estrazione": ultima_estrazione
     })
 
@@ -112,7 +174,7 @@ for ruota in RUOTE_ORDINE:
 # =========================
 
 ordinati = sorted(
-    risultati_ruote,
+    risultati,
     key=lambda x: x["score"],
     reverse=True
 )
@@ -129,15 +191,15 @@ jolly = ordinati[:3]
 
 ambo_forte = [
     r for r in ordinati
-    if r["score"] >= 7
+    if r["score"] >= 12
 ]
 
 # =========================
-# SALVA RISULTATI
+# OUTPUT
 # =========================
 
 output = {
-    "tutte": risultati_ruote,
+    "tutte": risultati,
     "jolly": jolly,
     "ambo_forte": ambo_forte
 }
@@ -145,4 +207,4 @@ output = {
 with open("risultati.json", "w", encoding="utf-8") as f:
     json.dump(output, f, indent=4, ensure_ascii=False)
 
-print("Risultati generati correttamente.")
+print("Motore ciclometrico evoluto generato.")
