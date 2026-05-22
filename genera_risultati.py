@@ -138,4 +138,4 @@ for ruota, estrazioni in archivio.items():
     score = top[0][1] + top[1][1]
 
     risultati.append({
-        "ru
+        "ruota"
