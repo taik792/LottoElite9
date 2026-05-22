@@ -1,5 +1,5 @@
 import json
-from collections import Counter, defaultdict
+from collections import Counter
 
 RUOTE_ORDINE = [
     "Bari",
@@ -16,6 +16,8 @@ RUOTE_ORDINE = [
 
 DISTANZE_FORTI = [9, 18, 27, 45]
 
+COLPI_VALIDITA = 6
+
 # =========================
 # CARICA ESTRAZIONI
 # =========================
@@ -26,6 +28,17 @@ with open("estrazioni.json", "r", encoding="utf-8") as f:
 # =========================
 # FUNZIONI CICLICHE
 # =========================
+
+def normalizza(n):
+
+    while n > 90:
+        n -= 90
+
+    while n < 1:
+        n += 90
+
+    return n
+
 
 def distanza_ciclica(a, b):
 
@@ -52,20 +65,7 @@ def vertibile(n):
     if n < 10:
         return n
 
-    s = str(n)
-
-    return int(s[::-1])
-
-
-def normalizza(n):
-
-    while n > 90:
-        n -= 90
-
-    while n < 1:
-        n += 90
-
-    return n
+    return int(str(n)[::-1])
 
 
 # =========================
@@ -74,36 +74,36 @@ def normalizza(n):
 
 def genera_previsione(storico, ultima_estrazione):
 
-    numeri = []
+    convergenze = Counter()
+
+    archivio = []
 
     for estr in storico:
-        numeri.extend(estr)
-
-    convergenze = Counter()
+        archivio.extend(estr)
 
     # =====================
     # ANALISI CICLICA
     # =====================
 
-    for n in numeri:
+    for numero in archivio:
 
         # DISTANZE CICLICHE
         for d in DISTANZE_FORTI:
 
-            n1 = normalizza(n + d)
-            n2 = normalizza(n - d)
+            avanti = normalizza(numero + d)
+            dietro = normalizza(numero - d)
 
-            convergenze[n1] += 2
-            convergenze[n2] += 2
+            convergenze[avanti] += 2
+            convergenze[dietro] += 2
 
-        # COMPLEMENTARE A 90
-        comp = complementare90(n)
+        # COMPLEMENTARE
+        comp = complementare90(numero)
         convergenze[comp] += 3
 
         # VERTIBILE
-        v = vertibile(n)
+        v = vertibile(numero)
 
-        if v != n:
+        if v != numero:
             convergenze[v] += 2
 
     # =====================
@@ -125,21 +125,46 @@ def genera_previsione(storico, ultima_estrazione):
 
     ambo = []
 
-    totale_score = 0
+    score_totale = 0
 
     for numero, score in candidati:
 
         if numero not in ambo:
 
             ambo.append(numero)
-            totale_score += score
+            score_totale += score
 
         if len(ambo) == 2:
             break
 
-    score_finale = totale_score // 2
+    score_finale = score_totale // 2
 
     return ambo, score_finale
+
+
+# =========================
+# CALCOLO COLPI RIMANENTI
+# =========================
+
+def calcola_colpi_rimanenti(storico_ruota, ambo):
+
+    colpi = 0
+
+    storico_inverso = storico_ruota[::-1]
+
+    for estrazione in storico_inverso:
+
+        colpi += 1
+
+        if ambo[0] in estrazione or ambo[1] in estrazione:
+            break
+
+    rimanenti = COLPI_VALIDITA - colpi
+
+    if rimanenti < 0:
+        rimanenti = 0
+
+    return rimanenti
 
 
 # =========================
@@ -152,7 +177,6 @@ for ruota in RUOTE_ORDINE:
 
     storico_ruota = estrazioni[ruota]
 
-    # ultime 10 estrazioni
     ultime_10 = storico_ruota[-10:]
 
     ultima_estrazione = storico_ruota[-1]
@@ -162,10 +186,16 @@ for ruota in RUOTE_ORDINE:
         ultima_estrazione
     )
 
+    colpi_rimanenti = calcola_colpi_rimanenti(
+        storico_ruota,
+        ambo
+    )
+
     risultati.append({
         "ruota": ruota,
         "ambo": ambo,
         "score": score,
+        "colpi": colpi_rimanenti,
         "estrazione": ultima_estrazione
     })
 
@@ -195,7 +225,7 @@ ambo_forte = [
 ]
 
 # =========================
-# OUTPUT
+# SALVA JSON
 # =========================
 
 output = {
@@ -207,4 +237,4 @@ output = {
 with open("risultati.json", "w", encoding="utf-8") as f:
     json.dump(output, f, indent=4, ensure_ascii=False)
 
-print("Motore ciclometrico evoluto generato.")
+print("Motore ciclometrico evoluto creato.")
