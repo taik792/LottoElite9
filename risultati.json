@@ -4,9 +4,9 @@
       "ruota": "Bari",
       "ambo": [
         9,
-        65
+        22
       ],
-      "score": 6,
+      "score": 696,
       "ultima": [
         45,
         50,
@@ -14,15 +14,15 @@
         1,
         26
       ],
-      "colpi": 4
+      "colpi": 2
     },
     {
       "ruota": "Cagliari",
       "ambo": [
-        64,
-        80
+        4,
+        22
       ],
-      "score": 6,
+      "score": 658,
       "ultima": [
         61,
         42,
@@ -30,15 +30,15 @@
         26,
         21
       ],
-      "colpi": 4
+      "colpi": 0
     },
     {
       "ruota": "Firenze",
       "ambo": [
         60,
-        2
+        15
       ],
-      "score": 7,
+      "score": 844,
       "ultima": [
         73,
         48,
@@ -46,15 +46,15 @@
         84,
         88
       ],
-      "colpi": 3
+      "colpi": 2
     },
     {
       "ruota": "Genova",
       "ambo": [
         30,
-        55
+        8
       ],
-      "score": 7,
+      "score": 807,
       "ultima": [
         62,
         77,
@@ -65,28 +65,12 @@
       "colpi": 2
     },
     {
-      "ruota": "Milano",
-      "ambo": [
-        85,
-        14
-      ],
-      "score": 5,
-      "ultima": [
-        71,
-        24,
-        74,
-        37,
-        12
-      ],
-      "colpi": 4
-    },
-    {
       "ruota": "Roma",
       "ambo": [
         7,
-        47
+        30
       ],
-      "score": 6,
+      "score": 783,
       "ultima": [
         14,
         10,
@@ -94,15 +78,15 @@
         69,
         4
       ],
-      "colpi": 0
+      "colpi": 2
     },
     {
       "ruota": "Torino",
       "ambo": [
-        15,
-        1
+        1,
+        15
       ],
-      "score": 5,
+      "score": 737,
       "ultima": [
         81,
         12,
@@ -115,10 +99,10 @@
     {
       "ruota": "Venezia",
       "ambo": [
-        85,
-        40
+        40,
+        11
       ],
-      "score": 6,
+      "score": 735,
       "ultima": [
         51,
         58,
@@ -131,44 +115,12 @@
   ],
   "jolly": [
     {
-      "ruota": "Bari",
-      "ambo": [
-        9,
-        65
-      ],
-      "score": 6,
-      "ultima": [
-        45,
-        50,
-        76,
-        1,
-        26
-      ],
-      "colpi": 4
-    },
-    {
-      "ruota": "Cagliari",
-      "ambo": [
-        64,
-        80
-      ],
-      "score": 6,
-      "ultima": [
-        61,
-        42,
-        13,
-        26,
-        21
-      ],
-      "colpi": 4
-    },
-    {
       "ruota": "Venezia",
       "ambo": [
-        85,
-        40
+        40,
+        11
       ],
-      "score": 6,
+      "score": 735,
       "ultima": [
         51,
         58,
@@ -184,9 +136,9 @@
       "ruota": "Firenze",
       "ambo": [
         60,
-        2
+        15
       ],
-      "score": 7,
+      "score": 844,
       "ultima": [
         73,
         48,
@@ -194,15 +146,15 @@
         84,
         88
       ],
-      "colpi": 3
+      "colpi": 2
     },
     {
       "ruota": "Genova",
       "ambo": [
         30,
-        55
+        8
       ],
-      "score": 7,
+      "score": 807,
       "ultima": [
         62,
         77,
@@ -213,44 +165,44 @@
       "colpi": 2
     },
     {
-      "ruota": "Bari",
+      "ruota": "Roma",
       "ambo": [
-        9,
-        65
+        7,
+        30
       ],
-      "score": 6,
+      "score": 783,
       "ultima": [
-        45,
-        50,
-        76,
-        1,
-        26
+        14,
+        10,
+        31,
+        69,
+        4
       ],
-      "colpi": 4
+      "colpi": 2
     },
     {
-      "ruota": "Cagliari",
+      "ruota": "Torino",
       "ambo": [
-        64,
-        80
+        1,
+        15
       ],
-      "score": 6,
+      "score": 737,
       "ultima": [
-        61,
-        42,
-        13,
-        26,
-        21
+        81,
+        12,
+        33,
+        84,
+        22
       ],
-      "colpi": 4
+      "colpi": 3
     },
     {
       "ruota": "Venezia",
       "ambo": [
-        85,
-        40
+        40,
+        11
       ],
-      "score": 6,
+      "score": 735,
       "ultima": [
         51,
         58,
@@ -261,46 +213,12 @@
       "colpi": 4
     },
     {
-      "ruota": "Milano",
-      "ambo": [
-        85,
-        14
-      ],
-      "score": 5,
-      "ultima": [
-        71,
-        24,
-        74,
-        37,
-        12
-      ],
-      "colpi": 4
-    },
-    {
-      "ruota": "Torino",
-      "ambo": [
-        15,
-        1
-      ],
-      "score": 5,
-      "ultima": [
-        81,
-        12,
-        33,
-        84,
-        22
-      ],
-      "colpi": 3
-    }
-  ],
-  "previsioni_attive": [
-    {
       "ruota": "Bari",
       "ambo": [
         9,
-        65
+        22
       ],
-      "score": 6,
+      "score": 696,
       "ultima": [
         45,
         50,
@@ -308,15 +226,15 @@
         1,
         26
       ],
-      "colpi": 5
+      "colpi": 2
     },
     {
       "ruota": "Cagliari",
       "ambo": [
-        64,
-        80
+        4,
+        22
       ],
-      "score": 6,
+      "score": 658,
       "ultima": [
         61,
         42,
@@ -324,15 +242,17 @@
         26,
         21
       ],
-      "colpi": 5
-    },
+      "colpi": 0
+    }
+  ],
+  "previsioni_attive": [
     {
       "ruota": "Venezia",
       "ambo": [
-        85,
-        40
+        40,
+        11
       ],
-      "score": 6,
+      "score": 735,
       "ultima": [
         51,
         58,
