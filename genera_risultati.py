@@ -15,69 +15,52 @@ RUOTE_ORDINE = [
 ]
 
 # =========================
-# CARICA ESTRAZIONI
+# CARICA JSON
 # =========================
 
 with open("estrazioni.json", "r", encoding="utf-8") as f:
     estrazioni = json.load(f)
 
-# PRENDE LE ULTIME 12 ESTRAZIONI
-ultime = estrazioni[-12:]
-
 risultati_ruote = []
-jolly = []
-ambo_forte = []
 
 # =========================
-# FUNZIONE CICLICA
+# CALCOLO CICLICO
 # =========================
 
 def calcolo_ciclico(numeri):
 
-    frequenze = Counter()
-    distanze = Counter()
-
-    # frequenze
-    for n in numeri:
-        frequenze[n] += 1
-
-    # distanze cicliche
-    for i in range(len(numeri)-1):
-        a = numeri[i]
-        b = numeri[i+1]
-
-        dist = abs(a - b)
-
-        if dist > 45:
-            dist = 90 - dist
-
-        distanze[dist] += 1
-
     score_numeri = {}
 
-    for n in set(numeri):
+    frequenze = Counter(numeri)
+
+    for numero in set(numeri):
 
         score = 0
 
         # frequenza
-        score += frequenze[n] * 2
+        score += frequenze[numero] * 2
 
-        # vicinanza ciclica
+        # distanze cicliche
         for altro in numeri:
 
-            dist = abs(n - altro)
+            dist = abs(numero - altro)
 
             if dist > 45:
                 dist = 90 - dist
 
             if dist <= 9:
                 score += 2
+
             elif dist <= 18:
                 score += 1
 
-        score_numeri[n] = score
+        score_numeri[numero] = score
 
-    ordinati = sorted(score_numeri.items(), key=lambda x: x[1], reverse=True)
+    ordinati = sorted(
+        score_numeri.items(),
+        key=lambda x: x[1],
+        reverse=True
+    )
 
     return ordinati
 
@@ -87,23 +70,26 @@ def calcolo_ciclico(numeri):
 
 for ruota in RUOTE_ORDINE:
 
-    archivio_ruota = []
+    storico = estrazioni[ruota]
 
-    for estrazione in ultime:
-        if ruota in estrazione:
-            archivio_ruota.extend(estrazione[ruota])
+    # ultime 12 estrazioni
+    ultime_12 = storico[-12:]
+
+    archivio = []
+
+    for estrazione in ultime_12:
+        archivio.extend(estrazione)
 
     # ultima estrazione
-    ultima_estrazione = ultime[-1][ruota]
+    ultima_estrazione = storico[-1]
 
-    # calcolo ciclico
-    classifica = calcolo_ciclico(archivio_ruota)
+    classifica = calcolo_ciclico(archivio)
 
     ambo = []
 
     for numero, score in classifica:
 
-        # ESCLUDE numeri già usciti nell'ultima estrazione
+        # esclude numeri già usciti
         if numero not in ultima_estrazione:
             ambo.append(numero)
 
@@ -114,14 +100,12 @@ for ruota in RUOTE_ORDINE:
         classifica[0][1] + classifica[1][1]
     ) // 2
 
-    risultato = {
+    risultati_ruote.append({
         "ruota": ruota,
         "ambo": ambo,
         "score": score_finale,
         "estrazione": ultima_estrazione
-    }
-
-    risultati_ruote.append(risultato)
+    })
 
 # =========================
 # ORDINA PER SCORE
@@ -135,14 +119,12 @@ ordinati = sorted(
 
 # =========================
 # JOLLY
-# PRIME 3 RUOTE
 # =========================
 
 jolly = ordinati[:3]
 
 # =========================
 # AMBO FORTE
-# SOLO SCORE >= 7
 # =========================
 
 ambo_forte = [
@@ -151,7 +133,7 @@ ambo_forte = [
 ]
 
 # =========================
-# SALVA JSON
+# SALVA RISULTATI
 # =========================
 
 output = {
