@@ -1,16 +1,217 @@
 import json
-from collections import Counter
+from itertools import combinations
 
-COLPI_VALIDITA = 5
+# =========================
+# CONFIG
+# =========================
+
+TOP_RUOTE = 10
+TOP_JOLLY = 3
+TOP_FORTE = 5
+COLPI_VALIDITA = 6
 
 # =========================
 # CARICA ESTRAZIONI
 # =========================
 
-with open("estrazioni.json", "r") as f:
+with open("estrazioni.json", "r", encoding="utf-8") as f:
     estrazioni = json.load(f)
 
-RUOTE_ORDINE = [
+# =========================
+# FUNZIONI
+# =========================
+
+def frequenza(numero, storico):
+    conta = 0
+
+    for estrazione in storico[-20:]:
+        if numero in estrazione:
+            conta += 1
+
+    return conta
+
+
+def ritardo(numero, storico):
+
+    colpi = 0
+
+    for estrazione in reversed(storico):
+
+        colpi += 1
+
+        if numero in estrazione:
+            return colpi
+
+    return 50
+
+
+def distanza_ciclica(n1, n2):
+
+    d = abs(n1 - n2)
+
+    return min(d, 90 - d)
+
+
+def score_ambo(n1, n2, storico):
+
+    score = 0
+
+    # -------------------------
+    # FREQUENZA
+    # -------------------------
+
+    f1 = frequenza(n1, storico)
+    f2 = frequenza(n2, storico)
+
+    score += (f1 + f2) * 12
+
+    # -------------------------
+    # RITARDO
+    # -------------------------
+
+    r1 = ritardo(n1, storico)
+    r2 = ritardo(n2, storico)
+
+    score += (r1 + r2) * 8
+
+    # -------------------------
+    # DISTANZA CICLOMETRICA
+    # -------------------------
+
+    distanza = distanza_ciclica(n1, n2)
+
+    if distanza in [9, 18, 27, 36, 45]:
+        score += 220
+
+    elif distanza in [5, 10, 15]:
+        score += 120
+
+    elif distanza <= 2:
+        score += 40
+
+    # -------------------------
+    # ASSENZA RECENTE
+    # -------------------------
+
+    uscito_recente = False
+
+    for estrazione in storico[-6:]:
+
+        if n1 in estrazione and n2 in estrazione:
+            uscito_recente = True
+            break
+
+    if not uscito_recente:
+        score += 180
+
+    # -------------------------
+    # RITORNO PERIODICO
+    # -------------------------
+
+    intervalli = []
+
+    ultimo = None
+
+    for idx, estrazione in enumerate(storico):
+
+        if n1 in estrazione or n2 in estrazione:
+
+            if ultimo is not None:
+                intervalli.append(idx - ultimo)
+
+            ultimo = idx
+
+    if len(intervalli) >= 2:
+
+        media = sum(intervalli) / len(intervalli)
+
+        if 4 <= media <= 12:
+            score += 200
+
+    # -------------------------
+    # PENALITÀ NUMERI TROPPO VICINI
+    # -------------------------
+
+    if abs(n1 - n2) == 1:
+        score -= 180
+
+    return int(score)
+
+
+def calcola_colpi_rimanenti(storico, ambo):
+
+    colpi = 0
+
+    storico_inverso = storico[::-1]
+
+    for estrazione in storico_inverso:
+
+        colpi += 1
+
+        if ambo[0] in estrazione or ambo[1] in estrazione:
+            break
+
+    rimanenti = COLPI_VALIDITA - colpi
+
+    if rimanenti < 0:
+        rimanenti = 0
+
+    return rimanenti
+
+
+# =========================
+# ANALISI
+# =========================
+
+risultati = []
+
+for ruota, storico in estrazioni.items():
+
+    numeri = list(range(1, 91))
+
+    migliori = []
+
+    for n1, n2 in combinations(numeri, 2):
+
+        score = score_ambo(n1, n2, storico)
+
+        migliori.append({
+            "ambo": [n1, n2],
+            "score": score
+        })
+
+    migliori = sorted(
+        migliori,
+        key=lambda x: x["score"],
+        reverse=True
+    )
+
+    migliore = migliori[0]
+
+    colpi = calcola_colpi_rimanenti(
+        storico,
+        migliore["ambo"]
+    )
+
+    risultati.append({
+
+        "ruota": ruota,
+
+        "ambo": migliore["ambo"],
+
+        "score": migliore["score"],
+
+        "ultima_estrazione": storico[-1],
+
+        "colpi_rimanenti": colpi
+
+    })
+
+# =========================
+# ORDINE REALE RUOTE
+# =========================
+
+ordine_ruote = [
     "Bari",
     "Cagliari",
     "Firenze",
@@ -23,192 +224,69 @@ RUOTE_ORDINE = [
     "Venezia"
 ]
 
-# =========================
-# FUNZIONI
-# =========================
+risultati_ordinati = []
 
-def distanza(a, b):
-    d = abs(a - b)
-    return min(d, 90 - d)
+for nome in ordine_ruote:
 
-def vertibile(n):
-    s = str(n).zfill(2)
-    return int(s[::-1])
+    for r in risultati:
 
-def frequenza_numero(storico, numero, ultime=12):
-    count = 0
-
-    for estrazione in storico[-ultime:]:
-        if numero in estrazione:
-            count += 1
-
-    return count
-
-def calcola_colpi(storico, ambo):
-
-    storico_recente = storico[::-1]
-
-    colpi = 0
-
-    for estrazione in storico_recente:
-
-        if ambo[0] in estrazione or ambo[1] in estrazione:
-            break
-
-        colpi += 1
-
-    rimanenti = COLPI_VALIDITA - colpi
-
-    if rimanenti < 0:
-        rimanenti = 0
-
-    return rimanenti
+        if r["ruota"] == nome:
+            risultati_ordinati.append(r)
 
 # =========================
-# ANALISI CICLOMETRICA
-# =========================
-
-def analizza_ruota(nome_ruota, storico):
-
-    conteggio_ambi = Counter()
-
-    ultime = storico[-18:]
-
-    for estrazione in ultime:
-
-        numeri = estrazione[:5]
-
-        for i in range(len(numeri)):
-            for j in range(i + 1, len(numeri)):
-
-                a = numeri[i]
-                b = numeri[j]
-
-                dist = distanza(a, b)
-
-                candidato1 = (a + dist) % 90
-                candidato2 = (b + dist) % 90
-
-                if candidato1 == 0:
-                    candidato1 = 90
-
-                if candidato2 == 0:
-                    candidato2 = 90
-
-                ambi = [
-                    tuple(sorted((candidato1, candidato2))),
-                    tuple(sorted((vertibile(candidato1), candidato2))),
-                    tuple(sorted((candidato1, vertibile(candidato2))))
-                ]
-
-                for ambo in ambi:
-
-                    score = 0
-
-                    # distanza forte
-                    if distanza(ambo[0], ambo[1]) <= 18:
-                        score += 120
-
-                    # vertibili
-                    if vertibile(ambo[0]) == ambo[1]:
-                        score += 180
-
-                    # somma ciclometrica
-                    if (ambo[0] + ambo[1]) % 9 == 0:
-                        score += 90
-
-                    # numeri consecutivi
-                    if abs(ambo[0] - ambo[1]) <= 9:
-                        score += 70
-
-                    # penalità numeri troppo usciti
-                    freq1 = frequenza_numero(storico, ambo[0])
-                    freq2 = frequenza_numero(storico, ambo[1])
-
-                    score -= freq1 * 25
-                    score -= freq2 * 25
-
-                    # bonus numeri poco usciti
-                    if freq1 <= 1:
-                        score += 40
-
-                    if freq2 <= 1:
-                        score += 40
-
-                    # penalità se già usciti insieme
-                    for estr in ultime[-10:]:
-
-                        if ambo[0] in estr and ambo[1] in estr:
-                            score -= 200
-
-                    conteggio_ambi[ambo] += score
-
-    migliori = conteggio_ambi.most_common(1)
-
-    if not migliori:
-        return None
-
-    ambo, score = migliori[0]
-
-    colpi = calcola_colpi(storico, ambo)
-
-    return {
-        "ruota": nome_ruota,
-        "ambo": list(ambo),
-        "score": int(score),
-        "colpi_rimanenti": colpi,
-        "ultima_estrazione": storico[-1]
-    }
-
-# =========================
-# GENERA RISULTATI
-# =========================
-
-risultati = []
-
-for ruota in RUOTE_ORDINE:
-
-    if ruota not in estrazioni:
-        continue
-
-    risultato = analizza_ruota(
-        ruota,
-        estrazioni[ruota]
-    )
-
-    if risultato:
-        risultati.append(risultato)
-
-# =========================
-# ORDINE SCORE
+# JOLLY
 # =========================
 
 jolly = sorted(
     risultati,
     key=lambda x: x["score"],
     reverse=True
-)[:3]
+)[:TOP_JOLLY]
+
+# =========================
+# AMBO FORTE
+# =========================
 
 ambo_forte = sorted(
     risultati,
-    key=lambda x: (
-        x["score"],
-        x["colpi_rimanenti"]
-    ),
+    key=lambda x: x["score"],
     reverse=True
-)[:5]
+)[:TOP_FORTE]
 
 # =========================
-# OUTPUT
+# PREVISIONI ATTIVE
+# =========================
+
+previsioni_attive = []
+
+for r in risultati:
+
+    if r["colpi_rimanenti"] > 0:
+        previsioni_attive.append(r)
+
+# =========================
+# OUTPUT JSON
 # =========================
 
 output = {
-    "ruote": risultati,
+
+    "ruote": risultati_ordinati,
+
     "jolly": jolly,
-    "ambo_forte": ambo_forte
+
+    "ambo_forte": ambo_forte,
+
+    "previsioni_attive": previsioni_attive
+
 }
 
-with open("risultati.json", "w") as f:
-    json.dump(output, f, indent=2)
+with open("risultati.json", "w", encoding="utf-8") as f:
 
-print("Risultati generati.")
+    json.dump(
+        output,
+        f,
+        indent=4,
+        ensure_ascii=False
+    )
+
+print("risultati.json generato correttamente")
