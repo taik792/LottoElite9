@@ -42,7 +42,7 @@ h1{
     text-shadow:0 0 10px #00e5ff;
 }
 
-/* --- MODIFICATO: Configurazione base per Computer (4 colonne) --- */
+/* --- CONFIGURAZIONE BASE: Computer (4 colonne) --- */
 .container{
     display:grid;
     grid-template-columns: repeat(4, 1fr);
@@ -111,41 +111,50 @@ h1{
         0 0 10px #ffe600;
 }
 
-/* --- MODIFICATO: Ottimizzazione per Tablet e Smartphone --- */
+/* --- OTTIMIZZAZIONE RESPONSIVE --- */
 @media(max-width:1024px){
-    /* Per schermi medi o tablet, passa a 3 colonne per evitare sovrapposizioni */
+    /* Per tablet e monitor piccoli, passa a 3 colonne */
     .container {
         grid-template-columns: repeat(3, 1fr);
     }
 }
 
 @media(max-width:768px){
-    /* Per schermi stile smartphone, passa a 2 colonne */
+    /* Per smartphone (anche molto piccoli), mantiene 2 colonne fisse ed evita l'effetto dispersivo */
     .container {
         grid-template-columns: repeat(2, 1fr);
+        gap: 10px; /* Raddensa lo spazio tra le tessere */
     }
 
-    .numeri{
-        font-size:38px;
+    /* Ridimensionamento proporzionale di schede e testi per schermi stretti */
+    .card {
+        padding: 12px; 
+        border-radius: 16px; 
+        border-width: 3px; 
     }
 
     .ruota{
-        font-size:26px;
+        font-size: 20px;
+        margin-bottom: 8px;
+    }
+
+    .estrazione{
+        font-size: 10px;
+        margin-bottom: 10px;
+    }
+
+    .numeri{
+        font-size: 28px; /* Dimensione ottimale per non far andare i due numeri a capo */
+        margin: 12px 0;
     }
 
     .score{
-        font-size:20px;
+        font-size: 16px;
     }
 
     .colpi{
-        font-size:18px;
-    }
-}
-
-@media(max-width:480px){
-    /* Per smartphone molto piccoli, meglio metterle singole (1 colonna) */
-    .container {
-        grid-template-columns: repeat(1, 1fr);
+        font-size: 14px;
+        margin-top: 8px;
     }
 }
 
