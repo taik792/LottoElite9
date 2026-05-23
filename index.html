@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Lotto Elite PRO</title>
+<title>Lotto Elite Pro</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 
@@ -13,231 +12,187 @@
 
 body{
     margin:0;
-    padding:20px;
-    background:#001b5e;
+    padding:15px;
+    background:#041b6b;
     font-family:'Orbitron',sans-serif;
     color:white;
-    text-align:center;
 }
 
 h1{
-    color:#00eaff;
-    text-shadow:0 0 20px #00eaff;
+    text-align:center;
+    color:#00e5ff;
     margin-bottom:5px;
+    font-size:28px;
+    text-shadow:0 0 10px #00e5ff;
 }
 
-h2{
-    color:#00eaff;
-    margin-top:40px;
-    text-shadow:0 0 10px #00eaff;
-}
-
-.sottotitolo{
+.subtitle{
+    text-align:center;
     color:white;
-    margin-bottom:30px;
-    font-size:12px;
+    margin-bottom:25px;
+    font-size:14px;
 }
 
-.griglia{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap:20px;
-    margin-top:20px;
+.section-title{
+    text-align:center;
+    color:#00e5ff;
+    margin-top:30px;
+    margin-bottom:15px;
+    font-size:26px;
+    text-shadow:0 0 10px #00e5ff;
+}
+
+.container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:15px;
 }
 
 .card{
-    background:#00103a;
-    border-radius:20px;
-    padding:20px;
-    width:190px;
-    box-shadow:0 0 15px #ffe600;
-    border:3px solid #ffe600;
+    background:#02124d;
+    border-radius:22px;
+    padding:18px;
+    text-align:center;
+    border:4px solid #ffe600;
+    box-shadow:
+        0 0 10px #ffe600,
+        0 0 20px #ffe600;
 }
 
-.card-jolly{
-    box-shadow:0 0 20px #ff4df0;
-    border:3px solid #ff4df0;
+.card.jolly{
+    border-color:#ff4dff;
+    box-shadow:
+        0 0 10px #ff4dff,
+        0 0 20px #ff4dff;
 }
 
-.card-forte{
-    box-shadow:0 0 20px #00eaff;
-    border:3px solid #00eaff;
-}
-
-.card-attiva{
-    box-shadow:0 0 20px #00ff85;
-    border:3px solid #00ff85;
+.card.forte{
+    border-color:#00e5ff;
+    box-shadow:
+        0 0 10px #00e5ff,
+        0 0 20px #00e5ff;
 }
 
 .ruota{
-    font-size:28px;
-    margin-bottom:10px;
+    font-size:32px;
+    margin-bottom:12px;
     font-weight:bold;
 }
 
 .estrazione{
     font-size:12px;
     color:#ffffff;
-    margin-bottom:20px;
-    line-height:1.5;
+    margin-bottom:15px;
 }
 
-.ambo{
-    font-size:42px;
-    color:#7ffcff;
-    text-shadow:0 0 15px #00ffff;
-    margin-bottom:20px;
+.numeri{
+    font-size:48px;
+    color:#7df9ff;
+    margin:20px 0;
+    text-shadow:
+        0 0 10px #00ffff,
+        0 0 20px #00ffff;
 }
 
 .score{
-    font-size:22px;
-    color:#ff5fcf;
-    text-shadow:0 0 10px #ff5fcf;
+    font-size:24px;
+    color:#ff4dff;
+    margin-top:10px;
+    text-shadow:
+        0 0 10px #ff4dff;
 }
 
 .colpi{
-    margin-top:10px;
-    font-size:18px;
+    font-size:20px;
     color:#ffe600;
-    text-shadow:0 0 10px #ffe600;
+    margin-top:12px;
+    text-shadow:
+        0 0 10px #ffe600;
 }
 
-.footer{
-    margin-top:40px;
-    font-size:10px;
-    opacity:0.7;
-}
+@media(max-width:600px){
 
-@media(max-width:700px){
-
-    body{
-        padding:10px;
-    }
-
-    .card{
-        width:90%;
-    }
-
-    .ambo{
-        font-size:36px;
+    .numeri{
+        font-size:38px;
     }
 
     .ruota{
-        font-size:24px;
+        font-size:26px;
     }
+
+    .score{
+        font-size:20px;
+    }
+
+    .colpi{
+        font-size:18px;
+    }
+
 }
 
 </style>
-
 </head>
 
 <body>
 
-<h1>🔥 LOTTO ELITE PRO 🤘</h1>
+<h1>🔥 LOTTO ELITE PRO 🔥</h1>
+<div class="subtitle">Motore Ciclometrico Evoluto</div>
 
-<div class="sottotitolo">
-Motore Ciclometrico Evoluto
-</div>
+<div class="section-title">🎰 RUOTE</div>
+<div class="container" id="ruote"></div>
 
-<!-- RUOTE -->
+<div class="section-title">💣 JOLLY</div>
+<div class="container" id="jolly"></div>
 
-<h2>🎰 RUOTE</h2>
+<div class="section-title">📊 AMBO FORTE</div>
+<div class="container" id="forte"></div>
 
-<div class="griglia" id="ruote"></div>
-
-<!-- JOLLY -->
-
-<h2>💣 JOLLY</h2>
-
-<div class="griglia" id="jolly"></div>
-
-<!-- AMBO FORTE -->
-
-<h2>📊 AMBO FORTE</h2>
-
-<div class="griglia" id="ambo-forte"></div>
-
-<!-- PREVISIONI ATTIVE -->
-
-<h2>🔥 PREVISIONI ATTIVE</h2>
-
-<div class="griglia" id="attive"></div>
-
-<div class="footer">
-Lotto Elite PRO
-</div>
+<div class="section-title">🔥 PREVISIONI ATTIVE</div>
+<div class="container" id="attive"></div>
 
 <script>
 
-async function caricaDati(){
+fetch("risultati.json")
+.then(response => response.json())
+.then(data => {
 
-    const response = await fetch(
-        "risultati.json?v=" + new Date().getTime()
-    );
+    creaSezione("ruote", data.ruote, "");
+    creaSezione("jolly", data.jolly, "jolly");
+    creaSezione("forte", data.ambo_forte, "forte");
+    creaSezione("attive", data.previsioni_attive, "forte");
 
-    const data = await response.json();
+});
 
-    mostraRuote(
-        data.ruote || [],
-        "ruote",
-        ""
-    );
+function creaSezione(id, lista, classe){
 
-    mostraRuote(
-        data.jolly || [],
-        "jolly",
-        "card-jolly"
-    );
+    const container = document.getElementById(id);
 
-    mostraRuote(
-        data.ambo_forte || [],
-        "ambo-forte",
-        "card-forte"
-    );
-
-    mostraRuote(
-        data.previsioni_attive || [],
-        "attive",
-        "card-attiva"
-    );
-}
-
-function mostraRuote(lista, idContainer, classe){
-
-    const container = document.getElementById(idContainer);
-
-    container.innerHTML = "";
-
-    lista.forEach(item => {
+    lista.forEach(previsione => {
 
         const card = document.createElement("div");
-
         card.className = `card ${classe}`;
-
-        const estrazione = item.ultima || item.estrazione || [];
 
         card.innerHTML = `
 
             <div class="ruota">
-                ${item.ruota}
+                ${previsione.ruota}
             </div>
 
             <div class="estrazione">
                 Ultima Estrazione<br>
-                ${estrazione.join(" • ")}
+                ${previsione.ultima_estrazione.join(" • ")}
             </div>
 
-            <div class="ambo">
-                ${item.ambo[0]} - ${item.ambo[1]}
+            <div class="numeri">
+                ${previsione.ambo[0]} - ${previsione.ambo[1]}
             </div>
 
             <div class="score">
-                Score ${item.score}
+                Score ${previsione.score}
             </div>
 
             <div class="colpi">
-                Colpi rimasti: ${item.colpi}
+                Colpi rimasti: ${previsione.colpi_rimanenti}
             </div>
 
         `;
@@ -245,9 +200,8 @@ function mostraRuote(lista, idContainer, classe){
         container.appendChild(card);
 
     });
-}
 
-caricaDati();
+}
 
 </script>
 
