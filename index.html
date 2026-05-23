@@ -28,7 +28,7 @@ h1{
 
 .subtitle{
     text-align:center;
-    color:white;
+    color:black;
     margin-bottom:25px;
     font-size:14px;
 }
@@ -41,11 +41,12 @@ h1{
     font-size:26px;
     text-shadow:0 0 10px #00e5ff;
 }
-.container {
-    display: grid;
-    /* Cambia solo questa linea qui sotto */
-    grid-template-columns: repeat(4, 1fr); 
-    gap: 15px;
+
+/* --- MODIFICATO: Configurazione base per Computer (4 colonne) --- */
+.container{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap:15px;
 }
 
 .card{
@@ -110,7 +111,19 @@ h1{
         0 0 10px #ffe600;
 }
 
-@media(max-width:600px){
+/* --- MODIFICATO: Ottimizzazione per Tablet e Smartphone --- */
+@media(max-width:1024px){
+    /* Per schermi medi o tablet, passa a 3 colonne per evitare sovrapposizioni */
+    .container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media(max-width:768px){
+    /* Per schermi stile smartphone, passa a 2 colonne */
+    .container {
+        grid-template-columns: repeat(2, 1fr);
+    }
 
     .numeri{
         font-size:38px;
@@ -127,7 +140,13 @@ h1{
     .colpi{
         font-size:18px;
     }
+}
 
+@media(max-width:480px){
+    /* Per smartphone molto piccoli, meglio metterle singole (1 colonna) */
+    .container {
+        grid-template-columns: repeat(1, 1fr);
+    }
 }
 
 </style>
@@ -135,19 +154,19 @@ h1{
 
 <body>
 
-<h1>🔥 LOTTO ELITE PRO 🔥</h1>
+<h1>🎰 LOTTO ELITE PRO 🎰</h1>
 <div class="subtitle">Motore Ciclometrico Evoluto</div>
 
-<div class="section-title">🎰 RUOTE</div>
+<div class="section-title">📡 RUOTE</div>
 <div class="container" id="ruote"></div>
 
-<div class="section-title">💣 JOLLY</div>
+<div class="section-title">🃏 JOLLY</div>
 <div class="container" id="jolly"></div>
 
-<div class="section-title">📊 AMBO FORTE</div>
+<div class="section-title">🎯 AMBO FORTE</div>
 <div class="container" id="forte"></div>
 
-<div class="section-title">🔥 PREVISIONI ATTIVE</div>
+<div class="section-title">🎰 PREVISIONI ATTIVE</div>
 <div class="container" id="attive"></div>
 
 <script>
