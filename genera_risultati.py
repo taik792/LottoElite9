@@ -5,7 +5,6 @@ from itertools import combinations
 # CONFIG
 # =========================
 
-TOP_RUOTE = 10
 TOP_JOLLY = 3
 TOP_FORTE = 5
 COLPI_VALIDITA = 6
@@ -22,9 +21,11 @@ with open("estrazioni.json", "r", encoding="utf-8") as f:
 # =========================
 
 def frequenza(numero, storico):
+
     conta = 0
 
     for estrazione in storico[-20:]:
+
         if numero in estrazione:
             conta += 1
 
@@ -56,27 +57,27 @@ def score_ambo(n1, n2, storico):
 
     score = 0
 
-    # -------------------------
+    # =========================
     # FREQUENZA
-    # -------------------------
+    # =========================
 
     f1 = frequenza(n1, storico)
     f2 = frequenza(n2, storico)
 
     score += (f1 + f2) * 12
 
-    # -------------------------
+    # =========================
     # RITARDO
-    # -------------------------
+    # =========================
 
     r1 = ritardo(n1, storico)
     r2 = ritardo(n2, storico)
 
     score += (r1 + r2) * 8
 
-    # -------------------------
-    # DISTANZA CICLOMETRICA
-    # -------------------------
+    # =========================
+    # DISTANZE CICLOMETRICHE
+    # =========================
 
     distanza = distanza_ciclica(n1, n2)
 
@@ -89,9 +90,9 @@ def score_ambo(n1, n2, storico):
     elif distanza <= 2:
         score += 40
 
-    # -------------------------
+    # =========================
     # ASSENZA RECENTE
-    # -------------------------
+    # =========================
 
     uscito_recente = False
 
@@ -104,9 +105,9 @@ def score_ambo(n1, n2, storico):
     if not uscito_recente:
         score += 180
 
-    # -------------------------
+    # =========================
     # RITORNO PERIODICO
-    # -------------------------
+    # =========================
 
     intervalli = []
 
@@ -128,9 +129,9 @@ def score_ambo(n1, n2, storico):
         if 4 <= media <= 12:
             score += 200
 
-    # -------------------------
-    # PENALITÀ NUMERI TROPPO VICINI
-    # -------------------------
+    # =========================
+    # PENALITA NUMERI VICINI
+    # =========================
 
     if abs(n1 - n2) == 1:
         score -= 180
@@ -160,10 +161,12 @@ def calcola_colpi_rimanenti(storico, ambo):
 
 
 # =========================
-# ANALISI
+# ANALISI PRINCIPALE
 # =========================
 
 risultati = []
+
+ambi_usati = set()
 
 for ruota, storico in estrazioni.items():
 
@@ -173,11 +176,19 @@ for ruota, storico in estrazioni.items():
 
     for n1, n2 in combinations(numeri, 2):
 
+        ambo_ordinato = tuple(sorted([n1, n2]))
+
+        # evita ambi duplicati
+        if ambo_ordinato in ambi_usati:
+            continue
+
         score = score_ambo(n1, n2, storico)
 
         migliori.append({
+
             "ambo": [n1, n2],
             "score": score
+
         })
 
     migliori = sorted(
@@ -186,32 +197,62 @@ for ruota, storico in estrazioni.items():
         reverse=True
     )
 
-    migliore = migliori[0]
+    previsione_valida = None
 
-    colpi = calcola_colpi_rimanenti(
-        storico,
-        migliore["ambo"]
-    )
+    for candidato in migliori:
 
-    risultati.append({
+        colpi = calcola_colpi_rimanenti(
+            storico,
+            candidato["ambo"]
+        )
 
-        "ruota": ruota,
+        # prende solo ambi ancora vivi
+        if colpi > 0:
 
-        "ambo": migliore["ambo"],
+            previsione_valida = {
 
-        "score": migliore["score"],
+                "ruota": ruota,
 
-        "ultima_estrazione": storico[-1],
+                "ambo": candidato["ambo"],
 
-        "colpi_rimanenti": colpi
+                "score": candidato["score"],
 
-    })
+                "ultima_estrazione": storico[-1],
+
+                "colpi_rimanenti": colpi
+
+            }
+
+            ambi_usati.add(
+                tuple(sorted(candidato["ambo"]))
+            )
+
+            break
+
+    # fallback sicurezza
+    if previsione_valida is None:
+
+        previsione_valida = {
+
+            "ruota": ruota,
+
+            "ambo": [1, 90],
+
+            "score": 0,
+
+            "ultima_estrazione": storico[-1],
+
+            "colpi_rimanenti": 0
+        }
+
+    risultati.append(previsione_valida)
 
 # =========================
-# ORDINE REALE RUOTE
+# ORDINE RUOTE
 # =========================
 
 ordine_ruote = [
+
     "Bari",
     "Cagliari",
     "Firenze",
@@ -222,6 +263,7 @@ ordine_ruote = [
     "Roma",
     "Torino",
     "Venezia"
+
 ]
 
 risultati_ordinati = []
@@ -238,9 +280,13 @@ for nome in ordine_ruote:
 # =========================
 
 jolly = sorted(
-    risultati,
+
+    [r for r in risultati if r["colpi_rimanenti"] > 0],
+
     key=lambda x: x["score"],
+
     reverse=True
+
 )[:TOP_JOLLY]
 
 # =========================
@@ -248,21 +294,25 @@ jolly = sorted(
 # =========================
 
 ambo_forte = sorted(
-    risultati,
+
+    [r for r in risultati if r["colpi_rimanenti"] > 0],
+
     key=lambda x: x["score"],
+
     reverse=True
+
 )[:TOP_FORTE]
 
 # =========================
 # PREVISIONI ATTIVE
 # =========================
 
-previsioni_attive = []
+previsioni_attive = [
 
-for r in risultati:
+    r for r in risultati
+    if r["colpi_rimanenti"] > 0
 
-    if r["colpi_rimanenti"] > 0:
-        previsioni_attive.append(r)
+]
 
 # =========================
 # OUTPUT JSON
