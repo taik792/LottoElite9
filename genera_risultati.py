@@ -24,9 +24,9 @@ def frequenza(numero, storico):
 
     conta = 0
 
-    for estrazione in storico[-20:]:
+    for estrazioni in storico[-20:]:
 
-        if numero in estrazione:
+        if numero in estrazioni:
             conta += 1
 
     return conta
@@ -40,7 +40,7 @@ def ritardo(numero, storico):
 
         colpi += 1
 
-        if numero in estrazione:
+        if numero in estrazioni:
             return colpi
 
     return 50
@@ -96,9 +96,9 @@ def score_ambo(n1, n2, storico):
 
     uscito_recente = False
 
-    for estrazione in storico[-6:]:
+    for estrazioni in storico[-6:]:
 
-        if n1 in estrazione and n2 in estrazione:
+        if n1 in estrazioni and n2 in estrazioni:
             uscito_recente = True
             break
 
@@ -113,9 +113,9 @@ def score_ambo(n1, n2, storico):
 
     ultimo = None
 
-    for idx, estrazione in enumerate(storico):
+    for idx, estrazioni in enumerate(storico):
 
-        if n1 in estrazione or n2 in estrazione:
+        if n1 in estrazioni or n2 in estrazioni:
 
             if ultimo is not None:
                 intervalli.append(idx - ultimo)
@@ -145,11 +145,11 @@ def calcola_colpi_rimanenti(storico, ambo):
 
     storico_inverso = storico[::-1]
 
-    for estrazione in storico_inverso:
+    for estrazioni in storico_inverso:
 
         colpi += 1
 
-        if ambo[0] in estrazione or ambo[1] in estrazione:
+        if ambo[0] in estrazioni or ambo[1] in estrazioni:
             break
 
     rimanenti = COLPI_VALIDITA - colpi
@@ -240,7 +240,7 @@ for ruota, storico in estrazioni.items():
 
             "score": 0,
 
-            "ultima_estrazione": storico[-1],
+            "ultima_estrazioni": storico[-1],
 
             "colpi_rimanenti": 0
         }
