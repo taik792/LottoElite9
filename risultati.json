@@ -3,10 +3,10 @@
         {
             "ruota": "Bari",
             "ambo": [
-                2,
-                65
+                7,
+                25
             ],
-            "score": 1472,
+            "score": 1460,
             "ultima_estrazione": [
                 6,
                 49,
@@ -19,10 +19,10 @@
         {
             "ruota": "Cagliari",
             "ambo": [
-                5,
-                50
+                26,
+                80
             ],
-            "score": 1472,
+            "score": 1460,
             "ultima_estrazione": [
                 23,
                 71,
@@ -30,15 +30,15 @@
                 50,
                 27
             ],
-            "colpi_rimanenti": 5
+            "colpi_rimanenti": 4
         },
         {
             "ruota": "Firenze",
             "ambo": [
-                15,
-                60
+                7,
+                34
             ],
-            "score": 1496,
+            "score": 1460,
             "ultima_estrazione": [
                 79,
                 7,
@@ -46,7 +46,7 @@
                 8,
                 65
             ],
-            "colpi_rimanenti": 4
+            "colpi_rimanenti": 5
         },
         {
             "ruota": "Genova",
@@ -54,7 +54,7 @@
                 30,
                 48
             ],
-            "score": 1520,
+            "score": 1460,
             "ultima_estrazione": [
                 5,
                 48,
@@ -67,10 +67,10 @@
         {
             "ruota": "Milano",
             "ambo": [
-                40,
-                85
+                10,
+                37
             ],
-            "score": 1472,
+            "score": 1460,
             "ultima_estrazione": [
                 15,
                 40,
@@ -78,15 +78,15 @@
                 47,
                 58
             ],
-            "colpi_rimanenti": 5
+            "colpi_rimanenti": 3
         },
         {
             "ruota": "Napoli",
             "ambo": [
-                44,
-                53
+                15,
+                87
             ],
-            "score": 1496,
+            "score": 1448,
             "ultima_estrazione": [
                 37,
                 81,
@@ -94,15 +94,15 @@
                 34,
                 78
             ],
-            "colpi_rimanenti": 2
+            "colpi_rimanenti": 3
         },
         {
             "ruota": "Palermo",
             "ambo": [
-                18,
-                36
+                39,
+                66
             ],
-            "score": 1532,
+            "score": 1460,
             "ultima_estrazione": [
                 36,
                 65,
@@ -115,10 +115,10 @@
         {
             "ruota": "Roma",
             "ambo": [
-                38,
-                47
+                4,
+                31
             ],
-            "score": 1496,
+            "score": 1460,
             "ultima_estrazione": [
                 4,
                 23,
@@ -126,15 +126,15 @@
                 82,
                 5
             ],
-            "colpi_rimanenti": 4
+            "colpi_rimanenti": 5
         },
         {
             "ruota": "Torino",
             "ambo": [
-                15,
-                24
+                10,
+                82
             ],
-            "score": 1472,
+            "score": 1460,
             "ultima_estrazione": [
                 24,
                 40,
@@ -142,15 +142,15 @@
                 35,
                 81
             ],
-            "colpi_rimanenti": 5
+            "colpi_rimanenti": 4
         },
         {
             "ruota": "Venezia",
             "ambo": [
-                22,
-                85
+                40,
+                58
             ],
-            "score": 1484,
+            "score": 1460,
             "ultima_estrazione": [
                 53,
                 85,
@@ -158,49 +158,49 @@
                 74,
                 67
             ],
-            "colpi_rimanenti": 5
+            "colpi_rimanenti": 4
         }
     ],
     "jolly": [
         {
-            "ruota": "Palermo",
+            "ruota": "Bari",
             "ambo": [
-                18,
-                36
+                7,
+                25
             ],
-            "score": 1532,
+            "score": 1460,
             "ultima_estrazione": [
-                36,
+                6,
+                49,
+                53,
                 65,
-                39,
-                69,
-                5
+                25
             ],
             "colpi_rimanenti": 5
         },
         {
-            "ruota": "Genova",
+            "ruota": "Cagliari",
             "ambo": [
-                30,
-                48
+                26,
+                80
             ],
-            "score": 1520,
+            "score": 1460,
             "ultima_estrazione": [
-                5,
-                48,
-                79,
                 23,
-                16
+                71,
+                63,
+                50,
+                27
             ],
-            "colpi_rimanenti": 5
+            "colpi_rimanenti": 4
         },
         {
             "ruota": "Firenze",
             "ambo": [
-                15,
-                60
+                7,
+                34
             ],
-            "score": 1496,
+            "score": 1460,
             "ultima_estrazione": [
                 79,
                 7,
@@ -208,23 +208,55 @@
                 8,
                 65
             ],
-            "colpi_rimanenti": 4
+            "colpi_rimanenti": 5
         }
     ],
     "ambo_forte": [
         {
-            "ruota": "Palermo",
+            "ruota": "Bari",
             "ambo": [
-                18,
-                36
+                7,
+                25
             ],
-            "score": 1532,
+            "score": 1460,
             "ultima_estrazione": [
-                36,
+                6,
+                49,
+                53,
                 65,
-                39,
-                69,
-                5
+                25
+            ],
+            "colpi_rimanenti": 5
+        },
+        {
+            "ruota": "Cagliari",
+            "ambo": [
+                26,
+                80
+            ],
+            "score": 1460,
+            "ultima_estrazione": [
+                23,
+                71,
+                63,
+                50,
+                27
+            ],
+            "colpi_rimanenti": 4
+        },
+        {
+            "ruota": "Firenze",
+            "ambo": [
+                7,
+                34
+            ],
+            "score": 1460,
+            "ultima_estrazione": [
+                79,
+                7,
+                61,
+                8,
+                65
             ],
             "colpi_rimanenti": 5
         },
@@ -234,7 +266,7 @@
                 30,
                 48
             ],
-            "score": 1520,
+            "score": 1460,
             "ultima_estrazione": [
                 5,
                 48,
@@ -245,62 +277,30 @@
             "colpi_rimanenti": 5
         },
         {
-            "ruota": "Firenze",
+            "ruota": "Milano",
             "ambo": [
+                10,
+                37
+            ],
+            "score": 1460,
+            "ultima_estrazione": [
                 15,
-                60
+                40,
+                78,
+                47,
+                58
             ],
-            "score": 1496,
-            "ultima_estrazione": [
-                79,
-                7,
-                61,
-                8,
-                65
-            ],
-            "colpi_rimanenti": 4
-        },
-        {
-            "ruota": "Napoli",
-            "ambo": [
-                44,
-                53
-            ],
-            "score": 1496,
-            "ultima_estrazione": [
-                37,
-                81,
-                7,
-                34,
-                78
-            ],
-            "colpi_rimanenti": 2
-        },
-        {
-            "ruota": "Roma",
-            "ambo": [
-                38,
-                47
-            ],
-            "score": 1496,
-            "ultima_estrazione": [
-                4,
-                23,
-                53,
-                82,
-                5
-            ],
-            "colpi_rimanenti": 4
+            "colpi_rimanenti": 3
         }
     ],
     "previsioni_attive": [
         {
             "ruota": "Bari",
             "ambo": [
-                2,
-                65
+                7,
+                25
             ],
-            "score": 1472,
+            "score": 1460,
             "ultima_estrazione": [
                 6,
                 49,
@@ -313,10 +313,10 @@
         {
             "ruota": "Cagliari",
             "ambo": [
-                5,
-                50
+                26,
+                80
             ],
-            "score": 1472,
+            "score": 1460,
             "ultima_estrazione": [
                 23,
                 71,
@@ -324,15 +324,15 @@
                 50,
                 27
             ],
-            "colpi_rimanenti": 5
+            "colpi_rimanenti": 4
         },
         {
             "ruota": "Firenze",
             "ambo": [
-                15,
-                60
+                7,
+                34
             ],
-            "score": 1496,
+            "score": 1460,
             "ultima_estrazione": [
                 79,
                 7,
@@ -340,7 +340,7 @@
                 8,
                 65
             ],
-            "colpi_rimanenti": 4
+            "colpi_rimanenti": 5
         },
         {
             "ruota": "Genova",
@@ -348,7 +348,7 @@
                 30,
                 48
             ],
-            "score": 1520,
+            "score": 1460,
             "ultima_estrazione": [
                 5,
                 48,
@@ -361,10 +361,10 @@
         {
             "ruota": "Milano",
             "ambo": [
-                40,
-                85
+                10,
+                37
             ],
-            "score": 1472,
+            "score": 1460,
             "ultima_estrazione": [
                 15,
                 40,
@@ -372,15 +372,15 @@
                 47,
                 58
             ],
-            "colpi_rimanenti": 5
+            "colpi_rimanenti": 3
         },
         {
             "ruota": "Napoli",
             "ambo": [
-                44,
-                53
+                15,
+                87
             ],
-            "score": 1496,
+            "score": 1448,
             "ultima_estrazione": [
                 37,
                 81,
@@ -388,15 +388,15 @@
                 34,
                 78
             ],
-            "colpi_rimanenti": 2
+            "colpi_rimanenti": 3
         },
         {
             "ruota": "Palermo",
             "ambo": [
-                18,
-                36
+                39,
+                66
             ],
-            "score": 1532,
+            "score": 1460,
             "ultima_estrazione": [
                 36,
                 65,
@@ -409,10 +409,10 @@
         {
             "ruota": "Roma",
             "ambo": [
-                38,
-                47
+                4,
+                31
             ],
-            "score": 1496,
+            "score": 1460,
             "ultima_estrazione": [
                 4,
                 23,
@@ -420,15 +420,15 @@
                 82,
                 5
             ],
-            "colpi_rimanenti": 4
+            "colpi_rimanenti": 5
         },
         {
             "ruota": "Torino",
             "ambo": [
-                15,
-                24
+                10,
+                82
             ],
-            "score": 1472,
+            "score": 1460,
             "ultima_estrazione": [
                 24,
                 40,
@@ -436,15 +436,15 @@
                 35,
                 81
             ],
-            "colpi_rimanenti": 5
+            "colpi_rimanenti": 4
         },
         {
             "ruota": "Venezia",
             "ambo": [
-                22,
-                85
+                40,
+                58
             ],
-            "score": 1484,
+            "score": 1460,
             "ultima_estrazione": [
                 53,
                 85,
@@ -452,7 +452,7 @@
                 74,
                 67
             ],
-            "colpi_rimanenti": 5
+            "colpi_rimanenti": 4
         }
     ]
 }
