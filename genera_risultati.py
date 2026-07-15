@@ -49,7 +49,7 @@ def score_ambo(n1,n2,storico):
     if d<=2:
         score-=40
 
-    ultimi6=storico[-6:]
+    ultimi350=storico[-350:]
     if not any(n1 in e and n2 in e for e in ultimi6):
         score+=60
 
