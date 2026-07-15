@@ -24,7 +24,7 @@ def frequenza(numero, storico):
 
     conta = 0
 
-    for estrazioni in storico[-10:]:
+    for estrazioni in storico[-350:]:
 
         if numero in estrazioni:
             conta += 1
